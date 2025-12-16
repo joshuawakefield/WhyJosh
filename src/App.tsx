@@ -54,14 +54,7 @@ function App() {
           <div className="prose prose-invert prose-lg max-w-none">
             <h3 className="text-xl font-semibold text-gray-200 mb-4">Integrated Polarity</h3>
             <p className="text-gray-400 leading-relaxed">
-              Most professionals optimize for a single trajectory—climbing the corporate ladder or mastering a craft.
-              I've deliberately integrated both. The result: a cognitive operating system that translates between
-              execution and strategy, field operations and boardroom decisions, electrons and clouds.
-            </p>
-            <p className="text-gray-400 leading-relaxed">
-              This isn't about being a generalist. It's about building bridges where others see walls. Blue-collar
-              discipline taught me systems thinking from the ground up. White-collar strategy taught me to scale
-              those systems. The intersection is where leverage lives.
+              I operate beyond the standard 'Soft Skills vs. Hard Skills' binary. I possess <span className="text-gray-200 font-semibold">Integrated Polarity</span>. I have the engineering rigor to deconstruct the kernel, but the artistic intuition to read the room. I have the grit to handle the daily grind, but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.
             </p>
           </div>
         </section>
@@ -80,34 +73,41 @@ function App() {
             <div className="space-y-6 border-l-2 border-blue-500/30 pl-6 ml-2">
               <div className="space-y-2">
                 <div className="flex items-baseline gap-3">
-                  <span className="text-blue-500 font-mono text-sm">1989-2007</span>
-                  <h4 className="text-lg font-semibold text-gray-200">Foundation</h4>
+                  <span className="text-blue-500 font-mono text-sm">1989-1998</span>
+                  <h4 className="text-lg font-semibold text-gray-200">The Spark</h4>
                 </div>
                 <p className="text-gray-400 leading-relaxed">
-                  Apprentice electrician. Learned to read blueprints, pull wire, troubleshoot live systems.
-                  Built muscle memory for complex systems under pressure.
+                  My journey began with Logo in 1989. By 1996, I was compiling C++ and navigating the early Linux kernel. Pre-web, pre-cloud, deep roots.
                 </p>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-baseline gap-3">
-                  <span className="text-blue-500 font-mono text-sm">2007-2015</span>
-                  <h4 className="text-lg font-semibold text-gray-200">Evolution</h4>
+                  <span className="text-blue-500 font-mono text-sm">1999-2003</span>
+                  <h4 className="text-lg font-semibold text-gray-200">The Bedrock (WPI)</h4>
                 </div>
                 <p className="text-gray-400 leading-relaxed">
-                  Journeyman to Master. Commercial projects. Team leadership. Systems design.
-                  The transition from executing plans to creating them.
+                  Entered WPI early. Switched from CS to Electrical Engineering to master Signal Processing and Analog Circuitry. This physics-based mental model underpins how I debug AI today.
                 </p>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-baseline gap-3">
-                  <span className="text-blue-500 font-mono text-sm">2015-Present</span>
-                  <h4 className="text-lg font-semibold text-gray-200">Transformation</h4>
+                  <span className="text-blue-500 font-mono text-sm">2003-2021</span>
+                  <h4 className="text-lg font-semibold text-gray-200">The Crucible</h4>
                 </div>
                 <p className="text-gray-400 leading-relaxed">
-                  The pivot. Business education. Technology integration. From installing physical infrastructure
-                  to architecting digital systems. Same principles, different medium.
+                  A non-linear path through high-stakes operations—from managing critical equipment failures at DR Power to international mediation. Mastering the 'human' side of systems.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-baseline gap-3">
+                  <span className="text-blue-500 font-mono text-sm">2022-Present</span>
+                  <h4 className="text-lg font-semibold text-gray-200">The Synthesis</h4>
+                </div>
+                <p className="text-gray-400 leading-relaxed">
+                  Returned to the digital frontier via Burlington Code Academy (Top of Class). Now orchestrating AI agents and building production-grade apps like JamCamping.com.
                 </p>
               </div>
             </div>
@@ -127,27 +127,21 @@ function App() {
             <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-1">
-                  <div className="text-3xl font-bold text-blue-500">4.0</div>
-                  <div className="text-sm text-gray-400">GPA</div>
+                  <div className="text-3xl font-bold text-blue-500">Top of Class</div>
+                  <div className="text-sm text-gray-400">BCA Cohort</div>
                 </div>
                 <div className="space-y-1">
-                  <div className="text-3xl font-bold text-blue-500">Full-Time</div>
-                  <div className="text-sm text-gray-400">While Working</div>
+                  <div className="text-3xl font-bold text-blue-500">4 Certs</div>
+                  <div className="text-sm text-gray-400">Full Stack MERN</div>
                 </div>
                 <div className="space-y-1">
-                  <div className="text-3xl font-bold text-blue-500">3 Years</div>
-                  <div className="text-sm text-gray-400">Accelerated</div>
+                  <div className="text-3xl font-bold text-blue-500">Pre-AI</div>
+                  <div className="text-sm text-gray-400">Manual Mastery</div>
                 </div>
               </div>
             </div>
             <p className="text-gray-400 leading-relaxed">
-              Bachelor of Commerce Administration while maintaining full-time work. Not because I needed
-              validation, but because I needed tools. Financial modeling. Strategic frameworks.
-              Organizational behavior. The meta-layer that turns operations into outcomes.
-            </p>
-            <p className="text-gray-400 leading-relaxed">
-              The discipline from pulling wire in freezing warehouses translated directly to pulling
-              all-nighters with balance sheets. Different domain. Same execution engine.
+              In 2021, facing severe housing instability, I engineered a pivot. I secured $10k in grants to attend the Burlington Code Academy. I graduated top of class in the final pre-ChatGPT cohort, mastering the MERN stack manually. This proved I don't just survive constraints; I weaponize them.
             </p>
           </div>
         </section>
@@ -161,34 +155,27 @@ function App() {
             <div className="h-1 w-20 bg-blue-500"></div>
           </div>
           <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-gray-200">Financial Alteration</h3>
-            <p className="text-gray-400 leading-relaxed">
-              Career transitions aren't linear. They're exponential when you compound domains.
-              Blue-collar hourly rates hit ceilings. White-collar strategy work scales.
-              The arbitrage opportunity: apply trades-level systems thinking to knowledge work.
-            </p>
-            <div className="bg-slate-900 border border-slate-800 rounded-lg p-6">
-              <div className="space-y-4">
-                <div className="flex justify-between items-baseline">
-                  <span className="text-gray-400">Electrician (Peak)</span>
-                  <span className="text-gray-200 font-mono">$XX/hour × 2080 hours</span>
-                </div>
-                <div className="flex justify-between items-baseline">
-                  <span className="text-gray-400">Strategic Roles (Current)</span>
-                  <span className="text-blue-500 font-mono">$XXX,XXX+ annually</span>
-                </div>
-                <div className="h-px bg-slate-800 my-2"></div>
-                <div className="flex justify-between items-baseline">
-                  <span className="text-gray-300 font-semibold">Multiplier</span>
-                  <span className="text-blue-500 font-mono text-xl">X.X×</span>
-                </div>
+            <h3 className="text-xl font-semibold text-gray-200">The Arbitrage</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 space-y-3">
+                <h4 className="text-lg font-semibold text-blue-500">Protection of Engineering</h4>
+                <p className="text-gray-400 leading-relaxed text-sm">
+                  I act as a firewall. Because I operate 'Electron to Cloud,' I solve Tier 3 complexity in the queue, protecting your core devs from context-switching.
+                </p>
+              </div>
+              <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 space-y-3">
+                <h4 className="text-lg font-semibold text-blue-500">LTV Preservation</h4>
+                <p className="text-gray-400 leading-relaxed text-sm">
+                  I apply 'Vibration Control.' I turn cancellation events into loyalty events by validating user anxiety and applying forensic technical fixes.
+                </p>
+              </div>
+              <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 space-y-3">
+                <h4 className="text-lg font-semibold text-blue-500">Zero-Latency Onboarding</h4>
+                <p className="text-gray-400 leading-relaxed text-sm">
+                  I don't need 3 months to ramp. As proven by JamCamping.com, I already understand the Bolt.new stack and can generate value on Day 1.
+                </p>
               </div>
             </div>
-            <p className="text-gray-400 leading-relaxed">
-              But the real ROI isn't financial—it's cognitive. I can walk onto a construction site
-              and speak the language. Then walk into a boardroom and translate it into strategy.
-              That translation layer is the moat.
-            </p>
           </div>
         </section>
 
