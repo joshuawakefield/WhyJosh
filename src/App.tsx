@@ -59,7 +59,7 @@ function App() {
           </div>
         </section>
 
-        {/* The Timeline */}
+       {/* The Timeline - CORRECTED */}
         <section id="timeline" className="space-y-6">
           <div className="space-y-2">
             <h2 className="text-3xl md:text-4xl font-bold text-blue-500 tracking-tight">
@@ -69,7 +69,7 @@ function App() {
           </div>
           <div className="space-y-8">
             <h3 className="text-xl font-semibold text-gray-200">Electron to Cloud: 1989-Present</h3>
-
+        
             <div className="space-y-6 border-l-2 border-blue-500/30 pl-6 ml-2">
               <div className="space-y-2">
                 <div className="flex items-baseline gap-3">
@@ -77,37 +77,41 @@ function App() {
                   <h4 className="text-lg font-semibold text-gray-200">The Spark</h4>
                 </div>
                 <p className="text-gray-400 leading-relaxed">
-                  My journey began with Logo in 1989. By 1996, I was compiling C++ and navigating the early Linux kernel. Pre-web, pre-cloud, deep roots.
+                  My journey began with Logo in 1989. By 1996, I was compiling C++ and navigating the early Linux kernel.
+                  Pre-web, pre-cloud, deep roots.
                 </p>
               </div>
-
+        
               <div className="space-y-2">
                 <div className="flex items-baseline gap-3">
                   <span className="text-blue-500 font-mono text-sm">1999-2003</span>
                   <h4 className="text-lg font-semibold text-gray-200">The Bedrock (WPI)</h4>
                 </div>
                 <p className="text-gray-400 leading-relaxed">
-                  Entered WPI early. Switched from CS to Electrical Engineering to master Signal Processing and Analog Circuitry. This physics-based mental model underpins how I debug AI today.
+                  Entered WPI early. Switched from CS to Electrical Engineering to master Signal Processing and Analog Circuitry.
+                  This physics-based mental model underpins how I debug AI today.
                 </p>
               </div>
-
+        
               <div className="space-y-2">
                 <div className="flex items-baseline gap-3">
                   <span className="text-blue-500 font-mono text-sm">2003-2021</span>
                   <h4 className="text-lg font-semibold text-gray-200">The Crucible</h4>
                 </div>
                 <p className="text-gray-400 leading-relaxed">
-                  A non-linear path through high-stakes operations—from managing critical equipment failures at DR Power to international mediation. Mastering the 'human' side of systems.
+                  A non-linear path through high-stakes operations—from managing critical equipment failures at DR Power
+                  to international mediation. Mastering the "human" side of systems.
                 </p>
               </div>
-
-              <div className="space-y-2">
+              
+               <div className="space-y-2">
                 <div className="flex items-baseline gap-3">
                   <span className="text-blue-500 font-mono text-sm">2022-Present</span>
                   <h4 className="text-lg font-semibold text-gray-200">The Synthesis</h4>
                 </div>
                 <p className="text-gray-400 leading-relaxed">
-                  Returned to the digital frontier via Burlington Code Academy (Top of Class). Now orchestrating AI agents and building production-grade apps like JamCamping.com.
+                  Returned to the digital frontier via Burlington Code Academy (Top of Class). Now orchestrating AI agents
+                  and building production-grade apps like JamCamping.com.
                 </p>
               </div>
             </div>
