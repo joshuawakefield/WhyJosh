@@ -1,4 +1,4 @@
-import { ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, X, Zap } from 'lucide-react';
+import { ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, X, Zap, Cpu, Palette, Hammer } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 // --- TYPES ---
@@ -363,62 +363,159 @@ function App() {
 
           <div className="relative border-l border-slate-800 ml-4 space-y-12 pb-4">
             
-            {/* ITEM 1: WPI */}
-            <div className="relative pl-12 group/item">
+             {/* ITEM 1: The Origin (Amber) */}
+             <div className="relative pl-12 group/item">
               <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-500 group-hover/item:bg-amber-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
-                  <h3 className="text-xl font-bold text-gray-100">The Foundation: WPI (BS Electrical Engineering)</h3>
-                  <span className="text-amber-400 font-mono text-sm">1999-2003</span>
+                  <h3 className="text-xl font-bold text-gray-100">The Source Code: From Armatron to NuMega</h3>
+                  <span className="text-amber-400 font-mono text-sm">1985-1999</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  My "First Layer" is not code; it is Physics. Specialized in Power Systems, Signal Processing, and Control Theory. I learned the math of the universe—Fourier transforms, Feedback Loops, and Entropy. I view LLMs not as magic, but as high-dimensional signal processing.
+                  My path began with a Radio Shack Armatron in 1985 and evolved through Logo, DOS, and Linux. By 1996, I was attending college night school for C/C++ while still in Catholic high school. This culminated in a professional role at <strong>NuMega Labs (1998)</strong> coding alongside senior engineers and competing in US FIRST Robotics. I entered WPI not as a novice, but as a seasoned practitioner.
                 </div>
               </div>
             </div>
 
-            {/* ITEM 2: OPERATIONS (The Gap) */}
+            {/* ITEM 2: WPI (Indigo) */}
             <div className="relative pl-12 group/item">
               <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 border-indigo-500 group-hover/item:bg-indigo-500"></div>
+              <div className="space-y-2">
+                <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
+                  <h3 className="text-xl font-bold text-gray-100">The Hard Foundation: WPI Engineering</h3>
+                  <span className="text-indigo-400 font-mono text-sm">1999-2003</span>
+                </div>
+                <div className="text-gray-400 leading-relaxed">
+                  BS in Electrical Engineering. This was the era of "Hard Robotics" and rigorous Control Theory. I specialized in <strong>Real-Time DSP (EE 3703)</strong>, <strong>Control Engineering (ES 3011)</strong>, and <strong>Theory of Computation (CS 4123)</strong>. I was building autonomous feedback loops and optimizing assembly for embedded architectures. My understanding of AI is grounded in the math of the universe—Fourier transforms, Entropy, and Feedback—not just API calls.
+                </div>
+              </div>
+            </div>
+
+            {/* ITEM 3: The Crucible (Amber) */}
+            <div className="relative pl-12 group/item">
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-500 group-hover/item:bg-amber-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Crucible: High-Stakes Operations</h3>
-                  <span className="text-indigo-400 font-mono text-sm">2004-2019</span>
+                  <span className="text-amber-400 font-mono text-sm">2006-2020</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  Spent 15 years in the trenches of physical reality. From managing critical equipment failures at <span className="text-gray-200">DR Power</span> to orchestrating high-volume logistics in industrial kitchens. This era removed my fear of failure. If the server goes down, you lose money; if the machine goes down, you lose fingers. I treat software bugs with the same forensic urgency as mechanical failure.
+                   I stepped out of the code and into the fire of reality. From managing multi-million dollar government contracts at <strong>CACI</strong> (Budgeting, Compliance, Section L/M) to solving critical mechanical failures at <strong>DR Power Equipment</strong>. This era forged my financial literacy and operational grit. I know that when systems fail, it costs real money—whether it's an SAP error or a blown actuator.
                 </div>
               </div>
             </div>
 
-            {/* ITEM 3: THE WINTER (The Pivot) */}
+            {/* ITEM 4: The Pivot (Indigo) */}
             <div className="relative pl-12 group/item">
-              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-500 group-hover/item:bg-amber-500"></div>
-              <div className="space-y-2">
-                <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
-                  <h3 className="text-xl font-bold text-gray-100">The Pivot: Antifragility</h3>
-                  <span className="text-amber-400 font-mono text-sm">2020-2022</span>
-                </div>
-                <div className="text-gray-400 leading-relaxed">
-                  Navigated extreme resource constraints (housing instability) while working rigorous manual labor (Tree Service) during a Vermont winter. This era forged my "Stopper" mentality: In a crisis, I do not vibrate with chaos; I absorb it. I proved that ambition can survive even when resources are at zero.
-                </div>
-              </div>
-            </div>
-
-             {/* ITEM 4: THE RETURN (BCA) */}
-             <div className="relative pl-12 group/item">
               <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 border-indigo-500 group-hover/item:bg-indigo-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
-                  <h3 className="text-xl font-bold text-gray-100">The Return: Burlington Code Academy</h3>
-                  <span className="text-indigo-400 font-mono text-sm">Late 2022</span>
+                  <h3 className="text-xl font-bold text-gray-100">The Antifragile Turn</h3>
+                  <span className="text-indigo-400 font-mono text-sm">2020-2022</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  Graduated Top of Class in the <strong>final pre-ChatGPT cohort</strong>. I utilized my WPI engineering foundation to master the MERN stack manually—debugging raw syntax without AI. I didn't just learn to code; I reactivated my core circuitry to become a bridge between the metal and the model.
+                  Navigated extreme resource constraints while working rigorous manual labor (Tree Service) during a Vermont winter. This era proved that ambition can survive even when resources are at zero. It culminated in my return to the <strong>Burlington Code Academy</strong>, where I graduated top-of-class in the industry's <strong>final pre-ChatGPT cohort</strong>.
                 </div>
               </div>
             </div>
 
+             {/* ITEM 5: The Synthesis (Amber) */}
+             <div className="relative pl-12 group/item">
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-500 group-hover/item:bg-amber-500"></div>
+              <div className="space-y-2">
+                <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
+                  <h3 className="text-xl font-bold text-gray-100">The Synthesis: AI Orchestration</h3>
+                  <span className="text-amber-400 font-mono text-sm">Present</span>
+                </div>
+                <div className="text-gray-400 leading-relaxed">
+                  I have now integrated the "Hard Engineering" of WPI, the "Operational Grit" of the trades, and the "Modern Stack" of React/Node. I don't just write code; I orchestrate AI systems (JamCamping) using a hypervisor mentality. I am the bridge between the metal and the model.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* DOMAIN SYNTHESIS SECTION */}
+        <section id="domains" className="space-y-12 group">
+          <div className="flex items-center gap-4 relative">
+            <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-indigo-500/10 text-indigo-400 group-hover:shadow-[0_0_20px_rgba(79,70,229,0.5)] group-hover:bg-indigo-500/20">
+              <Cpu size={32} />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
+              The Domain Matrix
+            </h2>
+          </div>
+
+          <div className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed">
+            <p>
+              My mind is an association engine. I can poke a stick in a campfire and see embers that remind me of particle trails in a cloud chamber. To me, a jazz mode is just a frequency response; a kitchen service is just a packet-switching network. I don't just "know" these domains—I understand the universal patterns that connect them.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* Domain 1: The Physics */}
+            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4">
+              <div className="flex items-center gap-3 text-amber-400">
+                <Zap size={24} />
+                <h3 className="text-xl font-bold">The Physics</h3>
+              </div>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                <strong>Rigorous Engineering.</strong> My foundation isn't syntax; it's First Principles. I speak the language of Signal Processing, Calculus, and Control Theory. From coding <em>Armatrons</em> in the 80s to modeling entropy at WPI, I understand the hardware that the software lives on.
+              </p>
+            </SpotlightCard>
+
+            {/* Domain 2: The Improvisation */}
+            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4">
+              <div className="flex items-center gap-3 text-indigo-400">
+                <Palette size={24} />
+                <h3 className="text-xl font-bold">The Art</h3>
+              </div>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                <strong>Systematic Creativity.</strong> I have played improvisational guitar (Phish/Dead style) since 1998. This isn't just music; it's real-time algorithmic composition. It is the ability to listen, react, and stabilize a chaotic system (the band) into a coherent output (the jam). 
+              </p>
+            </SpotlightCard>
+
+            {/* Domain 3: The Reality */}
+            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4">
+              <div className="flex items-center gap-3 text-amber-400">
+                <Hammer size={24} />
+                <h3 className="text-xl font-bold">The Reality</h3>
+              </div>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                <strong>Operational Truth.</strong> I have managed $350k budgets for GovCon (CACI), restored 800-tree vacuum systems in the snow, and run high-volume kitchen logistics. I have done Technical Support for Daft Labs and DR Power. I know what "Production" actually feels like.
+              </p>
+            </SpotlightCard>
+          </div>
+
+          {/* HARD SKILLS MATRIX */}
+          <div className="mt-8 rounded-lg border border-slate-700 bg-slate-950 p-6 font-mono text-sm relative overflow-hidden group/matrix">
+            <div className="absolute top-0 right-0 p-2 text-xs text-slate-500 font-bold tracking-widest uppercase">
+              Desirability Index: Robotics & AI
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
+              <div>
+                <h4 className="text-amber-500 mb-3 border-b border-amber-500/20 pb-1">01. THE METAL (Control & Signals)</h4>
+                <ul className="space-y-2 text-gray-400">
+                  <li><span className="text-gray-100">Control Theory:</span> Feedback Loops, PID Tuning, Stability Analysis</li>
+                  <li><span className="text-gray-100">Signal Processing:</span> FFT, Filtering, Noise Reduction, ADC/DAC</li>
+                  <li><span className="text-gray-100">Embedded Logic:</span> Assembly, Real-Time Constraints, Interrupts</li>
+                  <li><span className="text-gray-100">Physics:</span> E&M, Thermodynamics, Kinematics (Robotics)</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="text-indigo-500 mb-3 border-b border-indigo-500/20 pb-1">02. THE MIND (AI & Math)</h4>
+                <ul className="space-y-2 text-gray-400">
+                  <li><span className="text-gray-100">Mathematics:</span> Linear Algebra, Calculus, Discrete Math, Probability</li>
+                  <li><span className="text-gray-100">AI Context:</span> RAG Architectures, Token Optimization, Agentic Workflows</li>
+                  <li><span className="text-gray-100">Data Engineering:</span> Python (Pandas/NumPy), ETL Pipelines, Regex</li>
+                  <li><span className="text-gray-100">Pattern Rec:</span> High-Dimensional Data Synthesis, Anomaly Detection</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
 
