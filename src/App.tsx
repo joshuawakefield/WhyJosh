@@ -1,4 +1,4 @@
-import { ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, X, Zap, Cpu, Palette, Hammer } from 'lucide-react';
+import { ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Wrench, Trophy } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 // --- TYPES ---
@@ -516,6 +516,67 @@ function App() {
                 </ul>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* WINS / MISSION LOGS SECTION */}
+        <section id="wins" className="space-y-12 group">
+          <div className="flex items-center gap-4 relative">
+            <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
+              <Trophy size={32} />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
+              Critical Interventions
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* Story 1: CACI (Governance) */}
+            <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card">
+              <div className="p-4 bg-indigo-950/30 border-b border-slate-700 flex justify-between items-center">
+                <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: CACI_DEFENSE</span>
+                <Shield size={18} className="text-indigo-400" />
+              </div>
+              <div className="p-6 flex flex-col gap-4 flex-1">
+                <h3 className="text-xl font-bold text-gray-100">The $6 Million Audit</h3>
+                <p className="text-sm text-gray-400 leading-relaxed flex-1">
+                  As Red Team Lead for a critical federal recompete, I didn't just review documents; I enforced a zero-defect compliance standard. One missing signature or miscalculated labor rate would have disqualified the bid. I managed the audit trail for a <strong>$6M revenue stream</strong>, ensuring 100% compliance under extreme deadline pressure. The contract was secured.
+                </p>
+                <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: REVENUE_SECURED]</div>
+              </div>
+            </SpotlightCard>
+
+            {/* Story 2: DR Power (Empathy/Ops) */}
+            <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card">
+              <div className="p-4 bg-amber-950/30 border-b border-slate-700 flex justify-between items-center">
+                <span className="text-xs font-mono text-amber-400 tracking-widest">LOG_REF: DR_POWER_OPS</span>
+                <Wrench size={18} className="text-amber-400" />
+              </div>
+              <div className="p-6 flex flex-col gap-4 flex-1">
+                <h3 className="text-xl font-bold text-gray-100">The Forensic Save</h3>
+                <p className="text-sm text-gray-400 leading-relaxed flex-1">
+                  A commercial client was down. Their equipment failure wasn't just an inconvenience; it was a daily P&L loss. They were furious. I didn't quote policy. I de-escalated the human emotion by validating the business impact, then surgically diagnosed the root cause (a specific voltage drop, not a mechanical failure). I stayed on the case until the machine was running.
+                </p>
+                <div className="mt-2 text-xs text-amber-300 font-mono">[RESULT: CHURN_PREVENTED]</div>
+              </div>
+            </SpotlightCard>
+
+            {/* Story 3: Resourcefulness (Innovation) */}
+             <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card">
+              <div className="p-4 bg-indigo-950/30 border-b border-slate-700 flex justify-between items-center">
+                <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: BOOTSTRAP_01</span>
+                <Zap size={18} className="text-indigo-400" />
+              </div>
+              <div className="p-6 flex flex-col gap-4 flex-1">
+                <h3 className="text-xl font-bold text-gray-100">The "Impossible" Pivot</h3>
+                <p className="text-sm text-gray-400 leading-relaxed flex-1">
+                  In 2022, I faced a $12,000 tuition constraint for the Burlington Code Academy with $0 in funding. I refused to accept the dead end. I engineered a funding stack using two state grants and a private scholarship, negotiating the gap. I entered the program with the same determination, graduating top of class. I don't see barriers; I see routing problems.
+                </p>
+                <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: OBJECTIVE_ACHIEVED]</div>
+              </div>
+            </SpotlightCard>
+
           </div>
         </section>
 
