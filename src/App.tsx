@@ -1,4 +1,4 @@
-import { Download, ExternalLink, Linkedin, Github, Mail, ChevronDown } from 'lucide-react';
+import { Download, ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, Cpu, HardHat, Zap } from 'lucide-react';
 
 function App() {
   const scrollToSection = (id: string) => {
@@ -7,196 +7,201 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased">
+    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased selection:bg-blue-500/30">
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-6 py-20 relative">
-        <div className="max-w-4xl w-full text-center space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-blue-500 mb-4">
+      <section className="min-h-screen flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden">
+        {/* Background texture */}
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        
+        <div className="max-w-5xl w-full text-center space-y-8 relative z-10">
+          <div className="space-y-6">
+            <div className="inline-block px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-mono mb-4">
+              SYSTEM STATE: OPTIMAL // READY FOR DEPLOYMENT
+            </div>
+            <h1 className="text-5xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 mb-4">
               JOSHUA WAKEFIELD
             </h1>
-            <p className="text-xl md:text-3xl text-gray-300 font-light leading-relaxed max-w-3xl mx-auto">
-              The Human Hypervisor. Bridging Blue-Collar Grit & White-Collar Strategy.
+            <p className="text-xl md:text-3xl text-gray-300 font-light leading-relaxed max-w-4xl mx-auto">
+              The <span className="text-blue-400 font-medium">Human Hypervisor</span> for AI Communities.
+              <br className="hidden md:block" />
+              Bridging Blue-Collar Grit & White-Collar Strategy.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <button className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors duration-200 flex items-center gap-2 w-full sm:w-auto justify-center">
-              <Download size={20} />
-              Download Resume
-            </button>
-            <button className="px-8 py-4 border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white font-medium rounded-lg transition-colors duration-200 flex items-center gap-2 w-full sm:w-auto justify-center">
+            <a href="mailto:joshua.wakefield@gmail.com" className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg shadow-blue-900/20 hover:scale-105">
+              <Mail size={20} />
+              Contact Me
+            </a>
+            <a href="https://jamcamping.com" target="_blank" rel="noopener noreferrer" className="px-8 py-4 border border-slate-700 bg-slate-900/50 hover:bg-slate-800 text-blue-400 hover:text-white font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center hover:border-blue-500/50">
               <ExternalLink size={20} />
-              View JamCamping
-            </button>
+              View Proof of Work
+            </a>
           </div>
         </div>
 
         <button
           onClick={() => scrollToSection('thesis')}
-          className="absolute bottom-12 text-gray-500 hover:text-blue-500 transition-colors duration-200 animate-bounce"
+          className="absolute bottom-12 text-slate-600 hover:text-blue-400 transition-colors duration-200 animate-bounce"
         >
           <ChevronDown size={32} />
         </button>
       </section>
 
       {/* Main Content Container */}
-      <div className="max-w-3xl mx-auto px-6 py-20 space-y-32">
+      <div className="max-w-4xl mx-auto px-6 py-20 space-y-40">
 
         {/* The Thesis */}
-        <section id="thesis" className="space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-500 tracking-tight">
-              The Thesis
+        <section id="thesis" className="space-y-8">
+          <div className="space-y-4 border-l-4 border-blue-500 pl-6">
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight">
+              Integrated Polarity
             </h2>
-            <div className="h-1 w-20 bg-blue-500"></div>
+            <p className="text-blue-400 font-mono text-lg">/ˈin(t)əˌɡrādəd pōˈlerədē/</p>
           </div>
-          <div className="prose prose-invert prose-lg max-w-none">
-            <h3 className="text-xl font-semibold text-gray-200 mb-4">Integrated Polarity</h3>
-            <p className="text-gray-400 leading-relaxed">
-              I operate beyond the standard 'Soft Skills vs. Hard Skills' binary. I possess <span className="text-gray-200 font-semibold">Integrated Polarity</span>. I have the engineering rigor to deconstruct the kernel, but the artistic intuition to read the room. I have the grit to handle the daily grind, but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.
+          
+          <div className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed space-y-6">
+            <p>
+              I operate beyond the standard "Soft Skills vs. Hard Skills" binary. Most professionals optimize for a single trajectory—climbing the corporate ladder or mastering a craft. 
+              <strong className="text-white"> I have deliberately integrated both.</strong>
             </p>
-          </div>
-        </section>
-
-       {/* The Timeline - CORRECTED */}
-        <section id="timeline" className="space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-500 tracking-tight">
-              The Timeline
-            </h2>
-            <div className="h-1 w-20 bg-blue-500"></div>
-          </div>
-          <div className="space-y-8">
-            <h3 className="text-xl font-semibold text-gray-200">Electron to Cloud: 1989-Present</h3>
-        
-            <div className="space-y-6 border-l-2 border-blue-500/30 pl-6 ml-2">
-              <div className="space-y-2">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-blue-500 font-mono text-sm">1989-1998</span>
-                  <h4 className="text-lg font-semibold text-gray-200">The Spark</h4>
-                </div>
-                <p className="text-gray-400 leading-relaxed">
-                  My journey began with Logo in 1989. By 1996, I was compiling C++ and navigating the early Linux kernel.
-                  Pre-web, pre-cloud, deep roots.
-                </p>
-              </div>
-        
-              <div className="space-y-2">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-blue-500 font-mono text-sm">1999-2003</span>
-                  <h4 className="text-lg font-semibold text-gray-200">The Bedrock (WPI)</h4>
-                </div>
-                <p className="text-gray-400 leading-relaxed">
-                  Entered WPI early. Switched from CS to Electrical Engineering to master Signal Processing and Analog Circuitry.
-                  This physics-based mental model underpins how I debug AI today.
-                </p>
-              </div>
-        
-              <div className="space-y-2">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-blue-500 font-mono text-sm">2003-2021</span>
-                  <h4 className="text-lg font-semibold text-gray-200">The Crucible</h4>
-                </div>
-                <p className="text-gray-400 leading-relaxed">
-                  A non-linear path through high-stakes operations—from managing critical equipment failures at DR Power
-                  to international mediation. Mastering the "human" side of systems.
-                </p>
-              </div>
-              
-               <div className="space-y-2">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-blue-500 font-mono text-sm">2022-Present</span>
-                  <h4 className="text-lg font-semibold text-gray-200">The Synthesis</h4>
-                </div>
-                <p className="text-gray-400 leading-relaxed">
-                  Returned to the digital frontier via Burlington Code Academy (Top of Class). Now orchestrating AI agents
-                  and building production-grade apps like JamCamping.com.
-                </p>
-              </div>
+            <p>
+              I possess the engineering rigor to deconstruct the kernel (WPI EE), but the artistic intuition to read the room (Jazz/Comedy). I have the grit to handle the daily grind (Trades), but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.
+            </p>
+            <div className="bg-slate-900/80 p-6 rounded-lg border border-slate-800 mt-8">
+              <p className="text-emerald-400 font-mono text-sm mb-2">// THE FORCE MULTIPLIER EFFECT</p>
+              <p className="italic text-gray-400">
+                "I am not just one person; I am a team of specialists inhabiting one body, orchestrated by a mature executive consciousness."
+              </p>
             </div>
           </div>
         </section>
 
-        {/* The Pivot (BCA) */}
-        <section id="pivot" className="space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-500 tracking-tight">
-              The Pivot
+        {/* The Timeline */}
+        <section id="timeline" className="space-y-12">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-blue-500/10 rounded-lg text-blue-400">
+              <Terminal size={32} />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight">
+              The Electron-to-Cloud Graph
             </h2>
-            <div className="h-1 w-20 bg-blue-500"></div>
           </div>
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-gray-200">Proof of Grit</h3>
-            <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-1">
-                  <div className="text-3xl font-bold text-blue-500">Top of Class</div>
-                  <div className="text-sm text-gray-400">BCA Cohort</div>
+
+          <div className="relative border-l border-slate-800 ml-4 space-y-12 pb-4">
+            {/* WPI Era */}
+            <div className="relative pl-12 group">
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-blue-500 group-hover:bg-blue-500 transition-colors duration-300"></div>
+              <div className="space-y-2">
+                <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
+                  <h3 className="text-xl font-bold text-gray-100">The Bedrock: WPI</h3>
+                  <span className="font-mono text-blue-400 text-sm">1999-2003</span>
                 </div>
-                <div className="space-y-1">
-                  <div className="text-3xl font-bold text-blue-500">4 Certs</div>
-                  <div className="text-sm text-gray-400">Full Stack MERN</div>
-                </div>
-                <div className="space-y-1">
-                  <div className="text-3xl font-bold text-blue-500">Pre-AI</div>
-                  <div className="text-sm text-gray-400">Manual Mastery</div>
+                <div className="text-gray-400 leading-relaxed">
+                  Electrical Engineering & Signal Processing. I learned the math of the universe—Fourier transforms, Control Theory, and Entropy. I view LLMs not as magic, but as high-dimensional signal processing.
                 </div>
               </div>
             </div>
-            <p className="text-gray-400 leading-relaxed">
-              In 2021, facing severe housing instability, I engineered a pivot. I secured $10k in grants to attend the Burlington Code Academy. I graduated top of class in the final pre-ChatGPT cohort, mastering the MERN stack manually. This proved I don't just survive constraints; I weaponize them.
-            </p>
+
+            {/* The Pivot Era */}
+            <div className="relative pl-12 group">
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 group-hover:border-emerald-500 transition-colors duration-300"></div>
+              <div className="space-y-2">
+                <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
+                  <h3 className="text-xl font-bold text-gray-100">The Forge: Operational Grit</h3>
+                  <span className="font-mono text-emerald-400 text-sm">2020-2022</span>
+                </div>
+                <div className="text-gray-400 leading-relaxed">
+                  Navigated extreme resource constraints (housing instability) while working rigorous trade jobs (Tree Service, Industrial Kitchens). This era forged my "Stopper" mentality: In a crisis, I do not vibrate with chaos; I absorb it.
+                </div>
+              </div>
+            </div>
+
+            {/* The Tech Return */}
+            <div className="relative pl-12 group">
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-blue-400 group-hover:bg-blue-400 transition-colors duration-300"></div>
+              <div className="space-y-2">
+                <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
+                  <h3 className="text-xl font-bold text-gray-100">The Return: Burlington Code Academy</h3>
+                  <span className="font-mono text-blue-400 text-sm">2022</span>
+                </div>
+                <div className="text-gray-400 leading-relaxed">
+                  Graduated Top of Class. I didn't accept the $12k tuition constraint; I engineered a funding solution via grants. Mastered the MERN stack manually right before the ChatGPT acceleration.
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* The ROI (Arbitrage) */}
-        <section id="roi" className="space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-500 tracking-tight">
-              The ROI
-            </h2>
-            <div className="h-1 w-20 bg-blue-500"></div>
-          </div>
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-gray-200">The Arbitrage</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 space-y-3">
-                <h4 className="text-lg font-semibold text-blue-500">Protection of Engineering</h4>
-                <p className="text-gray-400 leading-relaxed text-sm">
-                  I act as a firewall. Because I operate 'Electron to Cloud,' I solve Tier 3 complexity in the queue, protecting your core devs from context-switching.
-                </p>
-              </div>
-              <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 space-y-3">
-                <h4 className="text-lg font-semibold text-blue-500">LTV Preservation</h4>
-                <p className="text-gray-400 leading-relaxed text-sm">
-                  I apply 'Vibration Control.' I turn cancellation events into loyalty events by validating user anxiety and applying forensic technical fixes.
-                </p>
-              </div>
-              <div className="bg-slate-900 border border-slate-800 rounded-lg p-6 space-y-3">
-                <h4 className="text-lg font-semibold text-blue-500">Zero-Latency Onboarding</h4>
-                <p className="text-gray-400 leading-relaxed text-sm">
-                  I don't need 3 months to ramp. As proven by JamCamping.com, I already understand the Bolt.new stack and can generate value on Day 1.
-                </p>
-              </div>
+        <section id="roi" className="space-y-8">
+           <div className="flex items-center gap-4">
+            <div className="p-3 bg-emerald-500/10 rounded-lg text-emerald-400">
+              <Zap size={32} />
             </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight">
+              The Arbitrage Opportunity
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
+              <h3 className="text-lg font-bold text-gray-200 mb-2">Escalation Firewall</h3>
+              <p className="text-gray-400 text-sm">
+                Most support reps escalate Tier 3 tickets. I solve them in the queue. I protect your Engineering team's bandwidth, saving thousands in context-switching costs.
+              </p>
+            </div>
+            <div className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
+              <h3 className="text-lg font-bold text-gray-200 mb-2">Vibration Control</h3>
+              <p className="text-gray-400 text-sm">
+                I apply radical empathy + technical authority. I turn "Cancellation Events" into "Loyalty Events," directly defending Net Dollar Retention (NDR).
+              </p>
+            </div>
+            <div className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
+              <h3 className="text-lg font-bold text-gray-200 mb-2">Context Hygiene</h3>
+              <p className="text-gray-400 text-sm">
+                I don't just use AI; I orchestrate it. My JamCamping workflow proves I can teach your users how to be Hypervisors of their own code.
+              </p>
+            </div>
+            <div className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
+              <h3 className="text-lg font-bold text-gray-200 mb-2">Zero Latency</h3>
+              <p className="text-gray-400 text-sm">
+                I am an exponential learner. I built production apps on your stack over a weekend. I start generating ROI on Day 1.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action */}
+        <section className="text-center space-y-8 pt-10">
+          <p className="text-2xl text-gray-300 font-light">
+            I am not looking for a job. I am looking for a mission.
+          </p>
+          <div className="flex justify-center">
+             <a 
+               href="mailto:joshua.wakefield@gmail.com"
+               className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-blue-600 font-lg rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 hover:bg-blue-500"
+             >
+              Let's Talk
+              <div className="absolute -inset-3 rounded-full bg-blue-400 opacity-20 group-hover:opacity-40 blur-lg transition-opacity duration-200" />
+            </a>
           </div>
         </section>
 
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-slate-800 mt-32">
-        <div className="max-w-3xl mx-auto px-6 py-12">
+      <footer className="border-t border-slate-900 mt-32 bg-slate-950">
+        <div className="max-w-4xl mx-auto px-6 py-12">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-center md:text-left">
-              <p className="text-gray-400 text-sm">
-                Built on <span className="text-blue-500">Bolt.new</span>. Deployed by Joshua Wakefield.
+              <p className="text-gray-500 text-sm font-mono">
+                SYSTEM_ID: JOSHUA_WAKEFIELD // <span className="text-blue-500">READY</span>
               </p>
             </div>
             <div className="flex gap-6">
               <a
-                href="https://linkedin.com/in/your-profile"
+                href="https://linkedin.com/in/jmwakefield"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-blue-500 transition-colors duration-200"
@@ -204,7 +209,7 @@ function App() {
                 <Linkedin size={24} />
               </a>
               <a
-                href="https://github.com/your-username"
+                href="https://github.com/joshuawakefield"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-blue-500 transition-colors duration-200"
@@ -212,7 +217,7 @@ function App() {
                 <Github size={24} />
               </a>
               <a
-                href="mailto:your.email@example.com"
+                href="mailto:joshua.wakefield@gmail.com"
                 className="text-gray-400 hover:text-blue-500 transition-colors duration-200"
               >
                 <Mail size={24} />
