@@ -1,6 +1,14 @@
 import { ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, X, Zap } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
+// --- TYPES ---
+interface TerminalBlock {
+  id: number;
+  command: string; // The command typed (e.g., "help")
+  output: string[]; // The lines returned by the system
+  timestamp: string;
+}
+
 // --- COMPONENTS ---
 
 function SpotlightCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -40,58 +48,86 @@ function SpotlightCard({ children, className = '' }: { children: React.ReactNode
 
 function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [input, setInput] = useState('');
-  const [history, setHistory] = useState<string[]>([
-    "WakefieldOS v1.0.5 (tty1)",
-    "Login: guest",
-    "Welcome to the System. Type 'help' for commands.",
-    "------------------------------------------------",
+  const [blocks, setBlocks] = useState<TerminalBlock[]>([
+    {
+      id: 0,
+      command: 'boot',
+      timestamp: new Date().toLocaleTimeString(),
+      output: [
+        "WakefieldOS v1.0.5 (tty1)",
+        "Login: guest",
+        "System Integrity: 100%",
+        "Welcome to the System. Type 'help' for commands."
+      ]
+    }
   ]);
+  
   const inputRef = useRef<HTMLInputElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Auto-scroll to bottom when blocks change
   useEffect(() => {
-    if (isOpen && bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'auto' });
+    if (isOpen && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       inputRef.current?.focus();
     }
-  }, [history, isOpen]);
+  }, [blocks, isOpen]);
+
+  // Focus input when clicking anywhere in terminal
+  const handleFocus = () => {
+    inputRef.current?.focus();
+  };
 
   const handleCommand = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       const cmd = input.trim().toLowerCase();
-      const newHistory = [...history, `guest@wakefield:~$ ${input}`];
+      if (!cmd) return;
+
+      const newBlock: TerminalBlock = {
+        id: Date.now(),
+        command: cmd,
+        timestamp: new Date().toLocaleTimeString(),
+        output: []
+      };
 
       switch (cmd) {
         case 'help':
-          newHistory.push("Available commands: whoami, stack, contact, jamcamping, clear, exit");
+          newBlock.output = ["Available commands:", "whoami", "stack", "contact", "jamcamping", "clear", "exit"];
           break;
         case 'whoami':
-          newHistory.push("Joshua Wakefield. Polymathic Systems Synthesizer. WPI EE '03. Forged in DR Power. Currently optimizing entropy.");
+          newBlock.output = ["Joshua Wakefield.", "Polymathic Systems Synthesizer.", "WPI EE '03.", "Forged in DR Power.", "Currently optimizing entropy."];
           break;
         case 'stack':
-          newHistory.push("CORE: React, Next.js, Node, TypeScript");
-          newHistory.push("AI: Agent Orchestration, Context Hygiene, RAG");
-          newHistory.push("HARDWARE: Signal Processing, IoT, Circuit Design");
+          newBlock.output = [
+            "CORE: React, Next.js, Node, TypeScript",
+            "AI: Agent Orchestration, Context Hygiene, RAG",
+            "HARDWARE: Signal Processing, IoT, Circuit Design"
+          ];
           break;
         case 'contact':
-          newHistory.push("Email: joshua.wakefield@gmail.com");
-          newHistory.push("Location: Newport, RI, USA");
+          newBlock.output = ["Email: joshua.wakefield@gmail.com", "Location: Newport, RI, USA"];
           break;
         case 'jamcamping':
-          newHistory.push("JamCamping.com: A production-grade PWA built in one weekend on Bolt.new.");
-          newHistory.push("Status: Deployed // Architecture: Dual-Stack");
+          newBlock.output = [
+            "JamCamping.com",
+            "----------------",
+            "A production-grade PWA built in one weekend on Bolt.new.",
+            "Architecture: Dual-Stack (Vite/Next.js study)",
+            "Status: Deployed"
+          ];
           break;
         case 'clear':
-          setHistory([]);
+          setBlocks([]);
           setInput('');
           return;
         case 'exit':
           onClose();
           return;
         default:
-          if (cmd !== '') newHistory.push(`Command not found: ${cmd}. Type 'help' for assistance.`);
+          newBlock.output = [`Command not found: ${cmd}`, "Type 'help' for assistance."];
       }
-      setHistory(newHistory);
+
+      setBlocks(prev => [...prev, newBlock]);
       setInput('');
     }
   };
@@ -99,34 +135,68 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-slate-950 border border-slate-700 rounded-lg shadow-2xl overflow-hidden font-mono text-sm md:text-base ring-1 ring-amber-500/20">
-        <div className="bg-slate-900 p-2 border-b border-slate-800 flex justify-between items-center">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={onClose}>
+      <div 
+        className="w-full max-w-3xl bg-slate-950 border border-slate-700 rounded-lg shadow-2xl overflow-hidden font-mono ring-1 ring-amber-500/20 flex flex-col max-h-[80vh]"
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+      >
+        {/* Terminal Header with Midnight Sunset Gradient */}
+        <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-indigo-400 p-3 flex justify-between items-center">
           <div className="flex gap-2 ml-2">
-            <div className="w-3 h-3 rounded-full bg-red-500/80" />
-            <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-            <div className="w-3 h-3 rounded-full bg-green-500/80" />
+            <div className="w-3 h-3 rounded-full bg-slate-900/40 border border-slate-900/10" />
+            <div className="w-3 h-3 rounded-full bg-slate-900/40 border border-slate-900/10" />
+            <div className="w-3 h-3 rounded-full bg-slate-900/40 border border-slate-900/10" />
           </div>
-          <div className="text-slate-400 text-xs tracking-widest">GUEST@WAKEFIELD:~</div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white mr-2"><X size={16} /></button>
+          <div className="text-slate-900 font-bold text-xs tracking-widest opacity-80">GUEST@WAKEFIELD:~</div>
+          <button onClick={onClose} className="text-slate-900 hover:text-white transition-colors mr-2"><X size={18} /></button>
         </div>
-        <div className="p-4 h-[400px] overflow-y-auto text-green-400 selection:bg-green-900/50 font-medium" onClick={() => inputRef.current?.focus()}>
-          {history.map((line, i) => (
-            <div key={i} className="mb-1 break-words">{line}</div>
+
+        {/* Terminal Body */}
+        <div 
+          className="flex-1 overflow-y-auto bg-slate-950 scrollbar-thin scrollbar-thumb-slate-800" 
+          onClick={handleFocus}
+          ref={scrollRef}
+        >
+          {blocks.map((block, index) => (
+            <div key={block.id} className={`p-4 border-b border-white/5 ${index % 2 === 0 ? 'bg-indigo-950/10' : 'bg-transparent'}`}>
+              {/* Command Line */}
+              <div className="flex items-start gap-3 mb-2 opacity-80">
+                <span className="text-amber-500 font-bold shrink-0">➜</span>
+                <span className="text-blue-400 shrink-0">~</span>
+                <span className="text-gray-100">{block.command}</span>
+                <span className="text-slate-600 text-xs ml-auto font-sans">{block.timestamp}</span>
+              </div>
+              
+              {/* Output Lines */}
+              <div className="pl-6 space-y-1">
+                {block.output.map((line, i) => (
+                  <div key={i} className="text-green-400/90 text-sm md:text-base leading-relaxed break-words">
+                    {line}
+                  </div>
+                ))}
+              </div>
+            </div>
           ))}
-          <div className="flex items-center gap-2">
-            <span className="text-blue-400">guest@wakefield:~$</span>
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleCommand}
-              className="bg-transparent border-none outline-none text-green-400 flex-1 focus:ring-0 placeholder-green-800"
-              autoFocus
-            />
+
+          {/* Active Input Line */}
+          <div className="p-4 bg-slate-900/30">
+            <div className="flex items-center gap-3">
+              <span className="text-amber-500 font-bold animate-pulse">➜</span>
+              <span className="text-blue-400">~</span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleCommand}
+                // Text-base prevents iOS zoom. No outline.
+                className="bg-transparent border-none outline-none text-gray-100 flex-1 focus:ring-0 placeholder-slate-700 text-base"
+                autoFocus
+                autoComplete="off"
+                spellCheck="false"
+              />
+            </div>
           </div>
-          <div ref={bottomRef} />
         </div>
       </div>
     </div>
