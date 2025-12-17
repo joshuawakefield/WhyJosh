@@ -343,17 +343,25 @@ function App() {
         </section>
 
         {/* Call to Action */}
-        <section className="text-center space-y-8 pt-10">
+        <section className="text-center space-y-8 pt-10 pb-20">
           <p className="text-2xl text-gray-300 font-light">
             I am not looking for a job. I am looking for a mission.
           </p>
           <div className="flex justify-center">
              <a 
                href="mailto:joshua.wakefield@gmail.com"
-               className={`group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 font-lg rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-90 ${highVibe ? 'bg-fuchsia-600 focus:ring-fuchsia-600' : 'bg-blue-600 focus:ring-blue-600'}`}
+               className={`group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 font-lg rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 hover:scale-105 ${highVibe ? 'bg-fuchsia-600 focus:ring-fuchsia-600 shadow-[0_0_40px_-10px_rgba(217,70,239,0.5)]' : 'bg-blue-600 focus:ring-blue-600 shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]'}`}
              >
-              Let's Talk
-              <div className={`absolute -inset-3 rounded-full opacity-20 group-hover:opacity-40 blur-lg transition-opacity duration-200 ${highVibe ? 'bg-fuchsia-400' : 'bg-blue-400'}`} />
+              <span className="relative z-10">Let's Talk</span>
+              
+              {/* Hardware Accelerated Glow Layer - Moved behind text and fixed for iOS */}
+              <div 
+                className={`absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl ${highVibe ? 'bg-fuchsia-400' : 'bg-blue-400'}`} 
+                style={{ transform: 'translateZ(0)' }} // Force GPU acceleration for smooth iOS rendering
+              />
+              
+              {/* Subtle pulsing ring animation for "Lit Up" state */}
+              <div className={`absolute -inset-0 rounded-full animate-ping opacity-20 ${highVibe ? 'bg-fuchsia-500' : 'bg-blue-500'}`} style={{ animationDuration: '3s' }}></div>
             </a>
           </div>
         </section>
