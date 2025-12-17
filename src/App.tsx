@@ -456,41 +456,41 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
             {/* Domain 1: The Physics */}
-            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4">
+            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <div className="flex items-center gap-3 text-amber-400">
                 <Zap size={24} />
                 <h3 className="text-xl font-bold">The Physics</h3>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">
-  <strong>First Principles.</strong> My foundation isn't syntax; it is the Math of the Universe. I possess the literacy to consume <strong>Robotics & AI white papers</strong> because I speak their native tongue: <strong>Fourier Transforms</strong>, <strong>Control Theory</strong>, and <strong>Feedback Loops</strong>. From <strong>Relativity</strong> and <strong>Optics</strong> to <strong>Algorithmic Complexity</strong>, I understand the deep physics that high-level APIs abstract away.
-</p>
+                <strong>First Principles.</strong> My foundation isn't syntax; it is the Math of the Universe. I possess the literacy to consume <strong>Robotics & AI white papers</strong> because I speak their native tongue: <strong>Fourier Transforms</strong>, <strong>Control Theory</strong>, and <strong>Feedback Loops</strong>. From <strong>Relativity</strong> and <strong>Optics</strong> to <strong>Algorithmic Complexity</strong>, I understand the deep physics that high-level APIs abstract away.
+              </p>
             </SpotlightCard>
 
             {/* Domain 2: The Improvisation */}
-<SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4">
-  <div className="flex items-center gap-3 text-indigo-400">
-    <Palette size={24} />
-    <h3 className="text-xl font-bold">The Art</h3>
-  </div>
-  <p className="text-sm text-gray-400 leading-relaxed">
-    <strong>Systematic Creativity.</strong> To me, the Circle of Fifths is a circuit diagram. I apply <strong>Jazz Theory</strong> to improvisational guitar (Phish/Dead), treating music as real-time conversational logic. I create <strong>Sacred Geometric</strong> art to explore the visual syntax of nature. I study <strong>Stand-Up Comedy</strong> to master the ultimate feedback loop: controlling the timing, tension, and release of a room's energy.
-  </p>
-</SpotlightCard>
+            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+              <div className="flex items-center gap-3 text-indigo-400">
+                <Palette size={24} />
+                <h3 className="text-xl font-bold">The Art</h3>
+              </div>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                <strong>Systematic Creativity.</strong> To me, the Circle of Fifths is a circuit diagram. I apply <strong>Jazz Theory</strong> to improvisational guitar (Phish/Dead), treating music as real-time conversational logic. I create <strong>Sacred Geometric</strong> art to explore the visual syntax of nature. I study <strong>Stand-Up Comedy</strong> to master the ultimate feedback loop: controlling the timing, tension, and release of a room's energy.
+              </p>
+            </SpotlightCard>
 
             {/* Domain 3: The Reality */}
-            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4">
+            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <div className="flex items-center gap-3 text-amber-400">
                 <Hammer size={24} />
                 <h3 className="text-xl font-bold">The Reality</h3>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">
-  <strong>Operational Truth.</strong> I have mastered the physical stack. In the <strong>Trades</strong>, I execute Carpentry, Plumbing, Electrical, Demo, and Tree Work. In <strong>Culinary</strong>, I am a ServSafe Manager who has run everything from Prep/Line/Grill to Large-Scale Banquets (Colleges/Cruise Ships). Whether mudding drywall or designing a menu for a kitchen build, I respect the physics of production.
-</p>
+                <strong>Operational Truth.</strong> I have mastered the physical stack. In the <strong>Trades</strong>, I execute Carpentry, Plumbing, Electrical, Demo, and Tree Work. In <strong>Culinary</strong>, I am a ServSafe Manager who has run everything from Line/Grill to Large-Scale Banquets (Colleges/Cruise Ships). Whether mudding drywall or designing a menu for an industrial kitchen build, I respect the physics of production.
+              </p>
             </SpotlightCard>
           </div>
 
           {/* HARD SKILLS MATRIX */}
-          <div className="mt-8 rounded-lg border border-slate-700 bg-slate-950 p-6 font-mono text-sm relative overflow-hidden group/matrix">
+          <div className="mt-8 rounded-lg border border-slate-700 bg-slate-950 p-6 font-mono text-sm relative overflow-hidden group/matrix transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
             <div className="absolute top-0 right-0 p-2 text-xs text-slate-500 font-bold tracking-widest uppercase">
               Desirability Index: Robotics & AI
             </div>
@@ -526,14 +526,14 @@ function App() {
               <Trophy size={32} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
-              Support Wins
+              Favorite Wins
             </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* Story 1: CACI (Governance) */}
-            <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card">
+            <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <div className="p-4 bg-indigo-950/30 border-b border-slate-700 flex justify-between items-center">
                 <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: CACI_RED_TEAM</span>
                 <Shield size={18} className="text-indigo-400" />
@@ -541,14 +541,14 @@ function App() {
               <div className="p-6 flex flex-col gap-4 flex-1">
                 <h3 className="text-xl font-bold text-gray-100">The Red Team Unification</h3>
                 <p className="text-sm text-gray-400 leading-relaxed flex-1">
-                  As the final Red Team Editor for a <strong>$6M federal military recompete</strong>, I inherited multiple disjointed technical and legal submissions with clashing voices and formatting. I spent days synthesizing them into a "single consciousness flow," harmonizing every font, tense, and vocabulary choice. NUWCDIVNPT Contracts later confirmed it was the "best written proposal the office had ever received," even though we lost on cost (#2).
+                  As the final Red Team Editor for a **$6M federal recompete**, I inherited 21 disjointed submissions with clashing voices and formatting. I spent days synthesizing them into a "single consciousness," harmonizing every font, tense, and vocabulary choice. NUWCDIVNPT officials later confirmed it was the "best written proposal they had ever received," setting a new standard for readability.
                 </p>
                 <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: QUALITY_BENCHMARK_SET]</div>
               </div>
             </SpotlightCard>
 
             {/* Story 2: DR Power (Wire Crimp) */}
-            <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card">
+            <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <div className="p-4 bg-amber-950/30 border-b border-slate-700 flex justify-between items-center">
                 <span className="text-xs font-mono text-amber-400 tracking-widest">LOG_REF: REMOTE_DEBUG</span>
                 <Radio size={18} className="text-amber-400" />
@@ -563,7 +563,7 @@ function App() {
             </SpotlightCard>
 
             {/* Story 3: DR Power (Human Override) */}
-             <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card">
+             <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <div className="p-4 bg-indigo-950/30 border-b border-slate-700 flex justify-between items-center">
                 <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: HUMAN_OVERRIDE</span>
                 <Activity size={18} className="text-indigo-400" />
