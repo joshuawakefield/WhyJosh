@@ -481,10 +481,10 @@ function App() {
             <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <div className="flex items-center gap-3 text-amber-400">
                 <Hammer size={24} />
-                <h3 className="text-xl font-bold">The Reality</h3>
+                <h3 className="text-xl font-bold">The Grind</h3>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                <strong>Operational Truth.</strong> I have mastered the physical stack. In the <strong>Trades</strong>, I execute Carpentry, Plumbing, Electrical, Demo, and Tree Work. In <strong>Culinary</strong>, I am a ServSafe Manager who has run everything from Line/Grill to Large-Scale Banquets (Colleges/Cruise Ships). Whether mudding drywall or designing a menu for an industrial kitchen build, I respect the physics of production.
+                <strong>Operational Truth.</strong> I have mastered the physical stack. In the <strong>Trades</strong>, I execute Carpentry, Plumbing, Electrical, Demo, and Tree Work. In <strong>Culinary</strong>, I am a <strong>ServSafe Manager</strong> who has run everything from Line/Grill to Large-Scale Banquets (Colleges/Cruise Ships). Whether mudding drywall or designing a menu for an industrial kitchen build, I respect the physics of production.
               </p>
             </SpotlightCard>
           </div>
@@ -492,7 +492,7 @@ function App() {
           {/* HARD SKILLS MATRIX */}
           <div className="mt-8 rounded-lg border border-slate-700 bg-slate-950 p-6 font-mono text-sm relative overflow-hidden group/matrix transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
             <div className="absolute top-0 right-0 p-2 text-xs text-slate-500 font-bold tracking-widest uppercase">
-              Desirability Index: Robotics & AI
+              Desirability Index: Perfectly suited Robotics & AI
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
@@ -526,7 +526,7 @@ function App() {
               <Trophy size={32} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
-              Favorite Wins
+              Selected Wins
             </h2>
           </div>
 
@@ -541,7 +541,7 @@ function App() {
               <div className="p-6 flex flex-col gap-4 flex-1">
                 <h3 className="text-xl font-bold text-gray-100">The Red Team Unification</h3>
                 <p className="text-sm text-gray-400 leading-relaxed flex-1">
-                  As the final Red Team Editor for a **$6M federal recompete**, I inherited 21 disjointed submissions with clashing voices and formatting. I spent days synthesizing them into a "single consciousness," harmonizing every font, tense, and vocabulary choice. NUWCDIVNPT officials later confirmed it was the "best written proposal they had ever received," setting a new standard for readability.
+                  As the final Red Team Editor for a <strong>$6M federal recompete</strong>, I inherited 21 disjointed submissions with clashing voices and formatting. I spent days synthesizing them into a "single consciousness," harmonizing every font, tense, and vocabulary choice. NUWCDIVNPT officials later confirmed it was the "<strong>best written</strong> proposal they had ever received," even though we lost on cost (#2).
                 </p>
                 <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: QUALITY_BENCHMARK_SET]</div>
               </div>
@@ -556,9 +556,9 @@ function App() {
               <div className="p-6 flex flex-col gap-4 flex-1">
                 <h3 className="text-xl font-bold text-gray-100">The Remote Debug</h3>
                 <p className="text-sm text-gray-400 leading-relaxed flex-1">
-                  A customer received a $1,700 machine that wouldn't start. He was irate. Instead of dispatching a return (costing ~$400), I visualized the schematic in my mind. I guided him to check a specific ignition wire buried deep in the chassis. We found a rare factory crimp error. He fixed it live. The engine fired. I turned a cancellation event into a victory lap.
+                A customer received a top-of-the-line trimmer that wouldn't start. He was irate, swearing at me. I didn't react; I visualized the schematic. Walking him through a forensic check, we located a one-off QC error: a crimped throttle cable deep in the chassis. I heard the engine fire live on the call. He went from swearing to apologizing, turning a DOA unit into a lifelong brand advocate.  
                 </p>
-                <div className="mt-2 text-xs text-amber-300 font-mono">[RESULT: CHURN_PREVENTED]</div>
+                <div className="mt-2 text-xs text-amber-300 font-mono">[RESULT: DETRACTOR_CONVERTED]</div>
               </div>
             </SpotlightCard>
 
@@ -602,7 +602,7 @@ function App() {
             <SpotlightCard className="bg-slate-900 border p-6 rounded-lg transition-all duration-300 border-slate-800 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <h3 className="text-lg font-bold text-gray-200 mb-2">NDR Protection (Churn Defense)</h3>
               <p className="text-gray-400 text-sm">
-                Support is the frontline of revenue retention. I convert "Cancellation Events" into "Loyalty Events" through radical empathy and forensic technical competence, directly defending your Net Dollar Retention (NDR) and reducing logo churn.
+                Support is the frontline of revenue retention. We are <strong>the face</strong> of the company to those who need us most. I convert "Cancellation Events" into "Loyalty Events" through radical empathy and forensic technical competence, directly defending your Net Dollar Retention (NDR) and reducing churn.
               </p>
             </SpotlightCard>
 
