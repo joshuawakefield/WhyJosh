@@ -140,12 +140,10 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
         className="w-full max-w-3xl bg-slate-950 border border-slate-700 rounded-lg shadow-2xl overflow-hidden font-mono ring-1 ring-amber-500/20 flex flex-col max-h-[80vh]"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
       >
-        {/* Terminal Header with Midnight Sunset Gradient */}
+        {/* Terminal Header with Midnight Sunset Gradient - ICONS REMOVED */}
         <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-indigo-400 p-3 flex justify-between items-center">
           <div className="flex gap-2 ml-2">
-            <div className="w-3 h-3 rounded-full bg-slate-900/40 border border-slate-900/10" />
-            <div className="w-3 h-3 rounded-full bg-slate-900/40 border border-slate-900/10" />
-            <div className="w-3 h-3 rounded-full bg-slate-900/40 border border-slate-900/10" />
+            {/* Window controls removed as requested */}
           </div>
           <div className="text-slate-900 font-bold text-xs tracking-widest opacity-80">GUEST@WAKEFIELD:~</div>
           <button onClick={onClose} className="text-slate-900 hover:text-white transition-colors mr-2"><X size={18} /></button>
@@ -315,9 +313,11 @@ function App() {
       <div className="max-w-4xl mx-auto px-6 py-20 space-y-40">
 
         {/* The Thesis */}
-        <section id="thesis" className="space-y-8">
-          <div className="space-y-4 border-l-4 pl-6 relative border-amber-500">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight glow-header">
+        {/* ADDED GROUP CLASS FOR UNIVERSAL HOVER TRIGGER */}
+        <section id="thesis" className="space-y-8 group">
+          <div className="space-y-4 border-l-4 pl-6 relative border-amber-500 transition-all duration-700 group-hover:shadow-[0_0_25px_-5px_rgba(251,191,36,0.3)]">
+            {/* Title grows 15% when ANYWHERE in section is hovered */}
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight glow-header transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
               Integrated Polarity
             </h2>
             <p className="text-amber-400 font-mono text-lg">/ˈin(t)əˌɡrādəd pōˈlerədē/</p>
@@ -345,22 +345,25 @@ function App() {
         </section>
 
         {/* The Timeline */}
-        <section id="timeline" className="space-y-12">
-          {/* HEADER WITH INTERACTIVE ICON GLOW */}
-          <div className="flex items-center gap-4 relative group cursor-default">
-            <div className="absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-amber-500/5"></div>
-            <div className="p-3 rounded-lg transition-all duration-500 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
+        {/* ADDED GROUP CLASS FOR UNIVERSAL HOVER TRIGGER */}
+        <section id="timeline" className="space-y-12 group">
+          {/* Header responds to GROUP hover */}
+          <div className="flex items-center gap-4 relative">
+            <div className="absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-amber-500/5"></div>
+            {/* Icon container glows/scales on GROUP hover */}
+            <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Terminal size={32} />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header">
+            {/* Title grows 15% on GROUP hover */}
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
               The Electron-to-Cloud Graph
             </h2>
           </div>
 
           <div className="relative border-l border-slate-800 ml-4 space-y-12 pb-4">
             {/* WPI Era */}
-            <div className="relative pl-12 group">
-              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-500 group-hover:bg-amber-500"></div>
+            <div className="relative pl-12 group/item">
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-500 group-hover/item:bg-amber-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Bedrock: WPI</h3>
@@ -373,8 +376,8 @@ function App() {
             </div>
 
             {/* The Pivot Era */}
-            <div className="relative pl-12 group">
-              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 group-hover:border-indigo-500"></div>
+            <div className="relative pl-12 group/item">
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 group-hover/item:border-indigo-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Forge: Operational Grit</h3>
@@ -387,8 +390,8 @@ function App() {
             </div>
 
             {/* The Tech Return */}
-            <div className="relative pl-12 group">
-              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-400 group-hover:bg-amber-400"></div>
+            <div className="relative pl-12 group/item">
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-400 group-hover/item:bg-amber-400"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Return: Burlington Code Academy</h3>
@@ -403,21 +406,25 @@ function App() {
         </section>
 
         {/* The ROI (Arbitrage) */}
-        <section id="roi" className="space-y-8">
-           {/* HEADER WITH INTERACTIVE ICON GLOW */}
-           <div className="flex items-center gap-4 relative group cursor-default">
-            <div className="absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-amber-500/5"></div>
-            <div className="p-3 rounded-lg transition-all duration-500 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
+        {/* ADDED GROUP CLASS FOR UNIVERSAL HOVER TRIGGER */}
+        <section id="roi" className="space-y-8 group">
+           {/* Header responds to GROUP hover */}
+           <div className="flex items-center gap-4 relative">
+            <div className="absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-amber-500/5"></div>
+            {/* Icon container glows/scales on GROUP hover */}
+            <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Zap size={32} />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header">
+            {/* Title grows 15% on GROUP hover */}
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
               The Arbitrage Opportunity
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {['Escalation Firewall', 'Vibration Control', 'Context Hygiene', 'Zero Latency'].map((title, i) => (
-              <SpotlightCard key={i} className="bg-slate-900 border p-6 rounded-lg transition-colors duration-500 border-slate-800 hover:border-amber-500/50">
+              // ADDED SCALE EFFECT TO CONSUME GAP
+              <SpotlightCard key={i} className="bg-slate-900 border p-6 rounded-lg transition-all duration-300 border-slate-800 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
                 <h3 className="text-lg font-bold text-gray-200 mb-2">{title}</h3>
                 <p className="text-gray-400 text-sm">
                   {i === 0 && "Most support reps escalate Tier 3 tickets. I solve them in the queue. I protect your Engineering team's bandwidth, saving thousands in context-switching costs."}
@@ -430,7 +437,7 @@ function App() {
           </div>
         </section>
 
-        {/* CALL TO ACTION - UPDATED WITH IOS FIXES */}
+        {/* CALL TO ACTION */}
         <section className="text-center space-y-8 pt-10 pb-20">
           <p className="text-2xl text-gray-300 font-light">
             I am not looking for a job. I am looking for a mission.
