@@ -269,7 +269,7 @@ function App() {
               I possess the engineering rigor to deconstruct the kernel (WPI EE), but the artistic intuition to read the room (Jazz/Comedy). I have the grit to handle the daily grind (Trades), but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.
             </p>
             
-            {/* UPDATED FORCE MULTIPLIER CARD WITH SPOTLIGHT */}
+            {/* FORCE MULTIPLIER - ACTIVE SPOTLIGHT CARD */}
             <SpotlightCard 
               highVibe={highVibe} 
               className={`p-6 rounded-lg border mt-8 transition-colors duration-500 ${highVibe ? 'bg-indigo-950/50 border-amber-500/30 hover:border-amber-500/80' : 'bg-slate-900/80 border-slate-800 hover:border-blue-500/50'}`}
@@ -284,8 +284,10 @@ function App() {
 
         {/* The Timeline */}
         <section id="timeline" className="space-y-12">
-          <div className="flex items-center gap-4 relative">
-            <div className={`p-3 rounded-lg transition-colors duration-500 ${highVibe ? 'bg-amber-500/10 text-amber-400' : 'bg-blue-500/10 text-blue-400'}`}>
+          {/* HEADER WITH INTERACTIVE ICON GLOW */}
+          <div className="flex items-center gap-4 relative group cursor-default">
+            <div className={`absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${highVibe ? 'bg-amber-500/5' : 'bg-blue-500/5'}`}></div>
+            <div className={`p-3 rounded-lg transition-all duration-500 transform group-hover:scale-110 ${highVibe ? 'bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20' : 'bg-blue-500/10 text-blue-400 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] group-hover:bg-blue-500/20'}`}>
               <Terminal size={32} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header">
@@ -340,8 +342,10 @@ function App() {
 
         {/* The ROI (Arbitrage) */}
         <section id="roi" className="space-y-8">
-           <div className="flex items-center gap-4 relative">
-            <div className={`p-3 rounded-lg transition-colors duration-500 ${highVibe ? 'bg-amber-500/10 text-amber-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
+           {/* HEADER WITH INTERACTIVE ICON GLOW */}
+           <div className="flex items-center gap-4 relative group cursor-default">
+            <div className={`absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${highVibe ? 'bg-amber-500/5' : 'bg-emerald-500/5'}`}></div>
+            <div className={`p-3 rounded-lg transition-all duration-500 transform group-hover:scale-110 ${highVibe ? 'bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] group-hover:bg-emerald-500/20'}`}>
               <Zap size={32} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header">
