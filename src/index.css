@@ -2,9 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Midnight Sunset / Rasta Leaning Theme */
+  --primary-glow: #fbbf24; /* Amber-400 */
+  --secondary-glow: #4f46e5; /* Indigo-600 */
+}
+
 @keyframes grid-pulse {
-  0%, 100% { opacity: 0.1; }
-  50% { opacity: 0.15; }
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.12; }
 }
 
 @keyframes scanlines {
@@ -37,31 +43,8 @@
   transform: translateZ(0); 
 }
 
-/* HIGH VIBE THEME: Midnight Sunset / Rasta Yellow */
-.high-vibe {
-  --primary-glow: #fbbf24; /* Amber-400 */
-  --secondary-glow: #4f46e5; /* Indigo-600 */
-}
-
-/* Force Tailwind overrides for High Vibe Mode */
-.high-vibe .text-blue-400,
-.high-vibe .text-blue-500,
-.high-vibe .text-blue-600 {
-  color: #fbbf24 !important; /* Amber-400 */
-}
-
-.high-vibe .bg-blue-500,
-.high-vibe .bg-blue-600 {
-  background-color: #f59e0b !important; /* Amber-500 */
-  color: #0f172a !important; /* Slate-900 Text for contrast on Yellow */
-}
-
-.high-vibe .border-blue-400,
-.high-vibe .border-blue-500 {
-  border-color: #fbbf24 !important;
-}
-
-.high-vibe .selection\:bg-blue-500\/30::selection {
+/* Global Selection Style */
+::selection {
   background-color: rgba(251, 191, 36, 0.3);
   color: #fbbf24;
 }
