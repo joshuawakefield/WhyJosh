@@ -1,9 +1,9 @@
-import { Download, ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, Zap, X } from 'lucide-react';
+import { ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, X, Zap } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 // --- COMPONENTS ---
 
-function SpotlightCard({ children, className = '', highVibe = false }: { children: React.ReactNode; className?: string; highVibe?: boolean }) {
+function SpotlightCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +30,7 @@ function SpotlightCard({ children, className = '', highVibe = false }: { childre
     >
       <div 
         ref={spotlightRef} 
-        className={`spotlight w-24 h-24 absolute pointer-events-none rounded-full blur-xl transition-opacity duration-100 ${highVibe ? 'bg-amber-400/20' : 'bg-blue-500/20'}`} 
+        className="spotlight w-24 h-24 absolute pointer-events-none rounded-full blur-xl transition-opacity duration-100 bg-amber-400/20" 
         style={{ opacity: 0, transform: 'translateZ(0)' }} 
       />
       {children}
@@ -41,7 +41,7 @@ function SpotlightCard({ children, className = '', highVibe = false }: { childre
 function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<string[]>([
-    "WakefieldOS v1.0.4 (tty1)",
+    "WakefieldOS v1.0.5 (tty1)",
     "Login: guest",
     "Welcome to the System. Type 'help' for commands.",
     "------------------------------------------------",
@@ -100,7 +100,7 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-slate-950 border border-slate-700 rounded-lg shadow-2xl overflow-hidden font-mono text-sm md:text-base ring-1 ring-white/10">
+      <div className="w-full max-w-2xl bg-slate-950 border border-slate-700 rounded-lg shadow-2xl overflow-hidden font-mono text-sm md:text-base ring-1 ring-amber-500/20">
         <div className="bg-slate-900 p-2 border-b border-slate-800 flex justify-between items-center">
           <div className="flex gap-2 ml-2">
             <div className="w-3 h-3 rounded-full bg-red-500/80" />
@@ -138,7 +138,6 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
-  const [highVibe, setHighVibe] = useState(false);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -157,33 +156,27 @@ function App() {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 ${highVibe ? 'high-vibe' : ''}`}>
+    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700">
       
       {/* System Progress Bar */}
       <div 
-        className={`fixed top-0 left-0 h-1 z-50 transition-all duration-300 ${highVibe ? 'bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]' : 'bg-blue-500'}`} 
+        className="fixed top-0 left-0 h-1 z-50 transition-all duration-300 bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]"
         style={{ width: `${scrollProgress}%` }} 
       />
 
       {/* Floating UI Controls */}
       <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-4">
-        {/* Vibration Control Toggle */}
-        <button 
-          onClick={() => setHighVibe(!highVibe)}
-          className={`p-4 rounded-full shadow-2xl border transition-all duration-300 hover:scale-110 ${highVibe ? 'bg-indigo-950/90 border-amber-500 text-amber-400 shadow-amber-900/20' : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:text-blue-400 hover:border-blue-500'}`}
-          title="Toggle Vibration Control"
-        >
-          <Zap size={24} className={highVibe ? 'fill-current animate-pulse' : ''} />
-        </button>
-
-        {/* Terminal Toggle */}
+        {/* Terminal Toggle - Positioned higher to clear Bolt badge */}
         <button 
           onClick={() => setIsTerminalOpen(true)}
-          className={`p-4 backdrop-blur border rounded-full shadow-2xl transition-all duration-300 hover:scale-110 ${highVibe ? 'bg-indigo-950/90 border-amber-500/50 text-amber-400/80 hover:text-amber-400 hover:border-amber-400' : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:text-green-400 hover:border-green-500'}`}
+          className="p-4 backdrop-blur border rounded-full shadow-2xl transition-all duration-300 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400/80 hover:text-amber-400 hover:border-amber-400"
           title="Open System Terminal"
         >
           <Terminal size={24} />
         </button>
+
+        {/* Spacer to push Terminal button above "Made in Bolt" badge */}
+        <div className="w-12 h-10 pointer-events-none" aria-hidden="true" />
       </div>
 
       <TerminalModal isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} />
@@ -191,29 +184,29 @@ function App() {
       {/* Hero Section */}
       <section className="min-h-screen flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden">
         {/* Dynamic Backgrounds */}
-        <div className={`absolute inset-0 opacity-10 [background-size:16px_16px] grid-pulse transition-all duration-1000 ${highVibe ? 'bg-[radial-gradient(#fbbf24_1px,transparent_1px)]' : 'bg-[radial-gradient(#3b82f6_1px,transparent_1px)]'}`}></div>
+        <div className="absolute inset-0 opacity-10 [background-size:16px_16px] grid-pulse bg-[radial-gradient(#fbbf24_1px,transparent_1px)]"></div>
 
-        {/* Midnight Sunset Gradient Overlay for High Vibe */}
-        <div className={`absolute inset-0 opacity-0 transition-opacity duration-1000 pointer-events-none ${highVibe ? 'opacity-30 bg-gradient-to-b from-indigo-900 via-purple-900 to-amber-900/20' : ''}`}></div>
+        {/* Midnight Sunset Gradient Overlay */}
+        <div className="absolute inset-0 opacity-30 bg-gradient-to-b from-indigo-900 via-purple-900 to-amber-900/20 pointer-events-none"></div>
 
         <div className="absolute inset-0 opacity-5 pointer-events-none" style={{
-          backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 2px, ${highVibe ? 'rgba(251, 191, 36, 0.1)' : 'rgba(59, 130, 246, 0.1)'} 2px, ${highVibe ? 'rgba(251, 191, 36, 0.1)' : 'rgba(59, 130, 246, 0.1)'} 4px)`,
+          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(251, 191, 36, 0.1) 2px, rgba(251, 191, 36, 0.1) 4px)',
           animation: 'scanlines 8s linear infinite'
         }}></div>
         
         <div className="max-w-5xl w-full text-center space-y-8 relative z-10">
           <div className="space-y-6">
-            <div className={`inline-block px-3 py-1 rounded-full border text-sm font-mono mb-4 transition-colors duration-500 ${highVibe ? 'border-amber-500/50 bg-amber-500/10 text-amber-400' : 'border-blue-500/30 bg-blue-500/10 text-blue-400'}`}>
-              SYSTEM STATE: {highVibe ? 'HIGH VIBRATION' : 'OPTIMAL'} // READY
+            <div className="inline-block px-3 py-1 rounded-full border text-sm font-mono mb-4 border-amber-500/50 bg-amber-500/10 text-amber-400">
+              SYSTEM STATE: HIGH VIBRATION // READY
             </div>
             
             {/* Main Title with Midnight Sunset Gradient */}
-            <h1 className={`text-5xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text mb-4 transition-all duration-700 ${highVibe ? 'bg-gradient-to-r from-amber-400 via-orange-400 to-indigo-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.3)]' : 'bg-gradient-to-r from-blue-400 to-emerald-400'}`}>
+            <h1 className="text-5xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text mb-4 bg-gradient-to-r from-amber-400 via-orange-400 to-indigo-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.3)]">
               JOSHUA WAKEFIELD
             </h1>
             
             <p className="text-xl md:text-3xl text-gray-300 font-light leading-relaxed max-w-4xl mx-auto">
-              The <span className={`font-medium transition-colors duration-500 ${highVibe ? 'text-amber-400' : 'text-blue-400'}`}>Human Hypervisor</span> for AI Communities.
+              The <span className="font-medium text-amber-400">Human Hypervisor</span> for AI Communities.
               <br className="hidden md:block" />
               Bridging Blue-Collar Grit & White-Collar Strategy.
             </p>
@@ -222,19 +215,19 @@ function App() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
             
             {/* CONTACT ME BUTTON - UPDATED FOR IOS */}
-            <a href="mailto:joshua.wakefield@gmail.com" className={`group relative px-8 py-4 font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg hover:scale-105 overflow-hidden ${highVibe ? 'bg-amber-500 text-slate-900 shadow-amber-900/30 hover:bg-amber-400' : 'bg-blue-600 text-white shadow-blue-900/20 hover:bg-blue-500'}`}>
+            <a href="mailto:joshua.wakefield@gmail.com" className="group relative px-8 py-4 font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg hover:scale-105 overflow-hidden bg-amber-500 text-slate-900 shadow-amber-900/30 hover:bg-amber-400">
               <span className="relative z-10 flex items-center gap-2">
                 <Mail size={20} /> Contact Me
               </span>
-              <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${highVibe ? 'bg-amber-300' : 'bg-blue-400'}`} style={{ mixBlendMode: 'overlay' }} />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-amber-300" style={{ mixBlendMode: 'overlay' }} />
             </a>
 
             {/* PROOF OF WORK BUTTON - UPDATED FOR IOS */}
-            <a href="https://jamcamping.com" target="_blank" rel="noopener noreferrer" className={`group relative px-8 py-4 border font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center overflow-hidden ${highVibe ? 'border-amber-500/50 bg-indigo-950/50 text-amber-400 hover:text-amber-300 hover:border-amber-400' : 'border-slate-700 bg-slate-900/50 text-blue-400 hover:text-white hover:border-blue-500/50'}`}>
+            <a href="https://jamcamping.com" target="_blank" rel="noopener noreferrer" className="group relative px-8 py-4 border font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center overflow-hidden border-amber-500/50 bg-indigo-950/50 text-amber-400 hover:text-amber-300 hover:border-amber-400">
               <span className="relative z-10 flex items-center gap-2">
                 <ExternalLink size={20} /> View Proof of Work
               </span>
-              <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-300 ${highVibe ? 'bg-amber-500' : 'bg-blue-500'}`} style={{ transform: 'translateZ(0)' }} />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-300 bg-amber-500" style={{ transform: 'translateZ(0)' }} />
             </a>
 
           </div>
@@ -242,7 +235,7 @@ function App() {
 
         <button
           onClick={() => scrollToSection('thesis')}
-          className={`absolute bottom-12 transition-colors duration-200 animate-bounce ${highVibe ? 'text-amber-600 hover:text-amber-400' : 'text-slate-600 hover:text-blue-400'}`}
+          className="absolute bottom-12 transition-colors duration-200 animate-bounce text-amber-600 hover:text-amber-400"
         >
           <ChevronDown size={32} />
         </button>
@@ -253,11 +246,11 @@ function App() {
 
         {/* The Thesis */}
         <section id="thesis" className="space-y-8">
-          <div className={`space-y-4 border-l-4 pl-6 relative transition-colors duration-500 ${highVibe ? 'border-amber-500' : 'border-blue-500'}`}>
-            <h2 className={`text-3xl md:text-5xl font-bold text-gray-100 tracking-tight glow-header`}>
+          <div className="space-y-4 border-l-4 pl-6 relative border-amber-500">
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight glow-header">
               Integrated Polarity
             </h2>
-            <p className={`${highVibe ? 'text-amber-400' : 'text-blue-400'} font-mono text-lg transition-colors duration-500`}>/ˈin(t)əˌɡrādəd pōˈlerədē/</p>
+            <p className="text-amber-400 font-mono text-lg">/ˈin(t)əˌɡrādəd pōˈlerədē/</p>
           </div>
           
           <div className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed space-y-6">
@@ -271,10 +264,9 @@ function App() {
             
             {/* FORCE MULTIPLIER - ACTIVE SPOTLIGHT CARD */}
             <SpotlightCard 
-              highVibe={highVibe} 
-              className={`p-6 rounded-lg border mt-8 transition-colors duration-500 ${highVibe ? 'bg-indigo-950/50 border-amber-500/30 hover:border-amber-500/80' : 'bg-slate-900/80 border-slate-800 hover:border-blue-500/50'}`}
+              className="p-6 rounded-lg border mt-8 bg-indigo-950/50 border-amber-500/30 hover:border-amber-500/80"
             >
-              <p className={`${highVibe ? 'text-amber-400' : 'text-emerald-400'} font-mono text-sm mb-2`}>// THE FORCE MULTIPLIER EFFECT</p>
+              <p className="text-amber-400 font-mono text-sm mb-2">// THE FORCE MULTIPLIER EFFECT</p>
               <p className="italic text-gray-400">
                 "I am not just one person; I am a team of specialists inhabiting one body, orchestrated by a mature executive consciousness."
               </p>
@@ -286,8 +278,8 @@ function App() {
         <section id="timeline" className="space-y-12">
           {/* HEADER WITH INTERACTIVE ICON GLOW */}
           <div className="flex items-center gap-4 relative group cursor-default">
-            <div className={`absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${highVibe ? 'bg-amber-500/5' : 'bg-blue-500/5'}`}></div>
-            <div className={`p-3 rounded-lg transition-all duration-500 transform group-hover:scale-110 ${highVibe ? 'bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20' : 'bg-blue-500/10 text-blue-400 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] group-hover:bg-blue-500/20'}`}>
+            <div className="absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-amber-500/5"></div>
+            <div className="p-3 rounded-lg transition-all duration-500 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Terminal size={32} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header">
@@ -298,11 +290,11 @@ function App() {
           <div className="relative border-l border-slate-800 ml-4 space-y-12 pb-4">
             {/* WPI Era */}
             <div className="relative pl-12 group">
-              <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 ${highVibe ? 'border-amber-500 group-hover:bg-amber-500' : 'border-blue-500 group-hover:bg-blue-500'}`}></div>
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-500 group-hover:bg-amber-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Bedrock: WPI</h3>
-                  <span className={`${highVibe ? 'text-amber-400' : 'text-blue-400'} font-mono text-sm`}>1999-2003</span>
+                  <span className="text-amber-400 font-mono text-sm">1999-2003</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
                   Electrical Engineering & Signal Processing. I learned the math of the universe—Fourier transforms, Control Theory, and Entropy. I view LLMs not as magic, but as high-dimensional signal processing.
@@ -312,11 +304,11 @@ function App() {
 
             {/* The Pivot Era */}
             <div className="relative pl-12 group">
-              <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 ${highVibe ? 'group-hover:border-indigo-500' : 'group-hover:border-emerald-500'}`}></div>
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 group-hover:border-indigo-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Forge: Operational Grit</h3>
-                  <span className={`${highVibe ? 'text-indigo-400' : 'text-emerald-400'} font-mono text-sm`}>2020-2022</span>
+                  <span className="text-indigo-400 font-mono text-sm">2020-2022</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
                   Navigated extreme resource constraints (housing instability) while working rigorous trade jobs (Tree Service, Industrial Kitchens). This era forged my "Stopper" mentality: In a crisis, I do not vibrate with chaos; I absorb it.
@@ -326,11 +318,11 @@ function App() {
 
             {/* The Tech Return */}
             <div className="relative pl-12 group">
-              <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 ${highVibe ? 'border-amber-400 group-hover:bg-amber-400' : 'border-blue-400 group-hover:bg-blue-400'}`}></div>
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-400 group-hover:bg-amber-400"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Return: Burlington Code Academy</h3>
-                  <span className={`${highVibe ? 'text-amber-400' : 'text-blue-400'} font-mono text-sm`}>2022</span>
+                  <span className="text-amber-400 font-mono text-sm">2022</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
                   Graduated Top of Class. I didn't accept the $12k tuition constraint; I engineered a funding solution via grants. Mastered the MERN stack manually right before the ChatGPT acceleration.
@@ -344,8 +336,8 @@ function App() {
         <section id="roi" className="space-y-8">
            {/* HEADER WITH INTERACTIVE ICON GLOW */}
            <div className="flex items-center gap-4 relative group cursor-default">
-            <div className={`absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${highVibe ? 'bg-amber-500/5' : 'bg-emerald-500/5'}`}></div>
-            <div className={`p-3 rounded-lg transition-all duration-500 transform group-hover:scale-110 ${highVibe ? 'bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 group-hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] group-hover:bg-emerald-500/20'}`}>
+            <div className="absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-amber-500/5"></div>
+            <div className="p-3 rounded-lg transition-all duration-500 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Zap size={32} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header">
@@ -355,7 +347,7 @@ function App() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {['Escalation Firewall', 'Vibration Control', 'Context Hygiene', 'Zero Latency'].map((title, i) => (
-              <SpotlightCard key={i} highVibe={highVibe} className={`bg-slate-900 border p-6 rounded-lg transition-colors duration-500 ${highVibe ? 'border-slate-800 hover:border-amber-500/50' : 'border-slate-800 hover:border-blue-500/30'}`}>
+              <SpotlightCard key={i} className="bg-slate-900 border p-6 rounded-lg transition-colors duration-500 border-slate-800 hover:border-amber-500/50">
                 <h3 className="text-lg font-bold text-gray-200 mb-2">{title}</h3>
                 <p className="text-gray-400 text-sm">
                   {i === 0 && "Most support reps escalate Tier 3 tickets. I solve them in the queue. I protect your Engineering team's bandwidth, saving thousands in context-switching costs."}
@@ -376,18 +368,18 @@ function App() {
           <div className="flex justify-center">
              <a 
                href="mailto:joshua.wakefield@gmail.com"
-               className={`group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 font-lg rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 hover:scale-105 ${highVibe ? 'bg-amber-500 text-slate-900 focus:ring-amber-500 shadow-[0_0_40px_-10px_rgba(251,191,36,0.6)]' : 'bg-blue-600 focus:ring-blue-600 shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]'}`}
+               className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 font-lg rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 hover:scale-105 bg-amber-500 text-slate-900 focus:ring-amber-500 shadow-[0_0_40px_-10px_rgba(251,191,36,0.6)]"
              >
               <span className="relative z-10">Let's Talk</span>
               
               {/* Hardware Accelerated Glow Layer - iOS Safe */}
               <div 
-                className={`absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl ${highVibe ? 'bg-amber-400' : 'bg-blue-400'}`} 
+                className="absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-amber-400" 
                 style={{ transform: 'translateZ(0)' }} 
               />
               
               {/* Subtle pulsing ring animation */}
-              <div className={`absolute -inset-0 rounded-full animate-ping opacity-20 ${highVibe ? 'bg-amber-500' : 'bg-blue-500'}`} style={{ animationDuration: '3s' }}></div>
+              <div className="absolute -inset-0 rounded-full animate-ping opacity-20 bg-amber-500" style={{ animationDuration: '3s' }}></div>
             </a>
           </div>
         </section>
@@ -400,13 +392,13 @@ function App() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-center md:text-left">
               <p className="text-gray-500 text-sm font-mono">
-                SYSTEM_ID: JOSHUA_WAKEFIELD // <span className={`transition-colors duration-500 ${highVibe ? 'text-amber-500' : 'text-blue-500'}`}>READY</span>
+                SYSTEM_ID: JOSHUA_WAKEFIELD // <span className="text-amber-500">READY</span>
               </p>
             </div>
             <div className="flex gap-6">
-              <a href="https://linkedin.com/in/jmwakefield" target="_blank" rel="noopener noreferrer" className={`transition-colors duration-200 ${highVibe ? 'text-gray-400 hover:text-amber-500' : 'text-gray-400 hover:text-blue-500'}`}><Linkedin size={24} /></a>
-              <a href="https://github.com/joshuawakefield" target="_blank" rel="noopener noreferrer" className={`transition-colors duration-200 ${highVibe ? 'text-gray-400 hover:text-amber-500' : 'text-gray-400 hover:text-blue-500'}`}><Github size={24} /></a>
-              <a href="mailto:joshua.wakefield@gmail.com" className={`transition-colors duration-200 ${highVibe ? 'text-gray-400 hover:text-amber-500' : 'text-gray-400 hover:text-blue-500'}`}><Mail size={24} /></a>
+              <a href="https://linkedin.com/in/jmwakefield" target="_blank" rel="noopener noreferrer" className="transition-colors duration-200 text-gray-400 hover:text-amber-500"><Linkedin size={24} /></a>
+              <a href="https://github.com/joshuawakefield" target="_blank" rel="noopener noreferrer" className="transition-colors duration-200 text-gray-400 hover:text-amber-500"><Github size={24} /></a>
+              <a href="mailto:joshua.wakefield@gmail.com" className="transition-colors duration-200 text-gray-400 hover:text-amber-500"><Mail size={24} /></a>
             </div>
           </div>
         </div>
