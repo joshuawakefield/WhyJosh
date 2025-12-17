@@ -1,3 +1,65 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes grid-pulse {
+  0%, 100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes scanlines {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(10px);
+  }
+}
+
+@keyframes glow-header {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+  }
+}
+
+@keyframes spotlight-glow {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.grid-pulse {
+  animation: grid-pulse 4s ease-in-out infinite;
+}
+
+.scanlines {
+  animation: scanlines 8s linear infinite;
+}
+
+.glow-header {
+  animation: glow-header 3s ease-in-out infinite;
+}
+
+.spotlight-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+}

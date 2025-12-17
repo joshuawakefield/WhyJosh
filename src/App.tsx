@@ -1,17 +1,79 @@
 import { Download, ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, Cpu, HardHat, Zap } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+
+function SpotlightCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const spotlightRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current || !spotlightRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    spotlightRef.current.style.opacity = '0.5';
+    spotlightRef.current.style.left = `${x - 50}px`;
+    spotlightRef.current.style.top = `${y - 50}px`;
+  };
+
+  const handleMouseLeave = () => {
+    if (spotlightRef.current) {
+      spotlightRef.current.style.opacity = '0';
+    }
+    setIsHovered(false);
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      className={`spotlight-container ${className}`}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div ref={spotlightRef} className="spotlight w-24 h-24" />
+      {children}
+    </div>
+  );
+}
 
 function App() {
+  const [scrollProgress, setScrollProgress] = useState(0);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = window.scrollY;
+      const progress = windowHeight > 0 ? (scrolled / windowHeight) * 100 : 0;
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased selection:bg-blue-500/30">
+      {/* Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 h-1 bg-blue-500 z-50 transition-all duration-300" style={{ width: `${scrollProgress}%` }} />
+
       {/* Hero Section */}
       <section className="min-h-screen flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden">
-        {/* Background texture */}
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        {/* Background texture with pulse */}
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px] grid-pulse"></div>
+
+        {/* Scanlines overlay */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none" style={{
+          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(59, 130, 246, 0.1) 2px, rgba(59, 130, 246, 0.1) 4px)',
+          animation: 'scanlines 8s linear infinite'
+        }}></div>
         
         <div className="max-w-5xl w-full text-center space-y-8 relative z-10">
           <div className="space-y-6">
@@ -53,8 +115,9 @@ function App() {
 
         {/* The Thesis */}
         <section id="thesis" className="space-y-8">
-          <div className="space-y-4 border-l-4 border-blue-500 pl-6">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight">
+          <div className="space-y-4 border-l-4 border-blue-500 pl-6 relative">
+            <div className="absolute -inset-4 bg-blue-500/5 rounded-lg -z-10"></div>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight glow-header">
               Integrated Polarity
             </h2>
             <p className="text-blue-400 font-mono text-lg">/ˈin(t)əˌɡrādəd pōˈlerədē/</p>
@@ -79,11 +142,12 @@ function App() {
 
         {/* The Timeline */}
         <section id="timeline" className="space-y-12">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 relative">
+            <div className="absolute -inset-4 bg-blue-500/5 rounded-lg -z-10"></div>
             <div className="p-3 bg-blue-500/10 rounded-lg text-blue-400">
               <Terminal size={32} />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header">
               The Electron-to-Cloud Graph
             </h2>
           </div>
@@ -135,40 +199,41 @@ function App() {
 
         {/* The ROI (Arbitrage) */}
         <section id="roi" className="space-y-8">
-           <div className="flex items-center gap-4">
+           <div className="flex items-center gap-4 relative">
+            <div className="absolute -inset-4 bg-emerald-500/5 rounded-lg -z-10"></div>
             <div className="p-3 bg-emerald-500/10 rounded-lg text-emerald-400">
               <Zap size={32} />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header">
               The Arbitrage Opportunity
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
+            <SpotlightCard className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
               <h3 className="text-lg font-bold text-gray-200 mb-2">Escalation Firewall</h3>
               <p className="text-gray-400 text-sm">
                 Most support reps escalate Tier 3 tickets. I solve them in the queue. I protect your Engineering team's bandwidth, saving thousands in context-switching costs.
               </p>
-            </div>
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
+            </SpotlightCard>
+            <SpotlightCard className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
               <h3 className="text-lg font-bold text-gray-200 mb-2">Vibration Control</h3>
               <p className="text-gray-400 text-sm">
                 I apply radical empathy + technical authority. I turn "Cancellation Events" into "Loyalty Events," directly defending Net Dollar Retention (NDR).
               </p>
-            </div>
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
+            </SpotlightCard>
+            <SpotlightCard className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
               <h3 className="text-lg font-bold text-gray-200 mb-2">Context Hygiene</h3>
               <p className="text-gray-400 text-sm">
                 I don't just use AI; I orchestrate it. My JamCamping workflow proves I can teach your users how to be Hypervisors of their own code.
               </p>
-            </div>
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
+            </SpotlightCard>
+            <SpotlightCard className="bg-slate-900 border border-slate-800 p-6 rounded-lg hover:border-blue-500/30 transition-colors">
               <h3 className="text-lg font-bold text-gray-200 mb-2">Zero Latency</h3>
               <p className="text-gray-400 text-sm">
                 I am an exponential learner. I built production apps on your stack over a weekend. I start generating ROI on Day 1.
               </p>
-            </div>
+            </SpotlightCard>
           </div>
         </section>
 
