@@ -323,9 +323,7 @@ function App() {
 
         {/* The Thesis */}
         <section id="thesis" className="space-y-8 group">
-          {/* Removed group-hover:shadow to fix outer glow bug */}
           <div className="space-y-4 border-l-4 pl-6 relative border-amber-500 transition-all duration-700">
-            {/* Removed glow-header class so text only scales */}
             <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
               Integrated Polarity
             </h2>
@@ -355,90 +353,122 @@ function App() {
         {/* The Timeline */}
         <section id="timeline" className="space-y-12 group">
           <div className="flex items-center gap-4 relative">
-            {/* Removed the background glow div */}
             <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Terminal size={32} />
             </div>
-            {/* Removed glow-header class */}
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
               The Electron-to-Cloud Graph
             </h2>
           </div>
 
           <div className="relative border-l border-slate-800 ml-4 space-y-12 pb-4">
+            
+            {/* ITEM 1: WPI */}
             <div className="relative pl-12 group/item">
               <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-500 group-hover/item:bg-amber-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
-                  <h3 className="text-xl font-bold text-gray-100">The Bedrock: WPI</h3>
+                  <h3 className="text-xl font-bold text-gray-100">The Foundation: WPI (BS Electrical Engineering)</h3>
                   <span className="text-amber-400 font-mono text-sm">1999-2003</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  Electrical Engineering & Signal Processing. I learned the math of the universe—Fourier transforms, Control Theory, and Entropy. I view LLMs not as magic, but as high-dimensional signal processing.
+                  My "First Layer" is not code; it is Physics. Specialized in Power Systems, Signal Processing, and Control Theory. I learned the math of the universe—Fourier transforms, Feedback Loops, and Entropy. I view LLMs not as magic, but as high-dimensional signal processing.
                 </div>
               </div>
             </div>
 
+            {/* ITEM 2: OPERATIONS (The Gap) */}
             <div className="relative pl-12 group/item">
-              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 group-hover/item:border-indigo-500"></div>
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 border-indigo-500 group-hover/item:bg-indigo-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
-                  <h3 className="text-xl font-bold text-gray-100">The Forge: Operational Grit</h3>
-                  <span className="text-indigo-400 font-mono text-sm">2020-2022</span>
+                  <h3 className="text-xl font-bold text-gray-100">The Crucible: High-Stakes Operations</h3>
+                  <span className="text-indigo-400 font-mono text-sm">2004-2019</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  Navigated extreme resource constraints (housing instability) while working rigorous trade jobs (Tree Service, Industrial Kitchens). This era forged my "Stopper" mentality: In a crisis, I do not vibrate with chaos; I absorb it.
+                  Spent 15 years in the trenches of physical reality. From managing critical equipment failures at <span className="text-gray-200">DR Power</span> to orchestrating high-volume logistics in industrial kitchens. This era removed my fear of failure. If the server goes down, you lose money; if the machine goes down, you lose fingers. I treat software bugs with the same forensic urgency as mechanical failure.
                 </div>
               </div>
             </div>
 
+            {/* ITEM 3: THE WINTER (The Pivot) */}
             <div className="relative pl-12 group/item">
-              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-400 group-hover/item:bg-amber-400"></div>
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-500 group-hover/item:bg-amber-500"></div>
+              <div className="space-y-2">
+                <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
+                  <h3 className="text-xl font-bold text-gray-100">The Pivot: Antifragility</h3>
+                  <span className="text-amber-400 font-mono text-sm">2020-2022</span>
+                </div>
+                <div className="text-gray-400 leading-relaxed">
+                  Navigated extreme resource constraints (housing instability) while working rigorous manual labor (Tree Service) during a Vermont winter. This era forged my "Stopper" mentality: In a crisis, I do not vibrate with chaos; I absorb it. I proved that ambition can survive even when resources are at zero.
+                </div>
+              </div>
+            </div>
+
+             {/* ITEM 4: THE RETURN (BCA) */}
+             <div className="relative pl-12 group/item">
+              <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 border-indigo-500 group-hover/item:bg-indigo-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Return: Burlington Code Academy</h3>
-                  <span className="text-amber-400 font-mono text-sm">2022</span>
+                  <span className="text-indigo-400 font-mono text-sm">Late 2022</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
                   Graduated Top of Class in the <strong>final pre-ChatGPT cohort</strong>. I utilized my WPI engineering foundation to master the MERN stack manually—debugging raw syntax without AI. I didn't just learn to code; I reactivated my core circuitry to become a bridge between the metal and the model.
                 </div>
               </div>
             </div>
+
           </div>
         </section>
 
         {/* The ROI (Arbitrage) */}
         <section id="roi" className="space-y-8 group">
            <div className="flex items-center gap-4 relative">
-            {/* Removed the background glow div */}
             <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Zap size={32} />
             </div>
-            {/* Removed glow-header class */}
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
-              The Arbitrage Opportunity
+              The Financial Arbitrage
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {['Escalation Firewall', 'Vibration Control', 'Context Hygiene', 'Zero Latency'].map((title, i) => (
-              <SpotlightCard key={i} className="bg-slate-900 border p-6 rounded-lg transition-all duration-300 border-slate-800 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
-                <h3 className="text-lg font-bold text-gray-200 mb-2">{title}</h3>
-                <p className="text-gray-400 text-sm">
-                  {i === 0 && "Most support reps escalate Tier 3 tickets. I solve them in the queue. I protect your Engineering team's bandwidth, saving thousands in context-switching costs."}
-                  {i === 1 && "I apply radical empathy + technical authority. I turn 'Cancellation Events' into 'Loyalty Events,' directly defending Net Dollar Retention (NDR)."}
-                  {i === 2 && "I don't just use AI; I orchestrate it. My JamCamping workflow proves I can teach your users how to be Hypervisors of their own code."}
-                  {i === 3 && "I am an exponential learner. I built production apps on your stack over a weekend. I start generating ROI on Day 1."}
-                </p>
-              </SpotlightCard>
-            ))}
+            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg transition-all duration-300 border-slate-800 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+              <h3 className="text-lg font-bold text-gray-200 mb-2">OpEx Defense (Engineering Shield)</h3>
+              <p className="text-gray-400 text-sm">
+                Every ticket I solve is an interruption your Senior Engineers <em>don't</em> have to handle. I protect your most expensive payroll assets from context-switching costs, effectively subsidizing my own salary by preserving high-value engineering hours.
+              </p>
+            </SpotlightCard>
+
+            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg transition-all duration-300 border-slate-800 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+              <h3 className="text-lg font-bold text-gray-200 mb-2">NDR Protection (Churn Defense)</h3>
+              <p className="text-gray-400 text-sm">
+                Support is the frontline of revenue retention. I convert "Cancellation Events" into "Loyalty Events" through radical empathy and forensic technical competence, directly defending your Net Dollar Retention (NDR) and reducing logo churn.
+              </p>
+            </SpotlightCard>
+
+            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg transition-all duration-300 border-slate-800 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+               <h3 className="text-lg font-bold text-gray-200 mb-2">Capital Efficiency (Token Hygiene)</h3>
+              <p className="text-gray-400 text-sm">
+                I don't just use AI; I orchestrate it. My JamCamping workflow proves I can teach your users how to be Hypervisors of their own code, reducing frustration and maximizing the value they get from every token they pay for.
+              </p>
+            </SpotlightCard>
+
+            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg transition-all duration-300 border-slate-800 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+              <h3 className="text-lg font-bold text-gray-200 mb-2">Zero Latency (Immediate Yield)</h3>
+              <p className="text-gray-400 text-sm">
+                 I built a production app on your stack in 48 hours. I don't need a 3-month ramp. I am a depreciating asset in reverse: I become exponentially more valuable every week as I synthesize the platform's edge cases into documentation.
+              </p>
+            </SpotlightCard>
           </div>
         </section>
 
         {/* CALL TO ACTION */}
         <section className="text-center space-y-8 pt-10 pb-20">
-          <p className="text-2xl text-gray-300 font-light">
-            I am not looking for a job. I am looking for a mission.
+          <p className="text-2xl text-gray-300 font-light max-w-2xl mx-auto">
+             I don't just want to close tickets; I want to build the division that eliminates them. <br/><br/>
+             <span className="text-lg text-gray-400">My trajectory is vertical. I am looking for the role where I can prove my value in the queue, and eventually lead your entire Customer Experience function.</span>
           </p>
           <div className="flex justify-center">
              <a 
