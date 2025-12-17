@@ -63,3 +63,39 @@
   opacity: 0;
   transition: opacity 0.1s ease-out;
 }
+/* Add to src/index.css */
+
+/* Terminal Blink Effect */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* High Vibe Mode Variables */
+.high-vibe {
+  --primary-glow: #d946ef; /* Fuchsia-500 */
+  --secondary-glow: #8b5cf6; /* Violet-500 */
+}
+
+.high-vibe .text-blue-400,
+.high-vibe .text-blue-500,
+.high-vibe .text-blue-600 {
+  color: #d946ef !important; /* Force override to Pink/Purple */
+}
+
+.high-vibe .bg-blue-500,
+.high-vibe .bg-blue-600 {
+  background-color: #d946ef !important;
+}
+
+.high-vibe .border-blue-500 {
+  border-color: #d946ef !important;
+}
+
+.high-vibe .selection\:bg-blue-500\/30::selection {
+  background-color: rgba(217, 70, 239, 0.3);
+}
