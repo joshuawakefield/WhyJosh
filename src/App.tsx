@@ -223,8 +223,12 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (windowHeight <= 0) {
+        setScrollProgress(0);
+        return;
+      }
       const scrolled = window.scrollY;
-      const progress = windowHeight > 0 ? (scrolled / windowHeight) * 100 : 0;
+      const progress = (scrolled / windowHeight) * 100;
       setScrollProgress(progress);
     };
     window.addEventListener('scroll', handleScroll);
@@ -301,7 +305,7 @@ function App() {
               <span className="relative z-10 flex items-center gap-2">
                 <ExternalLink size={20} /> View Proof of Work
               </span>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-300 bg-amber-500" style={{ transform: 'translateZ(0)' }} />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 bg-amber-500" style={{ transform: 'translateZ(0)' }} />
             </a>
           </div>
         </div>
@@ -319,8 +323,10 @@ function App() {
 
         {/* The Thesis */}
         <section id="thesis" className="space-y-8 group">
-          <div className="space-y-4 border-l-4 pl-6 relative border-amber-500 transition-all duration-700 group-hover:shadow-[0_0_25px_-5px_rgba(251,191,36,0.3)]">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight glow-header transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
+          {/* Removed group-hover:shadow to fix outer glow bug */}
+          <div className="space-y-4 border-l-4 pl-6 relative border-amber-500 transition-all duration-700">
+            {/* Removed glow-header class so text only scales */}
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
               Integrated Polarity
             </h2>
             <p className="text-amber-400 font-mono text-lg">/ˈin(t)əˌɡrādəd pōˈlerədē/</p>
@@ -349,11 +355,12 @@ function App() {
         {/* The Timeline */}
         <section id="timeline" className="space-y-12 group">
           <div className="flex items-center gap-4 relative">
-            <div className="absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-amber-500/5"></div>
+            {/* Removed the background glow div */}
             <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Terminal size={32} />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
+            {/* Removed glow-header class */}
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
               The Electron-to-Cloud Graph
             </h2>
           </div>
@@ -393,7 +400,7 @@ function App() {
                   <span className="text-amber-400 font-mono text-sm">2022</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  Graduated Top of Class. I didn't accept the $12k tuition constraint; I engineered a funding solution via grants. Mastered the MERN stack manually right before the ChatGPT acceleration.
+                  Graduated Top of Class in the <strong>final pre-ChatGPT cohort</strong>. I utilized my WPI engineering foundation to master the MERN stack manually—debugging raw syntax without AI. I didn't just learn to code; I reactivated my core circuitry to become a bridge between the metal and the model.
                 </div>
               </div>
             </div>
@@ -403,11 +410,12 @@ function App() {
         {/* The ROI (Arbitrage) */}
         <section id="roi" className="space-y-8 group">
            <div className="flex items-center gap-4 relative">
-            <div className="absolute -inset-4 rounded-lg -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-amber-500/5"></div>
+            {/* Removed the background glow div */}
             <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Zap size={32} />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
+            {/* Removed glow-header class */}
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
               The Arbitrage Opportunity
             </h2>
           </div>
