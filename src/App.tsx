@@ -467,15 +467,15 @@ function App() {
             </SpotlightCard>
 
             {/* Domain 2: The Improvisation */}
-            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4">
-              <div className="flex items-center gap-3 text-indigo-400">
-                <Palette size={24} />
-                <h3 className="text-xl font-bold">The Art</h3>
-              </div>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                <strong>Systematic Creativity.</strong> I have played improvisational guitar (Phish/Dead style) since 1998. This isn't just music; it's real-time algorithmic composition. It is the ability to listen, react, and stabilize a chaotic system (the band) into a coherent output (the jam). 
-              </p>
-            </SpotlightCard>
+<SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4">
+  <div className="flex items-center gap-3 text-indigo-400">
+    <Palette size={24} />
+    <h3 className="text-xl font-bold">The Art</h3>
+  </div>
+  <p className="text-sm text-gray-400 leading-relaxed">
+    <strong>Systematic Creativity.</strong> To me, the Circle of Fifths is a circuit diagram. I apply <strong>Jazz Theory</strong> to improvisational guitar (Phish/Dead), treating music as real-time conversational logic. I create <strong>Sacred Geometric</strong> art to explore the visual syntax of nature. I study <strong>Stand-Up Comedy</strong> to master the ultimate feedback loop: controlling the timing, tension, and release of a room's energy.
+  </p>
+</SpotlightCard>
 
             {/* Domain 3: The Reality */}
             <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4">
