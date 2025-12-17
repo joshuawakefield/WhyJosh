@@ -268,12 +268,17 @@ function App() {
             <p>
               I possess the engineering rigor to deconstruct the kernel (WPI EE), but the artistic intuition to read the room (Jazz/Comedy). I have the grit to handle the daily grind (Trades), but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.
             </p>
-            <div className={`p-6 rounded-lg border mt-8 transition-colors duration-500 ${highVibe ? 'bg-indigo-950/50 border-amber-500/30' : 'bg-slate-900/80 border-slate-800'}`}>
+            
+            {/* UPDATED FORCE MULTIPLIER CARD WITH SPOTLIGHT */}
+            <SpotlightCard 
+              highVibe={highVibe} 
+              className={`p-6 rounded-lg border mt-8 transition-colors duration-500 ${highVibe ? 'bg-indigo-950/50 border-amber-500/30 hover:border-amber-500/80' : 'bg-slate-900/80 border-slate-800 hover:border-blue-500/50'}`}
+            >
               <p className={`${highVibe ? 'text-amber-400' : 'text-emerald-400'} font-mono text-sm mb-2`}>// THE FORCE MULTIPLIER EFFECT</p>
               <p className="italic text-gray-400">
                 "I am not just one person; I am a team of specialists inhabiting one body, orchestrated by a mature executive consciousness."
               </p>
-            </div>
+            </SpotlightCard>
           </div>
         </section>
 
