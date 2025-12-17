@@ -386,7 +386,7 @@ function App() {
                   <span className="text-indigo-400 font-mono text-sm">1999-2003</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  BS in Electrical Engineering. This was the era of "Hard Robotics" and rigorous Control Theory. I specialized in <strong>Real-Time DSP (EE 3703)</strong>, <strong>Control Engineering (ES 3011)</strong>, and <strong>Theory of Computation (CS 4123)</strong>. I was building autonomous feedback loops and optimizing assembly for embedded architectures. My understanding of AI is grounded in the math of the universe—Fourier transforms, Entropy, and Feedback—not just API calls.
+                  98% BS in Electrical Engineering. This was the era of "Hard Robotics" and rigorous Control Theory. I specialized in <strong>Real-Time Signals & Systems</strong>, <strong>Control Engineering</strong>, and <strong>Analog Circuits and Motors</strong>. I was building autonomous feedback loops and optimizing assembly for embedded architectures. My understanding of AI is grounded in the math of the universe—Fourier transforms, Entropy, and Feedback—not just API calls.
                 </div>
               </div>
             </div>
@@ -400,7 +400,7 @@ function App() {
                   <span className="text-amber-400 font-mono text-sm">2006-2020</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                   I stepped out of the code and into the fire of reality. From managing multi-million dollar government contracts at <strong>CACI</strong> (Budgeting, Compliance, Section L/M) to solving critical mechanical failures at <strong>DR Power Equipment</strong>. This era forged my financial literacy and operational grit. I know that when systems fail, it costs real money—whether it's an SAP error or a blown actuator.
+                   I stepped out of the code and into the fire of reality. From managing multi-million dollar government contracts at <strong>CACI</strong> (Budgeting, BD, Financial), to running Tech Support at <strong>Daft Labs</strong>, to solving critical mechanical failures at <strong>DR Power Equipment</strong>. This era forged my financial literacy and operational grit. I know that when systems fail, it costs real money—whether it's an SAP error or a blown actuator.
                 </div>
               </div>
             </div>
@@ -414,7 +414,7 @@ function App() {
                   <span className="text-indigo-400 font-mono text-sm">2020-2022</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  Navigated extreme resource constraints while working rigorous manual labor (Tree Service) during a Vermont winter. This era proved that ambition can survive even when resources are at zero. It culminated in my return to the <strong>Burlington Code Academy</strong>, where I graduated top-of-class in the industry's <strong>final pre-ChatGPT cohort</strong>.
+                  Navigated extreme resource constraints while working rigorous manual labor (Tree Service) during a Vermont winter. This era proved that ambition can survive even when resources are at zero. It culminated in my return to the <strong>Burlington Code Academy</strong>, where I graduated top-of-class in the industry's <strong>final pre-ChatGPT cohort</strong>, re-igniting my entrance back into tech.
                 </div>
               </div>
             </div>
@@ -424,11 +424,11 @@ function App() {
               <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 border-amber-500 group-hover/item:bg-amber-500"></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
-                  <h3 className="text-xl font-bold text-gray-100">The Synthesis: AI Orchestration</h3>
+                  <h3 className="text-xl font-bold text-gray-100">The Synthesis: Native AI Orchestration</h3>
                   <span className="text-amber-400 font-mono text-sm">Present</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  I have now integrated the "Hard Engineering" of WPI, the "Operational Grit" of the trades, and the "Modern Stack" of React/Node. I don't just write code; I orchestrate AI systems (JamCamping) using a hypervisor mentality. I am the bridge between the metal and the model.
+                  I graduated the bootcamp weeks before <strong>ChatGPT</strong> launched, making me a native of the <strong>Generative Era</strong>. Since November 2022, I have engineered context daily across <strong>Claude, Grok, and Gemini</strong>. I don't just write code; I orchestrate agentic workflows—repurposing AI IDEs to transmute code outputs into narrative prose for ebooks. I have integrated WPI's "Hard Engineering" with the "Modern AI Stack" to become the bridge between the metal and the model.
                 </div>
               </div>
             </div>
@@ -616,7 +616,7 @@ function App() {
             <SpotlightCard className="bg-slate-900 border p-6 rounded-lg transition-all duration-300 border-slate-800 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <h3 className="text-lg font-bold text-gray-200 mb-2">Zero Latency (Immediate Yield)</h3>
               <p className="text-gray-400 text-sm">
-                 I built a production app on your stack in 48 hours. I don't need a 3-month ramp. I am a depreciating asset in reverse: I become exponentially more valuable every week as I synthesize the platform's edge cases into documentation.
+                 I built a production app on a new stack in 48 hours. I don't need a 3-month ramp. I am a depreciating asset in reverse: I become exponentially more valuable every week as I synthesize the platform's edge cases into documentation.
               </p>
             </SpotlightCard>
           </div>
