@@ -1,4 +1,4 @@
-import { ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Wrench, Trophy } from 'lucide-react';
+import { ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Wrench, Trophy, Activity, Radio } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 // --- TYPES ---
@@ -526,7 +526,7 @@ function App() {
               <Trophy size={32} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
-              Critical Interventions
+              Support Wins
             </h2>
           </div>
 
@@ -547,33 +547,33 @@ function App() {
               </div>
             </SpotlightCard>
 
-            {/* Story 2: DR Power (Empathy/Ops) */}
+            {/* Story 2: DR Power (Wire Crimp) */}
             <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card">
               <div className="p-4 bg-amber-950/30 border-b border-slate-700 flex justify-between items-center">
-                <span className="text-xs font-mono text-amber-400 tracking-widest">LOG_REF: DR_POWER_OPS</span>
-                <Wrench size={18} className="text-amber-400" />
+                <span className="text-xs font-mono text-amber-400 tracking-widest">LOG_REF: REMOTE_DEBUG</span>
+                <Radio size={18} className="text-amber-400" />
               </div>
               <div className="p-6 flex flex-col gap-4 flex-1">
-                <h3 className="text-xl font-bold text-gray-100">The Forensic Save</h3>
+                <h3 className="text-xl font-bold text-gray-100">The Remote Debug</h3>
                 <p className="text-sm text-gray-400 leading-relaxed flex-1">
-                  A commercial client was down. Their equipment failure wasn't just an inconvenience; it was a daily P&L loss. They were furious. I didn't quote policy. I de-escalated the human emotion by validating the business impact, then surgically diagnosed the root cause (a specific voltage drop, not a mechanical failure). I stayed on the case until the machine was running.
+                  A customer received a $1,700 machine that wouldn't start. He was irate. Instead of dispatching a return (costing ~$400), I visualized the schematic in my mind. I guided him to check a specific ignition wire buried deep in the chassis. We found a rare factory crimp error. He fixed it live. The engine fired. I turned a cancellation event into a victory lap.
                 </p>
                 <div className="mt-2 text-xs text-amber-300 font-mono">[RESULT: CHURN_PREVENTED]</div>
               </div>
             </SpotlightCard>
 
-            {/* Story 3: Resourcefulness (Innovation) */}
+            {/* Story 3: DR Power (Human Override) */}
              <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card">
               <div className="p-4 bg-indigo-950/30 border-b border-slate-700 flex justify-between items-center">
-                <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: BOOTSTRAP_01</span>
-                <Zap size={18} className="text-indigo-400" />
+                <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: HUMAN_OVERRIDE</span>
+                <Activity size={18} className="text-indigo-400" />
               </div>
               <div className="p-6 flex flex-col gap-4 flex-1">
-                <h3 className="text-xl font-bold text-gray-100">The "Impossible" Pivot</h3>
+                <h3 className="text-xl font-bold text-gray-100">The 160-Mile Protocol Breach</h3>
                 <p className="text-sm text-gray-400 leading-relaxed flex-1">
-                  In 2022, I faced a $12,000 tuition constraint for the Burlington Code Academy with $0 in funding. I refused to accept the dead end. I engineered a funding stack using two state grants and a private scholarship, negotiating the gap. I entered the program with the same determination, graduating top of class. I don't see barriers; I see routing problems.
+                  A customer's husband was dying at home; his mower was a critical emotional anchor. The nearest dealer was 80 miles away. Protocol said "too far." I refused that output. I negotiated a custom service contract, leveraging human empathy to convince the dealer to drive 160 miles round-trip. The machine was fixed before he passed. Some KPIs don't fit on a spreadsheet.
                 </p>
-                <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: OBJECTIVE_ACHIEVED]</div>
+                <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: MISSION_COMPLETE]</div>
               </div>
             </SpotlightCard>
 
