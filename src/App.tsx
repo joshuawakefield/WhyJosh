@@ -462,8 +462,8 @@ function App() {
                 <h3 className="text-xl font-bold">The Physics</h3>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                <strong>Rigorous Engineering.</strong> My foundation isn't syntax; it's First Principles. I speak the language of Signal Processing, Calculus, and Control Theory. From coding <em>Armatrons</em> in the 80s to modeling entropy at WPI, I understand the hardware that the software lives on.
-              </p>
+  <strong>First Principles.</strong> My foundation isn't syntax; it is the Math of the Universe. I possess the literacy to consume <strong>Robotics & AI white papers</strong> because I speak their native tongue: <strong>Fourier Transforms</strong>, <strong>Control Theory</strong>, and <strong>Feedback Loops</strong>. From <strong>Relativity</strong> and <strong>Optics</strong> to <strong>Algorithmic Complexity</strong>, I understand the deep physics that high-level APIs abstract away.
+</p>
             </SpotlightCard>
 
             {/* Domain 2: The Improvisation */}
@@ -484,8 +484,8 @@ function App() {
                 <h3 className="text-xl font-bold">The Reality</h3>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                <strong>Operational Truth.</strong> I have managed $350k budgets for GovCon (CACI), restored 800-tree vacuum systems in the snow, and run high-volume kitchen logistics. I have done Technical Support for Daft Labs and DR Power. I know what "Production" actually feels like.
-              </p>
+  <strong>Operational Truth.</strong> I have mastered the physical stack. In the <strong>Trades</strong>, I execute Carpentry, Plumbing, Electrical, Demo, and Tree Work. In <strong>Culinary</strong>, I am a ServSafe Manager who has run everything from Prep/Line/Grill to Large-Scale Banquets (Colleges/Cruise Ships). Whether mudding drywall or designing a menu for a kitchen build, I respect the physics of production.
+</p>
             </SpotlightCard>
           </div>
 
