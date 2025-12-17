@@ -535,15 +535,15 @@ function App() {
             {/* Story 1: CACI (Governance) */}
             <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card">
               <div className="p-4 bg-indigo-950/30 border-b border-slate-700 flex justify-between items-center">
-                <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: CACI_DEFENSE</span>
+                <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: CACI_RED_TEAM</span>
                 <Shield size={18} className="text-indigo-400" />
               </div>
               <div className="p-6 flex flex-col gap-4 flex-1">
-                <h3 className="text-xl font-bold text-gray-100">The $6 Million Audit</h3>
+                <h3 className="text-xl font-bold text-gray-100">The Red Team Unification</h3>
                 <p className="text-sm text-gray-400 leading-relaxed flex-1">
-                  As Red Team Lead for a critical federal recompete, I didn't just review documents; I enforced a zero-defect compliance standard. One missing signature or miscalculated labor rate would have disqualified the bid. I managed the audit trail for a <strong>$6M revenue stream</strong>, ensuring 100% compliance under extreme deadline pressure. The contract was secured.
+                  As the final Red Team Editor for a <strong>$6M federal military recompete</strong>, I inherited multiple disjointed technical and legal submissions with clashing voices and formatting. I spent days synthesizing them into a "single consciousness flow," harmonizing every font, tense, and vocabulary choice. NUWCDIVNPT Contracts later confirmed it was the "best written proposal the office had ever received," even though we lost on cost (#2).
                 </p>
-                <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: REVENUE_SECURED]</div>
+                <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: QUALITY_BENCHMARK_SET]</div>
               </div>
             </SpotlightCard>
 
