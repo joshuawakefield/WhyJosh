@@ -1,12 +1,11 @@
-import { Download, ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, Zap, X, Minus, Square } from 'lucide-react';
+import { Download, ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, Zap, X } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 // --- COMPONENTS ---
 
-function SpotlightCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+function SpotlightCard({ children, className = '', highVibe = false }: { children: React.ReactNode; className?: string; highVibe?: boolean }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current || !spotlightRef.current) return;
@@ -20,18 +19,20 @@ function SpotlightCard({ children, className = '' }: { children: React.ReactNode
 
   const handleMouseLeave = () => {
     if (spotlightRef.current) spotlightRef.current.style.opacity = '0';
-    setIsHovered(false);
   };
 
   return (
     <div
       ref={cardRef}
-      className={`spotlight-container relative overflow-hidden ${className}`}
+      className={`spotlight-container relative overflow-hidden transition-all duration-300 ${className}`}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
     >
-      <div ref={spotlightRef} className="spotlight w-24 h-24 absolute pointer-events-none rounded-full bg-blue-500/20 blur-xl transition-opacity duration-100" style={{ opacity: 0 }} />
+      <div 
+        ref={spotlightRef} 
+        className={`spotlight w-24 h-24 absolute pointer-events-none rounded-full blur-xl transition-opacity duration-100 ${highVibe ? 'bg-amber-400/20' : 'bg-blue-500/20'}`} 
+        style={{ opacity: 0, transform: 'translateZ(0)' }} 
+      />
       {children}
     </div>
   );
@@ -40,7 +41,7 @@ function SpotlightCard({ children, className = '' }: { children: React.ReactNode
 function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<string[]>([
-    "WakefieldOS v1.0.3 (tty1)",
+    "WakefieldOS v1.0.4 (tty1)",
     "Login: guest",
     "Welcome to the System. Type 'help' for commands.",
     "------------------------------------------------",
@@ -90,7 +91,6 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
         default:
           if (cmd !== '') newHistory.push(`Command not found: ${cmd}. Type 'help' for assistance.`);
       }
-
       setHistory(newHistory);
       setInput('');
     }
@@ -99,20 +99,18 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-slate-950 border border-slate-700 rounded-lg shadow-2xl overflow-hidden font-mono text-sm md:text-base">
-        {/* Terminal Header */}
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl bg-slate-950 border border-slate-700 rounded-lg shadow-2xl overflow-hidden font-mono text-sm md:text-base ring-1 ring-white/10">
         <div className="bg-slate-900 p-2 border-b border-slate-800 flex justify-between items-center">
           <div className="flex gap-2 ml-2">
-            <div className="w-3 h-3 rounded-full bg-red-500/50" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-            <div className="w-3 h-3 rounded-full bg-green-500/50" />
+            <div className="w-3 h-3 rounded-full bg-red-500/80" />
+            <div className="w-3 h-3 rounded-full bg-amber-500/80" />
+            <div className="w-3 h-3 rounded-full bg-green-500/80" />
           </div>
-          <div className="text-slate-400 text-xs">guest@wakefield:~</div>
+          <div className="text-slate-400 text-xs tracking-widest">GUEST@WAKEFIELD:~</div>
           <button onClick={onClose} className="text-slate-400 hover:text-white mr-2"><X size={16} /></button>
         </div>
-        {/* Terminal Body */}
-        <div className="p-4 h-[400px] overflow-y-auto text-green-400 selection:bg-green-900" onClick={() => inputRef.current?.focus()}>
+        <div className="p-4 h-[400px] overflow-y-auto text-green-400 selection:bg-green-900/50 font-medium" onClick={() => inputRef.current?.focus()}>
           {history.map((line, i) => (
             <div key={i} className="mb-1 break-words">{line}</div>
           ))}
@@ -124,7 +122,7 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleCommand}
-              className="bg-transparent border-none outline-none text-green-400 flex-1 focus:ring-0"
+              className="bg-transparent border-none outline-none text-green-400 flex-1 focus:ring-0 placeholder-green-800"
               autoFocus
             />
           </div>
@@ -159,17 +157,20 @@ function App() {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-500 ${highVibe ? 'high-vibe' : ''}`}>
+    <div className={`min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 ${highVibe ? 'high-vibe' : ''}`}>
       
       {/* System Progress Bar */}
-      <div className={`fixed top-0 left-0 h-1 z-50 transition-all duration-300 ${highVibe ? 'bg-fuchsia-500 shadow-[0_0_10px_rgba(217,70,239,0.8)]' : 'bg-blue-500'}`} style={{ width: `${scrollProgress}%` }} />
+      <div 
+        className={`fixed top-0 left-0 h-1 z-50 transition-all duration-300 ${highVibe ? 'bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]' : 'bg-blue-500'}`} 
+        style={{ width: `${scrollProgress}%` }} 
+      />
 
       {/* Floating UI Controls */}
       <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-4">
         {/* Vibration Control Toggle */}
         <button 
           onClick={() => setHighVibe(!highVibe)}
-          className={`p-4 rounded-full shadow-2xl border transition-all duration-300 hover:scale-110 ${highVibe ? 'bg-fuchsia-900/80 border-fuchsia-500 text-fuchsia-400' : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:text-blue-400 hover:border-blue-500'}`}
+          className={`p-4 rounded-full shadow-2xl border transition-all duration-300 hover:scale-110 ${highVibe ? 'bg-indigo-950/90 border-amber-500 text-amber-400 shadow-amber-900/20' : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:text-blue-400 hover:border-blue-500'}`}
           title="Toggle Vibration Control"
         >
           <Zap size={24} className={highVibe ? 'fill-current animate-pulse' : ''} />
@@ -178,7 +179,7 @@ function App() {
         {/* Terminal Toggle */}
         <button 
           onClick={() => setIsTerminalOpen(true)}
-          className="p-4 bg-slate-900/80 backdrop-blur border border-slate-700 text-slate-400 hover:text-green-400 hover:border-green-500 rounded-full shadow-2xl transition-all duration-300 hover:scale-110"
+          className={`p-4 backdrop-blur border rounded-full shadow-2xl transition-all duration-300 hover:scale-110 ${highVibe ? 'bg-indigo-950/90 border-amber-500/50 text-amber-400/80 hover:text-amber-400 hover:border-amber-400' : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:text-green-400 hover:border-green-500'}`}
           title="Open System Terminal"
         >
           <Terminal size={24} />
@@ -189,43 +190,59 @@ function App() {
 
       {/* Hero Section */}
       <section className="min-h-screen flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden">
-        <div className={`absolute inset-0 opacity-10 [background-size:16px_16px] grid-pulse transition-colors duration-500 ${highVibe ? 'bg-[radial-gradient(#d946ef_1px,transparent_1px)]' : 'bg-[radial-gradient(#3b82f6_1px,transparent_1px)]'}`}></div>
+        {/* Dynamic Backgrounds */}
+        <div className={`absolute inset-0 opacity-10 [background-size:16px_16px] grid-pulse transition-all duration-1000 ${highVibe ? 'bg-[radial-gradient(#fbbf24_1px,transparent_1px)]' : 'bg-[radial-gradient(#3b82f6_1px,transparent_1px)]'}`}></div>
+
+        {/* Midnight Sunset Gradient Overlay for High Vibe */}
+        <div className={`absolute inset-0 opacity-0 transition-opacity duration-1000 pointer-events-none ${highVibe ? 'opacity-30 bg-gradient-to-b from-indigo-900 via-purple-900 to-amber-900/20' : ''}`}></div>
 
         <div className="absolute inset-0 opacity-5 pointer-events-none" style={{
-          backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 2px, ${highVibe ? 'rgba(217, 70, 239, 0.2)' : 'rgba(59, 130, 246, 0.1)'} 2px, ${highVibe ? 'rgba(217, 70, 239, 0.2)' : 'rgba(59, 130, 246, 0.1)'} 4px)`,
+          backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 2px, ${highVibe ? 'rgba(251, 191, 36, 0.1)' : 'rgba(59, 130, 246, 0.1)'} 2px, ${highVibe ? 'rgba(251, 191, 36, 0.1)' : 'rgba(59, 130, 246, 0.1)'} 4px)`,
           animation: 'scanlines 8s linear infinite'
         }}></div>
         
         <div className="max-w-5xl w-full text-center space-y-8 relative z-10">
           <div className="space-y-6">
-            <div className={`inline-block px-3 py-1 rounded-full border text-sm font-mono mb-4 transition-colors duration-500 ${highVibe ? 'border-fuchsia-500/50 bg-fuchsia-500/10 text-fuchsia-400' : 'border-blue-500/30 bg-blue-500/10 text-blue-400'}`}>
+            <div className={`inline-block px-3 py-1 rounded-full border text-sm font-mono mb-4 transition-colors duration-500 ${highVibe ? 'border-amber-500/50 bg-amber-500/10 text-amber-400' : 'border-blue-500/30 bg-blue-500/10 text-blue-400'}`}>
               SYSTEM STATE: {highVibe ? 'HIGH VIBRATION' : 'OPTIMAL'} // READY
             </div>
-            <h1 className={`text-5xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text mb-4 transition-all duration-500 ${highVibe ? 'bg-gradient-to-r from-fuchsia-400 to-purple-400 drop-shadow-[0_0_15px_rgba(217,70,239,0.5)]' : 'bg-gradient-to-r from-blue-400 to-emerald-400'}`}>
+            
+            {/* Main Title with Midnight Sunset Gradient */}
+            <h1 className={`text-5xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text mb-4 transition-all duration-700 ${highVibe ? 'bg-gradient-to-r from-amber-400 via-orange-400 to-indigo-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.3)]' : 'bg-gradient-to-r from-blue-400 to-emerald-400'}`}>
               JOSHUA WAKEFIELD
             </h1>
+            
             <p className="text-xl md:text-3xl text-gray-300 font-light leading-relaxed max-w-4xl mx-auto">
-              The <span className={`font-medium transition-colors duration-500 ${highVibe ? 'text-fuchsia-400' : 'text-blue-400'}`}>Human Hypervisor</span> for AI Communities.
+              The <span className={`font-medium transition-colors duration-500 ${highVibe ? 'text-amber-400' : 'text-blue-400'}`}>Human Hypervisor</span> for AI Communities.
               <br className="hidden md:block" />
               Bridging Blue-Collar Grit & White-Collar Strategy.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <a href="mailto:joshua.wakefield@gmail.com" className={`px-8 py-4 text-white font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg hover:scale-105 ${highVibe ? 'bg-fuchsia-600 hover:bg-fuchsia-500 shadow-fuchsia-900/20' : 'bg-blue-600 hover:bg-blue-500 shadow-blue-900/20'}`}>
-              <Mail size={20} />
-              Contact Me
+            
+            {/* CONTACT ME BUTTON - UPDATED FOR IOS */}
+            <a href="mailto:joshua.wakefield@gmail.com" className={`group relative px-8 py-4 font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg hover:scale-105 overflow-hidden ${highVibe ? 'bg-amber-500 text-slate-900 shadow-amber-900/30 hover:bg-amber-400' : 'bg-blue-600 text-white shadow-blue-900/20 hover:bg-blue-500'}`}>
+              <span className="relative z-10 flex items-center gap-2">
+                <Mail size={20} /> Contact Me
+              </span>
+              <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${highVibe ? 'bg-amber-300' : 'bg-blue-400'}`} style={{ mixBlendMode: 'overlay' }} />
             </a>
-            <a href="https://jamcamping.com" target="_blank" rel="noopener noreferrer" className={`px-8 py-4 border bg-slate-900/50 hover:text-white font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center ${highVibe ? 'border-fuchsia-500/30 text-fuchsia-400 hover:bg-fuchsia-900/30' : 'border-slate-700 text-blue-400 hover:bg-slate-800 hover:border-blue-500/50'}`}>
-              <ExternalLink size={20} />
-              View Proof of Work
+
+            {/* PROOF OF WORK BUTTON - UPDATED FOR IOS */}
+            <a href="https://jamcamping.com" target="_blank" rel="noopener noreferrer" className={`group relative px-8 py-4 border font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center overflow-hidden ${highVibe ? 'border-amber-500/50 bg-indigo-950/50 text-amber-400 hover:text-amber-300 hover:border-amber-400' : 'border-slate-700 bg-slate-900/50 text-blue-400 hover:text-white hover:border-blue-500/50'}`}>
+              <span className="relative z-10 flex items-center gap-2">
+                <ExternalLink size={20} /> View Proof of Work
+              </span>
+              <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-300 ${highVibe ? 'bg-amber-500' : 'bg-blue-500'}`} style={{ transform: 'translateZ(0)' }} />
             </a>
+
           </div>
         </div>
 
         <button
           onClick={() => scrollToSection('thesis')}
-          className={`absolute bottom-12 transition-colors duration-200 animate-bounce ${highVibe ? 'text-fuchsia-600' : 'text-slate-600 hover:text-blue-400'}`}
+          className={`absolute bottom-12 transition-colors duration-200 animate-bounce ${highVibe ? 'text-amber-600 hover:text-amber-400' : 'text-slate-600 hover:text-blue-400'}`}
         >
           <ChevronDown size={32} />
         </button>
@@ -236,11 +253,11 @@ function App() {
 
         {/* The Thesis */}
         <section id="thesis" className="space-y-8">
-          <div className={`space-y-4 border-l-4 pl-6 relative ${highVibe ? 'border-fuchsia-500' : 'border-blue-500'}`}>
+          <div className={`space-y-4 border-l-4 pl-6 relative transition-colors duration-500 ${highVibe ? 'border-amber-500' : 'border-blue-500'}`}>
             <h2 className={`text-3xl md:text-5xl font-bold text-gray-100 tracking-tight glow-header`}>
               Integrated Polarity
             </h2>
-            <p className={`${highVibe ? 'text-fuchsia-400' : 'text-blue-400'} font-mono text-lg`}>/ˈin(t)əˌɡrādəd pōˈlerədē/</p>
+            <p className={`${highVibe ? 'text-amber-400' : 'text-blue-400'} font-mono text-lg transition-colors duration-500`}>/ˈin(t)əˌɡrādəd pōˈlerədē/</p>
           </div>
           
           <div className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed space-y-6">
@@ -251,8 +268,8 @@ function App() {
             <p>
               I possess the engineering rigor to deconstruct the kernel (WPI EE), but the artistic intuition to read the room (Jazz/Comedy). I have the grit to handle the daily grind (Trades), but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.
             </p>
-            <div className="bg-slate-900/80 p-6 rounded-lg border border-slate-800 mt-8">
-              <p className={`${highVibe ? 'text-fuchsia-400' : 'text-emerald-400'} font-mono text-sm mb-2`}>// THE FORCE MULTIPLIER EFFECT</p>
+            <div className={`p-6 rounded-lg border mt-8 transition-colors duration-500 ${highVibe ? 'bg-indigo-950/50 border-amber-500/30' : 'bg-slate-900/80 border-slate-800'}`}>
+              <p className={`${highVibe ? 'text-amber-400' : 'text-emerald-400'} font-mono text-sm mb-2`}>// THE FORCE MULTIPLIER EFFECT</p>
               <p className="italic text-gray-400">
                 "I am not just one person; I am a team of specialists inhabiting one body, orchestrated by a mature executive consciousness."
               </p>
@@ -263,7 +280,7 @@ function App() {
         {/* The Timeline */}
         <section id="timeline" className="space-y-12">
           <div className="flex items-center gap-4 relative">
-            <div className={`p-3 rounded-lg ${highVibe ? 'bg-fuchsia-500/10 text-fuchsia-400' : 'bg-blue-500/10 text-blue-400'}`}>
+            <div className={`p-3 rounded-lg transition-colors duration-500 ${highVibe ? 'bg-amber-500/10 text-amber-400' : 'bg-blue-500/10 text-blue-400'}`}>
               <Terminal size={32} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header">
@@ -274,11 +291,11 @@ function App() {
           <div className="relative border-l border-slate-800 ml-4 space-y-12 pb-4">
             {/* WPI Era */}
             <div className="relative pl-12 group">
-              <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 ${highVibe ? 'border-fuchsia-500 group-hover:bg-fuchsia-500' : 'border-blue-500 group-hover:bg-blue-500'}`}></div>
+              <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 ${highVibe ? 'border-amber-500 group-hover:bg-amber-500' : 'border-blue-500 group-hover:bg-blue-500'}`}></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Bedrock: WPI</h3>
-                  <span className={`${highVibe ? 'text-fuchsia-400' : 'text-blue-400'} font-mono text-sm`}>1999-2003</span>
+                  <span className={`${highVibe ? 'text-amber-400' : 'text-blue-400'} font-mono text-sm`}>1999-2003</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
                   Electrical Engineering & Signal Processing. I learned the math of the universe—Fourier transforms, Control Theory, and Entropy. I view LLMs not as magic, but as high-dimensional signal processing.
@@ -288,11 +305,11 @@ function App() {
 
             {/* The Pivot Era */}
             <div className="relative pl-12 group">
-              <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 ${highVibe ? 'group-hover:border-fuchsia-500' : 'group-hover:border-emerald-500'}`}></div>
+              <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 border-slate-600 transition-colors duration-300 ${highVibe ? 'group-hover:border-indigo-500' : 'group-hover:border-emerald-500'}`}></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Forge: Operational Grit</h3>
-                  <span className={`${highVibe ? 'text-fuchsia-400' : 'text-emerald-400'} font-mono text-sm`}>2020-2022</span>
+                  <span className={`${highVibe ? 'text-indigo-400' : 'text-emerald-400'} font-mono text-sm`}>2020-2022</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
                   Navigated extreme resource constraints (housing instability) while working rigorous trade jobs (Tree Service, Industrial Kitchens). This era forged my "Stopper" mentality: In a crisis, I do not vibrate with chaos; I absorb it.
@@ -302,11 +319,11 @@ function App() {
 
             {/* The Tech Return */}
             <div className="relative pl-12 group">
-              <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 ${highVibe ? 'border-fuchsia-400 group-hover:bg-fuchsia-400' : 'border-blue-400 group-hover:bg-blue-400'}`}></div>
+              <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-colors duration-300 ${highVibe ? 'border-amber-400 group-hover:bg-amber-400' : 'border-blue-400 group-hover:bg-blue-400'}`}></div>
               <div className="space-y-2">
                 <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4">
                   <h3 className="text-xl font-bold text-gray-100">The Return: Burlington Code Academy</h3>
-                  <span className={`${highVibe ? 'text-fuchsia-400' : 'text-blue-400'} font-mono text-sm`}>2022</span>
+                  <span className={`${highVibe ? 'text-amber-400' : 'text-blue-400'} font-mono text-sm`}>2022</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
                   Graduated Top of Class. I didn't accept the $12k tuition constraint; I engineered a funding solution via grants. Mastered the MERN stack manually right before the ChatGPT acceleration.
@@ -319,7 +336,7 @@ function App() {
         {/* The ROI (Arbitrage) */}
         <section id="roi" className="space-y-8">
            <div className="flex items-center gap-4 relative">
-            <div className={`p-3 rounded-lg ${highVibe ? 'bg-fuchsia-500/10 text-fuchsia-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
+            <div className={`p-3 rounded-lg transition-colors duration-500 ${highVibe ? 'bg-amber-500/10 text-amber-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
               <Zap size={32} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight glow-header">
@@ -329,7 +346,7 @@ function App() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {['Escalation Firewall', 'Vibration Control', 'Context Hygiene', 'Zero Latency'].map((title, i) => (
-              <SpotlightCard key={i} className={`bg-slate-900 border p-6 rounded-lg transition-colors ${highVibe ? 'border-slate-800 hover:border-fuchsia-500/50' : 'border-slate-800 hover:border-blue-500/30'}`}>
+              <SpotlightCard key={i} highVibe={highVibe} className={`bg-slate-900 border p-6 rounded-lg transition-colors duration-500 ${highVibe ? 'border-slate-800 hover:border-amber-500/50' : 'border-slate-800 hover:border-blue-500/30'}`}>
                 <h3 className="text-lg font-bold text-gray-200 mb-2">{title}</h3>
                 <p className="text-gray-400 text-sm">
                   {i === 0 && "Most support reps escalate Tier 3 tickets. I solve them in the queue. I protect your Engineering team's bandwidth, saving thousands in context-switching costs."}
@@ -342,7 +359,7 @@ function App() {
           </div>
         </section>
 
-        {/* Call to Action */}
+        {/* CALL TO ACTION - UPDATED WITH IOS FIXES */}
         <section className="text-center space-y-8 pt-10 pb-20">
           <p className="text-2xl text-gray-300 font-light">
             I am not looking for a job. I am looking for a mission.
@@ -350,18 +367,18 @@ function App() {
           <div className="flex justify-center">
              <a 
                href="mailto:joshua.wakefield@gmail.com"
-               className={`group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 font-lg rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 hover:scale-105 ${highVibe ? 'bg-fuchsia-600 focus:ring-fuchsia-600 shadow-[0_0_40px_-10px_rgba(217,70,239,0.5)]' : 'bg-blue-600 focus:ring-blue-600 shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]'}`}
+               className={`group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 font-lg rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 hover:scale-105 ${highVibe ? 'bg-amber-500 text-slate-900 focus:ring-amber-500 shadow-[0_0_40px_-10px_rgba(251,191,36,0.6)]' : 'bg-blue-600 focus:ring-blue-600 shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)]'}`}
              >
               <span className="relative z-10">Let's Talk</span>
               
-              {/* Hardware Accelerated Glow Layer - Moved behind text and fixed for iOS */}
+              {/* Hardware Accelerated Glow Layer - iOS Safe */}
               <div 
-                className={`absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl ${highVibe ? 'bg-fuchsia-400' : 'bg-blue-400'}`} 
-                style={{ transform: 'translateZ(0)' }} // Force GPU acceleration for smooth iOS rendering
+                className={`absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl ${highVibe ? 'bg-amber-400' : 'bg-blue-400'}`} 
+                style={{ transform: 'translateZ(0)' }} 
               />
               
-              {/* Subtle pulsing ring animation for "Lit Up" state */}
-              <div className={`absolute -inset-0 rounded-full animate-ping opacity-20 ${highVibe ? 'bg-fuchsia-500' : 'bg-blue-500'}`} style={{ animationDuration: '3s' }}></div>
+              {/* Subtle pulsing ring animation */}
+              <div className={`absolute -inset-0 rounded-full animate-ping opacity-20 ${highVibe ? 'bg-amber-500' : 'bg-blue-500'}`} style={{ animationDuration: '3s' }}></div>
             </a>
           </div>
         </section>
@@ -374,13 +391,13 @@ function App() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-center md:text-left">
               <p className="text-gray-500 text-sm font-mono">
-                SYSTEM_ID: JOSHUA_WAKEFIELD // <span className={highVibe ? 'text-fuchsia-500' : 'text-blue-500'}>READY</span>
+                SYSTEM_ID: JOSHUA_WAKEFIELD // <span className={`transition-colors duration-500 ${highVibe ? 'text-amber-500' : 'text-blue-500'}`}>READY</span>
               </p>
             </div>
             <div className="flex gap-6">
-              <a href="https://linkedin.com/in/jmwakefield" target="_blank" rel="noopener noreferrer" className={`transition-colors duration-200 ${highVibe ? 'text-gray-400 hover:text-fuchsia-500' : 'text-gray-400 hover:text-blue-500'}`}><Linkedin size={24} /></a>
-              <a href="https://github.com/joshuawakefield" target="_blank" rel="noopener noreferrer" className={`transition-colors duration-200 ${highVibe ? 'text-gray-400 hover:text-fuchsia-500' : 'text-gray-400 hover:text-blue-500'}`}><Github size={24} /></a>
-              <a href="mailto:joshua.wakefield@gmail.com" className={`transition-colors duration-200 ${highVibe ? 'text-gray-400 hover:text-fuchsia-500' : 'text-gray-400 hover:text-blue-500'}`}><Mail size={24} /></a>
+              <a href="https://linkedin.com/in/jmwakefield" target="_blank" rel="noopener noreferrer" className={`transition-colors duration-200 ${highVibe ? 'text-gray-400 hover:text-amber-500' : 'text-gray-400 hover:text-blue-500'}`}><Linkedin size={24} /></a>
+              <a href="https://github.com/joshuawakefield" target="_blank" rel="noopener noreferrer" className={`transition-colors duration-200 ${highVibe ? 'text-gray-400 hover:text-amber-500' : 'text-gray-400 hover:text-blue-500'}`}><Github size={24} /></a>
+              <a href="mailto:joshua.wakefield@gmail.com" className={`transition-colors duration-200 ${highVibe ? 'text-gray-400 hover:text-amber-500' : 'text-gray-400 hover:text-blue-500'}`}><Mail size={24} /></a>
             </div>
           </div>
         </div>
