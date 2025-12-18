@@ -441,13 +441,13 @@ function App() {
 
         {/* TIMELINE */}
         <section id="timeline" className="space-y-12 group scroll-mt-32">
-          <SectionHeader title="The Electron-to-Cloud Graph" icon={Terminal} color="amber" />
+          <SectionHeader title="Timeline" icon={Terminal} color="amber" />
           <div className="relative border-l border-slate-800 ml-4 space-y-12 pb-4">
              <TimelineItem title="The Source Code: From Armatron to NuMega" date="1985-1999" color="amber">
-                My path began with a Radio Shack Armatron in 1985 and evolved through Logo, DOS, and Linux. By 1996, I was attending college night school for C/C++ while still in Catholic high school. This culminated in a professional role at <Highlight color="indigo">NuMega Labs (1998)</Highlight> coding alongside senior engineers and competing in US FIRST Robotics. I entered WPI not as a novice, but as a seasoned practitioner.
+                My path began with a Radio Shack Armatron in 1985 and evolved through Logo 1989, DOS and BASIC 1990, and Linux 1995. By 1996, I was attending college night school for C/C++ while still in Catholic high school. This culminated in a professional role at <Highlight color="indigo">NuMega Labs (1998)</Highlight> coding alongside senior engineers and competing in US FIRST Robotics 1998-1999. I entered WPI not as a novice, but with some serious know-how.
              </TimelineItem>
              <TimelineItem title="The Hard Foundation: WPI Engineering" date="1999-2003" color="indigo">
-                98% BS in Electrical Engineering. This was the era of "Hard Robotics" and rigorous Control Theory. I specialized in <Highlight color="amber">Real-Time Signals & Systems</Highlight>, <Highlight color="amber">Control Engineering</Highlight>, and <Highlight color="amber">Analog Circuits and Motors</Highlight>. I was building autonomous feedback loops and optimizing assembly for embedded architectures. My understanding of AI is grounded in the math of the universe—Fourier transforms, Entropy, and Feedback—not just API calls.
+                98% BS in Electrical Engineering. This was the era of engineering labs and rigorous mathematical lecture. I specialized in <Highlight color="amber">Real-Time Signals & Systems</Highlight>, <Highlight color="amber">Control Engineering</Highlight>, <Highlight color="amber">Analog Circuits</Highlight>, and <Highlight color="amber">Power Engineering and Motors</Highlight>. I was building autonomous feedback loops and optimizing assembly for embedded architectures. My understanding of AI is grounded in the math of the universe—Fourier transforms, Entropy, and Feedback—not just API calls.
              </TimelineItem>
              <TimelineItem title="The Crucible: High-Stakes Operations" date="2006-2020" color="amber">
                 I stepped out of the code and into the fire of reality. From managing multi-million dollar government contracts at <Highlight color="indigo">CACI</Highlight> (Budgeting, BD, Financial), to running Tech Support at <Highlight color="indigo">Daft Labs</Highlight>, to solving critical mechanical failures at <Highlight color="indigo">DR Power Equipment</Highlight>. This era forged my financial literacy and operational grit. I know that when systems fail, it costs real money—whether it's an SAP error or a blown actuator.
