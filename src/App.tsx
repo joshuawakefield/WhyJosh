@@ -370,14 +370,21 @@ function App() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <a href="mailto:joshua.wakefield@gmail.com" className="group relative px-8 py-4 font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg hover:scale-105 overflow-hidden bg-amber-500 text-slate-900 shadow-amber-900/30 hover:bg-amber-400">
+            <a 
+              href="mailto:joshua.wakefield@gmail.com" 
+              className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 font-lg rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 hover:scale-105 bg-amber-500 text-slate-900 focus:ring-amber-500 shadow-[0_0_40px_-10px_rgba(251,191,36,0.6)]"
+            >
               <span className="relative z-10 flex items-center gap-2">
                 <Mail size={20} /> Contact Me
               </span>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-amber-300" style={{ mixBlendMode: 'overlay' }} />
+              <div 
+                className="absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-amber-400" 
+                style={{ transform: 'translateZ(0)' }} 
+              />
+              <div className="absolute -inset-0 rounded-full animate-ping opacity-20 bg-amber-500" style={{ animationDuration: '3s' }}></div>
             </a>
 
-            <button onClick={() => scrollToSection('jamcamping')} className="group relative px-8 py-4 border font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center overflow-hidden border-amber-500/50 bg-indigo-950/50 text-amber-400 hover:text-amber-300 hover:border-amber-400">
+            <button onClick={() => scrollToSection('jamcamping')} className="group relative px-8 py-4 border font-medium rounded-full transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center overflow-hidden border-amber-500/50 bg-indigo-950/50 text-amber-400 hover:text-amber-300 hover:border-amber-400">
               <span className="relative z-10 flex items-center gap-2">
                 <ExternalLink size={20} /> View Proof of Work
               </span>
@@ -408,8 +415,9 @@ function App() {
               I possess the engineering rigor to deconstruct the kernel (WPI EE), but the artistic intuition to read the room (Jazz/Comedy). I have the grit to handle the daily grind, but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.
             </p>
             
+            {/* FIXED: Background color now matches other boxes */}
             <SpotlightCard 
-              className="p-6 rounded-lg border mt-8 bg-indigo-950/50 border-amber-500/30 hover:border-amber-500/80"
+              className="p-6 rounded-lg border mt-8 bg-slate-900 border-slate-800 hover:border-amber-500/50"
             >
               <p className="text-amber-400 font-mono text-sm mb-2">// THE FORCE MULTIPLIER EFFECT</p>
               <p className="italic text-gray-400">
@@ -505,6 +513,26 @@ function App() {
                 </div>
               </div>
             </SpotlightCard>
+            
+            {/* NEW INDIGO BUTTON UNDER JAMCAMPING */}
+            <div className="flex justify-center mt-8">
+               <a 
+                 href="https://jamcamping.com" 
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 font-lg rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 hover:scale-105 bg-indigo-500 text-white focus:ring-indigo-500 shadow-[0_0_40px_-10px_rgba(99,102,241,0.6)]"
+               >
+                <span className="relative z-10 flex items-center gap-2">
+                  <ExternalLink size={20} /> View Proof of Work
+                </span>
+                <div 
+                  className="absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl bg-indigo-400" 
+                  style={{ transform: 'translateZ(0)' }} 
+                />
+                <div className="absolute -inset-0 rounded-full animate-ping opacity-20 bg-indigo-500" style={{ animationDuration: '3s' }}></div>
+              </a>
+            </div>
+
           </div>
         </section>
 
