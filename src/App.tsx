@@ -268,7 +268,7 @@ const scrollToSection = (id: string) => {
   }
 };
 
-cconst jumpSection = (direction: 'up' | 'down') => {
+const jumpSection = (direction: 'up' | 'down') => {
   const scrollPos = window.scrollY;
   const buffer = 10; // Prevents getting stuck due to 1px offsets
 
