@@ -1,4 +1,4 @@
-import { ExternalLink, Linkedin, Github, Mail, ChevronDown, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Wrench, Trophy, Activity, Radio } from 'lucide-react';
+import { ExternalLink, Linkedin, Github, Mail, ChevronDown, ChevronUp, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Wrench, Trophy, Activity, Radio, Play, ArrowUp, ArrowDown } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 // --- TYPES ---
@@ -11,7 +11,55 @@ interface TerminalBlock {
 
 // --- COMPONENTS ---
 
-function SpotlightCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+function NavBar({ activeSection }: { activeSection: string }) {
+  const navItems = [
+    { id: 'manifesto', label: 'Manifesto' },
+    { id: 'jamcamping', label: 'JamCamping' },
+    { id: 'timeline', label: 'Timeline' },
+    { id: 'domains', label: 'Domains' },
+    { id: 'wins', label: 'Wins' },
+    { id: 'roi', label: 'ROI' },
+    { id: 'contact', label: 'Contact' }
+  ];
+
+  const scrollTo = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 80; // height of nav
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-slate-950/80 backdrop-blur-md border-b border-white/5 flex items-center justify-center transition-all duration-300">
+      <div className="flex gap-1 md:gap-6 overflow-x-auto px-4 w-full max-w-5xl no-scrollbar items-center justify-start md:justify-center h-full">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => scrollTo(item.id)}
+            className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 ${
+              activeSection === item.id 
+                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/50' 
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+function SpotlightCard({ children, className = '', glowColor = 'amber' }: { children: React.ReactNode; className?: string; glowColor?: 'amber' | 'indigo' }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +77,8 @@ function SpotlightCard({ children, className = '' }: { children: React.ReactNode
     if (spotlightRef.current) spotlightRef.current.style.opacity = '0';
   };
 
+  const glowClass = glowColor === 'amber' ? 'bg-amber-400/20' : 'bg-indigo-500/20';
+
   return (
     <div
       ref={cardRef}
@@ -38,7 +88,7 @@ function SpotlightCard({ children, className = '' }: { children: React.ReactNode
     >
       <div 
         ref={spotlightRef} 
-        className="spotlight w-24 h-24 absolute pointer-events-none rounded-full blur-xl transition-opacity duration-100 bg-amber-400/20" 
+        className={`spotlight w-24 h-24 absolute pointer-events-none rounded-full blur-xl transition-opacity duration-100 ${glowClass}`}
         style={{ opacity: 0, transform: 'translateZ(0)' }} 
       />
       {children}
@@ -66,14 +116,24 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isOpen && scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      inputRef.current?.focus();
+    if (isOpen) {
+      setTimeout(() => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+        inputRef.current?.focus();
+      }, 100);
     }
   }, [blocks, isOpen]);
 
   const handleFocus = () => {
-    inputRef.current?.focus();
+    // Mobile fix: Scroll input into view when focused to avoid keyboard covering it
+    if (inputRef.current) {
+      inputRef.current.focus();
+      setTimeout(() => {
+        inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
   };
 
   const handleCommand = (e: React.KeyboardEvent) => {
@@ -151,19 +211,19 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-0 md:p-4" onClick={onClose}>
       <div 
-        className="w-full max-w-3xl bg-slate-950 border border-slate-700 rounded-lg shadow-2xl overflow-hidden font-mono ring-1 ring-amber-500/20 flex flex-col max-h-[80vh]"
+        className="w-full h-full md:h-auto md:max-w-3xl bg-slate-950 border-0 md:border border-slate-700 md:rounded-lg shadow-2xl overflow-hidden font-mono ring-0 md:ring-1 ring-amber-500/20 flex flex-col md:max-h-[80vh]"
         onClick={(e) => e.stopPropagation()} 
       >
-        <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-indigo-400 p-3 flex justify-between items-center">
+        <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-indigo-400 p-3 flex justify-between items-center shrink-0">
           <div className="flex gap-2 ml-2"></div>
           <div className="text-slate-900 font-bold text-xs tracking-widest opacity-80">GUEST@WAKEFIELD:~</div>
           <button onClick={onClose} className="text-slate-900 hover:text-white transition-colors mr-2"><X size={18} /></button>
         </div>
 
         <div 
-          className="flex-1 overflow-y-auto bg-slate-950 scrollbar-thin scrollbar-thumb-slate-800" 
+          className="flex-1 overflow-y-auto bg-slate-950 scrollbar-thin scrollbar-thumb-slate-800 p-2" 
           onClick={handleFocus}
           ref={scrollRef}
         >
@@ -186,7 +246,8 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
             </div>
           ))}
 
-          <div className="p-4 bg-slate-900/30">
+          {/* Input Area */}
+          <div className="p-4 bg-slate-900/30 mb-20 md:mb-0">
             <div className="flex items-center gap-3">
               <span className="text-amber-500 font-bold animate-pulse">➜</span>
               <span className="text-blue-400">~</span>
@@ -196,7 +257,8 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleCommand}
-                className="bg-transparent border-none outline-none text-gray-100 flex-1 focus:ring-0 placeholder-slate-700 text-base"
+                onFocus={handleFocus}
+                className="bg-transparent border-none outline-none text-gray-100 flex-1 focus:ring-0 placeholder-slate-700 text-base p-0"
                 autoFocus
                 autoComplete="off"
                 spellCheck="false"
@@ -213,59 +275,123 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
 function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState('hero');
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+
+  const sections = ['hero', 'manifesto', 'loom', 'jamcamping', 'timeline', 'domains', 'wins', 'roi', 'contact'];
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: 'smooth' });
+    if (element) {
+      const offset = 80;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const jumpSection = (direction: 'up' | 'down') => {
+    const currentIndex = sections.indexOf(activeSection);
+    if (currentIndex === -1) return;
+
+    let nextIndex = direction === 'down' ? currentIndex + 1 : currentIndex - 1;
+    
+    // Bounds checking
+    if (nextIndex < 0) nextIndex = 0;
+    if (nextIndex >= sections.length) nextIndex = sections.length - 1;
+
+    scrollToSection(sections[nextIndex]);
   };
 
   useEffect(() => {
     const handleScroll = () => {
+      // Progress Bar Logic
       const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (windowHeight <= 0) {
         setScrollProgress(0);
-        return;
+      } else {
+        const scrolled = window.scrollY;
+        const progress = (scrolled / windowHeight) * 100;
+        setScrollProgress(progress);
       }
-      const scrolled = window.scrollY;
-      const progress = (scrolled / windowHeight) * 100;
-      setScrollProgress(progress);
+
+      // Active Section Logic
+      const scrollPosition = window.scrollY + 300; // Offset for better detection
+      
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 relative">
+    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 relative pb-20">
       
+      <NavBar activeSection={activeSection} />
+
       {/* --- GLOBAL TEXTURE LAYER --- */}
       <div className="fixed inset-0 opacity-10 pointer-events-none z-0 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:16px_16px]"></div>
       
       {/* System Progress Bar */}
       <div 
-        className="fixed top-0 left-0 h-1 z-50 transition-all duration-300 bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]"
+        className="fixed top-16 left-0 h-0.5 z-50 transition-all duration-300 bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]"
         style={{ width: `${scrollProgress}%` }} 
       />
 
-      {/* Floating UI Controls */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-4">
+      {/* Floating UI Controls (Dock) */}
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-3 items-center">
+        {/* Navigation Arrows */}
+        <div className="flex flex-col gap-2 p-1.5 bg-slate-900/80 backdrop-blur rounded-full border border-slate-700 shadow-xl">
+          <button 
+            onClick={() => jumpSection('up')}
+            className="p-3 rounded-full hover:bg-white/10 text-gray-400 hover:text-amber-400 transition-colors"
+            title="Previous Section"
+          >
+            <ChevronUp size={20} />
+          </button>
+          <div className="h-px w-6 bg-slate-700 mx-auto" />
+          <button 
+            onClick={() => jumpSection('down')}
+            className="p-3 rounded-full hover:bg-white/10 text-gray-400 hover:text-amber-400 transition-colors"
+            title="Next Section"
+          >
+            <ChevronDown size={20} />
+          </button>
+        </div>
+
         {/* Terminal Toggle */}
         <button 
           onClick={() => setIsTerminalOpen(true)}
-          className="p-4 backdrop-blur border rounded-full shadow-2xl transition-all duration-300 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400/80 hover:text-amber-400 hover:border-amber-400"
+          className="p-4 backdrop-blur border rounded-full shadow-2xl transition-all duration-300 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400/80 hover:text-amber-400 hover:border-amber-400 group relative"
           title="Open System Terminal"
         >
           <Terminal size={24} />
+          <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2 py-1 bg-slate-900 text-xs rounded border border-amber-500/30 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+            CMD+K
+          </span>
         </button>
-
-        {/* Spacer to push Terminal button above "Made in Bolt" badge */}
-        <div className="w-12 h-10 pointer-events-none" aria-hidden="true" />
       </div>
 
       <TerminalModal isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} />
 
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden z-10">
+      <section id="hero" className="min-h-screen flex flex-col items-center justify-center px-6 pt-32 pb-20 relative overflow-hidden z-10">
         
         {/* Midnight Sunset Gradient Overlay */}
         <div className="absolute inset-0 opacity-20 bg-gradient-to-b from-indigo-900 via-purple-900 to-amber-900/20 pointer-events-none"></div>
@@ -301,28 +427,21 @@ function App() {
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-amber-300" style={{ mixBlendMode: 'overlay' }} />
             </a>
 
-            <a href="https://jamcamping.com" target="_blank" rel="noopener noreferrer" className="group relative px-8 py-4 border font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center overflow-hidden border-amber-500/50 bg-indigo-950/50 text-amber-400 hover:text-amber-300 hover:border-amber-400">
+            <button onClick={() => scrollToSection('jamcamping')} className="group relative px-8 py-4 border font-medium rounded-lg transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center overflow-hidden border-amber-500/50 bg-indigo-950/50 text-amber-400 hover:text-amber-300 hover:border-amber-400">
               <span className="relative z-10 flex items-center gap-2">
                 <ExternalLink size={20} /> View Proof of Work
               </span>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 bg-amber-500" style={{ transform: 'translateZ(0)' }} />
-            </a>
+            </button>
           </div>
         </div>
-
-        <button
-          onClick={() => scrollToSection('thesis')}
-          className="absolute bottom-12 transition-colors duration-200 animate-bounce text-amber-600 hover:text-amber-400"
-        >
-          <ChevronDown size={32} />
-        </button>
       </section>
 
       {/* Main Content Container */}
-      <div className="max-w-4xl mx-auto px-6 py-20 space-y-40 relative z-10">
+      <div className="max-w-4xl mx-auto px-6 py-10 space-y-40 relative z-10">
 
-        {/* The Thesis */}
-        <section id="thesis" className="space-y-8 group">
+        {/* The Manifesto (Thesis) */}
+        <section id="manifesto" className="space-y-8 group scroll-mt-24">
           <div className="space-y-4 border-l-4 pl-6 relative border-amber-500 transition-all duration-700">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
               Integrated Polarity
@@ -336,7 +455,7 @@ function App() {
               <strong className="text-white"> I have deliberately integrated both.</strong>
             </p>
             <p>
-              I possess the engineering rigor to deconstruct the kernel (WPI EE), but the artistic intuition to read the room (Jazz/Comedy). I have the grit to handle the daily grind (Trades), but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.
+              I possess the engineering rigor to deconstruct the kernel (WPI EE), but the artistic intuition to read the room (Jazz/Comedy). I have the grit to handle the daily grind, but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.
             </p>
             
             <SpotlightCard 
@@ -350,8 +469,98 @@ function App() {
           </div>
         </section>
 
+        {/* Loom Video Section */}
+        <section id="loom" className="space-y-8 group scroll-mt-24">
+          <div className="flex items-center gap-4 relative">
+             <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
+              <Play size={32} />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
+              The Human Interface
+            </h2>
+          </div>
+          
+          <SpotlightCard className="w-full aspect-video bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 shadow-2xl flex items-center justify-center group/video">
+             {/* Placeholder for Loom Embed */}
+             <div className="text-center space-y-4 p-8">
+               <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover/video:bg-amber-500 group-hover/video:text-slate-900 transition-colors duration-300 text-amber-400">
+                 <Play size={32} className="ml-1" />
+               </div>
+               <p className="text-gray-400 font-mono text-sm">[LOOM_VIDEO_PLACEHOLDER]</p>
+               <p className="text-gray-500 text-xs max-w-md mx-auto">
+                 "I'm Joshua. I’m currently working construction in Newport, RI, but I’m an engineer at heart. I built this site to show you that I don't just close tickets—I build trust. Let's talk."
+               </p>
+             </div>
+          </SpotlightCard>
+        </section>
+
+        {/* JamCamping AI Workflow */}
+        <section id="jamcamping" className="space-y-12 group scroll-mt-24">
+          <div className="flex items-center gap-4 relative">
+             <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-indigo-500/10 text-indigo-400 group-hover:shadow-[0_0_20px_rgba(79,70,229,0.5)] group-hover:bg-indigo-500/20">
+              <Activity size={32} />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
+              AI Orchestration: The Build
+            </h2>
+          </div>
+
+          <div className="space-y-8">
+            <p className="text-lg text-gray-300 leading-relaxed">
+              JamCamping.com isn't just an app; it is a proof of <strong className="text-amber-400">Agentic Workflow</strong>. I built a production-grade PWA in one weekend using a "Context Hygiene" loop that treats AI models not as chatbots, but as distinct processing units in a signal chain.
+            </p>
+
+            <SpotlightCard className="bg-slate-900 border p-8 rounded-lg border-slate-800 relative overflow-hidden group/workflow hover:border-amber-500/50 transition-all duration-500">
+              <div className="absolute top-0 right-0 p-3 text-xs font-mono text-amber-500/50 border-b border-l border-amber-500/20 rounded-bl-lg bg-amber-500/5">
+                WORKFLOW_ID: RECURSIVE_SYNTHESIS
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div className="space-y-6">
+                  <div className="flex flex-col gap-4">
+                     <div className="flex items-center gap-3">
+                       <div className="w-8 h-8 rounded bg-slate-800 flex items-center justify-center text-gray-400 font-mono text-xs border border-slate-700">01</div>
+                       <div>
+                         <h4 className="text-amber-400 font-bold">GitIngest (Context Capture)</h4>
+                         <p className="text-sm text-gray-500">Serialized the entire repo into a single context token stream.</p>
+                       </div>
+                     </div>
+                     <div className="h-4 w-px bg-slate-700 ml-4"></div>
+                     <div className="flex items-center gap-3">
+                       <div className="w-8 h-8 rounded bg-slate-800 flex items-center justify-center text-gray-400 font-mono text-xs border border-slate-700">02</div>
+                       <div>
+                         <h4 className="text-indigo-400 font-bold">External Reasoner (Logic)</h4>
+                         <p className="text-sm text-gray-500">Fed context to O1/Claude 3.5 Sonnet to architect the next feature *before* writing code.</p>
+                       </div>
+                     </div>
+                     <div className="h-4 w-px bg-slate-700 ml-4"></div>
+                     <div className="flex items-center gap-3">
+                       <div className="w-8 h-8 rounded bg-slate-800 flex items-center justify-center text-gray-400 font-mono text-xs border border-slate-700">03</div>
+                       <div>
+                         <h4 className="text-green-400 font-bold">Bolt.new (Execution)</h4>
+                         <p className="text-sm text-gray-500">Used Bolt as the IDE/Compiler to implement the pre-validated logic.</p>
+                       </div>
+                     </div>
+                  </div>
+                </div>
+
+                <div className="relative h-full min-h-[200px] flex items-center justify-center">
+                   {/* Placeholder for JamCamping Screenshot */}
+                   <div className="relative w-full aspect-video bg-indigo-950/30 rounded border border-indigo-500/30 flex flex-col items-center justify-center transition-all duration-500 group-hover/workflow:scale-105 group-hover/workflow:border-amber-500 group-hover/workflow:shadow-[0_0_30px_rgba(251,191,36,0.2)]">
+                      <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 mb-2">JamCamping</div>
+                      <div className="text-xs font-mono text-indigo-300 bg-indigo-900/50 px-2 py-1 rounded">V 1.0.0 // PRODUCTION</div>
+                      
+                      <a href="https://jamcamping.com" target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-10"></a>
+                   </div>
+                </div>
+              </div>
+            </SpotlightCard>
+          </div>
+        </section>
+
+
         {/* The Timeline */}
-        <section id="timeline" className="space-y-12 group">
+        <section id="timeline" className="space-y-12 group scroll-mt-24">
           <div className="flex items-center gap-4 relative">
             <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Terminal size={32} />
@@ -437,7 +646,7 @@ function App() {
         </section>
 
         {/* DOMAIN SYNTHESIS SECTION */}
-        <section id="domains" className="space-y-12 group">
+        <section id="domains" className="space-y-12 group scroll-mt-24">
           <div className="flex items-center gap-4 relative">
             <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-indigo-500/10 text-indigo-400 group-hover:shadow-[0_0_20px_rgba(79,70,229,0.5)] group-hover:bg-indigo-500/20">
               <Cpu size={32} />
@@ -467,7 +676,7 @@ function App() {
             </SpotlightCard>
 
             {/* Domain 2: The Improvisation */}
-            <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+            <SpotlightCard glowColor="indigo" className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <div className="flex items-center gap-3 text-indigo-400">
                 <Palette size={24} />
                 <h3 className="text-xl font-bold">The Art</h3>
@@ -506,8 +715,9 @@ function App() {
                 </ul>
               </div>
 
+              {/* CHANGE: Glow to Amber per user request */}
               <div>
-                <h4 className="text-indigo-500 mb-3 border-b border-indigo-500/20 pb-1">02. THE MIND (AI & Math)</h4>
+                <h4 className="text-amber-500 mb-3 border-b border-amber-500/20 pb-1">02. THE MIND (AI & Math)</h4>
                 <ul className="space-y-2 text-gray-400">
                   <li><span className="text-gray-100">Mathematics:</span> Linear Algebra, Calculus, Discrete Math, Probability</li>
                   <li><span className="text-gray-100">AI Context:</span> RAG Architectures, Token Optimization, Agentic Workflows</li>
@@ -520,7 +730,7 @@ function App() {
         </section>
 
         {/* WINS / MISSION LOGS SECTION */}
-        <section id="wins" className="space-y-12 group">
+        <section id="wins" className="space-y-12 group scroll-mt-24">
           <div className="flex items-center gap-4 relative">
             <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Trophy size={32} />
@@ -533,7 +743,7 @@ function App() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* Story 1: CACI (Governance) */}
-            <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+            <SpotlightCard glowColor="indigo" className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <div className="p-4 bg-indigo-950/30 border-b border-slate-700 flex justify-between items-center">
                 <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: CACI_RED_TEAM</span>
                 <Shield size={18} className="text-indigo-400" />
@@ -562,18 +772,18 @@ function App() {
               </div>
             </SpotlightCard>
 
-            {/* Story 3: DR Power (Human Override) */}
-             <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
-              <div className="p-4 bg-indigo-950/30 border-b border-slate-700 flex justify-between items-center">
-                <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: HUMAN_OVERRIDE</span>
-                <Activity size={18} className="text-indigo-400" />
+            {/* Story 3: DR Power (Human Override) -- CHANGED TO AMBER GLOW */}
+             <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+              <div className="p-4 bg-amber-950/30 border-b border-slate-700 flex justify-between items-center">
+                <span className="text-xs font-mono text-amber-400 tracking-widest">LOG_REF: HUMAN_OVERRIDE</span>
+                <Activity size={18} className="text-amber-400" />
               </div>
               <div className="p-6 flex flex-col gap-4 flex-1">
                 <h3 className="text-xl font-bold text-gray-100">The 160-Mile Protocol Breach</h3>
                 <p className="text-sm text-gray-400 leading-relaxed flex-1">
                   A customer's husband was dying at home; his mower was a critical emotional anchor. The nearest dealer was 80 miles away. Protocol said "too far." I refused that output. I negotiated a custom service contract, leveraging human empathy to convince the dealer to drive 160 miles round-trip. The machine was fixed before he passed. Some KPIs don't fit on a spreadsheet.
                 </p>
-                <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: MISSION_COMPLETE]</div>
+                <div className="mt-2 text-xs text-amber-300 font-mono">[RESULT: MISSION_COMPLETE]</div>
               </div>
             </SpotlightCard>
 
@@ -581,7 +791,7 @@ function App() {
         </section>
 
         {/* The ROI (Arbitrage) */}
-        <section id="roi" className="space-y-8 group">
+        <section id="roi" className="space-y-8 group scroll-mt-24">
            <div className="flex items-center gap-4 relative">
             <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
               <Zap size={32} />
@@ -623,7 +833,7 @@ function App() {
         </section>
 
         {/* CALL TO ACTION */}
-        <section className="text-center space-y-8 pt-10 pb-20">
+        <section id="contact" className="text-center space-y-8 pt-10 pb-20 scroll-mt-24">
           <p className="text-2xl text-gray-300 font-light max-w-2xl mx-auto">
              I don't just want to close tickets; I want to build the division that eliminates them. <br/><br/>
              <span className="text-lg text-gray-400">My trajectory is vertical. I am looking for the role where I can prove my value in the queue, and eventually lead your entire Customer Experience function.</span>
