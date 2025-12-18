@@ -1,3 +1,4 @@
+--- START OF FILE src/index.css ---
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -47,4 +48,15 @@
 ::selection {
   background-color: rgba(251, 191, 36, 0.3);
   color: #fbbf24;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
