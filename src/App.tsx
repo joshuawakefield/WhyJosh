@@ -292,7 +292,7 @@ const jumpSection = (direction: 'up' | 'down') => {
 };
 
   useEffect(() => {
-cconst handleScroll = () => {
+const handleScroll = () => {
   const winHeight = document.documentElement.scrollHeight - window.innerHeight;
   setScrollProgress(winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100);
 
