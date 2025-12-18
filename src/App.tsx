@@ -521,8 +521,7 @@ function App() {
         {/* CONTACT */}
         <section id="contact" className="text-center space-y-8 pt-10 pb-20 scroll-mt-24">
           <p className="text-2xl text-gray-300 font-light max-w-2xl mx-auto">
-             I don't just want to close tickets; I want to build the division that eliminates them. <br/><br/>
-             <span className="text-lg text-gray-400">My trajectory is vertical. I am looking for the role where I can prove my value in the queue, and eventually lead your entire Customer Experience function.</span>
+             I don't just want to close tickets; I want to build the division that eliminates them. My trajectory is vertical. I am looking for the role where I can prove my value in the queue, and eventually lead your entire Customer Experience function. I am the perfect individual for it!
           </p>
           <div className="flex justify-center">
              <GlowButton href="mailto:joshua.wakefield@gmail.com" icon={Mail} text="Let's Talk" color="amber" />
