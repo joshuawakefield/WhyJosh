@@ -254,58 +254,59 @@ function App() {
 const scrollToSection = (id: string) => {
   const element = document.getElementById(id);
   if (element) {
-    const offset = 0; // Changed to 0 for exact top alignment
+    // We subtract 100px to account for the visual gap and any floating UI
+    const offset = 100; 
     const bodyRect = document.body.getBoundingClientRect().top;
     const elementRect = element.getBoundingClientRect().top;
     const elementPosition = elementRect - bodyRect;
     const offsetPosition = elementPosition - offset;
-    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+
+    window.scrollTo({ 
+      top: offsetPosition, 
+      behavior: 'smooth' 
+    });
   }
 };
 
-const jumpSection = (direction: 'up' | 'down') => {
-  const point = window.scrollY;
-  let currentIdx = 0;
+cconst jumpSection = (direction: 'up' | 'down') => {
+  const scrollPos = window.scrollY;
+  const buffer = 10; // Prevents getting stuck due to 1px offsets
 
-  for (let i = 0; i < sections.length; i++) {
-    const el = document.getElementById(sections[i]);
-    if (el && el.offsetTop <= point) {
-      currentIdx = i;
-    } else {
-      break;
+  if (direction === 'down') {
+    // Find the first section that starts AFTER our current position
+    const nextSection = sections.find(id => {
+      const el = document.getElementById(id);
+      return el && el.offsetTop > scrollPos + buffer;
+    });
+    if (nextSection) scrollToSection(nextSection);
+  } else {
+    // Find all sections that start BEFORE our current position and pick the last one
+    const prevSections = sections.filter(id => {
+      const el = document.getElementById(id);
+      return el && el.offsetTop < scrollPos - buffer;
+    });
+    if (prevSections.length > 0) {
+      scrollToSection(prevSections[prevSections.length - 1]);
     }
   }
-
-  let targetIdx;
-  if (direction === 'down') {
-    targetIdx = Math.min(currentIdx + 1, sections.length - 1);
-  } else {
-    // 'up'
-    targetIdx = Math.max(currentIdx - 1, 0);
-  }
-
-  scrollToSection(sections[targetIdx]);
 };
 
   useEffect(() => {
-const handleScroll = () => {
+cconst handleScroll = () => {
   const winHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100;
-  setScrollProgress(progress);
+  setScrollProgress(winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100);
 
-  // Current section: furthest one we've scrolled past its top
-  const point = window.scrollY;
+  const scrollPos = window.scrollY;
+  const buffer = 50; // Larger buffer for visual "active" state
   let current = sections[0];
 
   for (const section of sections) {
     const el = document.getElementById(section);
-    if (el && el.offsetTop <= point) {
+    // If the top of the section is roughly at or above the current scroll position
+    if (el && el.offsetTop <= scrollPos + buffer) {
       current = section;
-    } else {
-      break; // Stop at first section not yet passed
     }
   }
-
   setActiveSection(current);
 };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -397,16 +398,24 @@ const handleScroll = () => {
         </section>
 
         {/* LOOM */}
-        <section id="loom" className="space-y-8 group scroll-mt-24">
-          <SectionHeader title="The Human Interface" icon={Play} color="amber" />
-          <SpotlightCard className="w-full aspect-video bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 shadow-2xl flex items-center justify-center group/video">
-             <div className="text-center space-y-4 p-8">
-               <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover/video:bg-amber-500 group-hover/video:text-slate-900 transition-colors duration-300 text-amber-400"><Play size={32} className="ml-1" /></div>
-               <p className="text-gray-400 font-mono text-sm">[LOOM_VIDEO_PLACEHOLDER]</p>
-               <p className="text-gray-500 text-xs max-w-md mx-auto">"I'm Joshua. I’m currently working construction in Newport, RI, but I’m an engineer at heart. I built this site to show you that I don't just close tickets—I build trust. Let's talk."</p>
-             </div>
-          </SpotlightCard>
-        </section>
+<section 
+  id="loom" 
+  className="space-y-8 group scroll-mt-32 min-h-[60vh] flex flex-col justify-center"
+>
+  <SectionHeader title="The Human Interface" icon={Play} color="amber" />
+  
+  <SpotlightCard className="w-full aspect-video bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 shadow-2xl flex items-center justify-center group/video">
+     <div className="text-center space-y-4 p-8">
+       <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover/video:bg-amber-500 group-hover/video:text-slate-900 transition-colors duration-300 text-amber-400">
+         <Play size={32} className="ml-1" />
+       </div>
+       <p className="text-gray-400 font-mono text-sm">[LOOM_VIDEO_PLACEHOLDER]</p>
+       <p className="text-gray-500 text-xs max-w-md mx-auto">
+         "I'm Joshua. I’m currently working construction in Newport, RI, but I’m an engineer at heart. I built this site to show you that I don't just close tickets—I build trust. Let's talk."
+       </p>
+     </div>
+  </SpotlightCard>
+</section>
 
         {/* JAMCAMPING */}
         <section id="jamcamping" className="space-y-12 group scroll-mt-24">
