@@ -263,14 +263,29 @@ function App() {
     }
   };
 
+  c// ... inside App component
+
   const jumpSection = (direction: 'up' | 'down') => {
-    const idx = sections.indexOf(activeSection);
+    // 1. Get current scroll position to find where we actually are
+    const scrollPos = window.scrollY + 200;
+    const currentIdx = sections.findIndex(id => {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      return scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight;
+    });
+
+    // 2. Fallback to activeSection if the index search fails
+    const idx = currentIdx !== -1 ? currentIdx : sections.indexOf(activeSection);
+
     if (direction === 'down') {
       if (idx < sections.length - 1) {
         scrollToSection(sections[idx + 1]);
       }
     } else {
-      if (idx > 0) {
+      // If we are at the very bottom or in the last section, go to the second to last
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+        scrollToSection(sections[sections.length - 2]);
+      } else if (idx > 0) {
         scrollToSection(sections[idx - 1]);
       }
     }
@@ -282,7 +297,14 @@ function App() {
       const progress = winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100;
       setScrollProgress(progress);
       
-      const scrollPos = window.scrollY + 400;
+      const scrollPos = window.scrollY + 250;
+      
+      // Special case for the bottom of the page
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10) {
+        setActiveSection(sections[sections.length - 1]);
+        return;
+      }
+
       for (const section of sections) {
         const el = document.getElementById(section);
         if (el && scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight) {
@@ -291,9 +313,10 @@ function App() {
         }
       }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
 
   const terminalPulseOpacity = 0.2 + (scrollProgress / 100) * 0.8;
 
