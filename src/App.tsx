@@ -251,21 +251,20 @@ function App() {
 
   const sections = ['hero', 'manifesto', 'loom', 'jamcamping', 'timeline', 'domains', 'wins', 'roi', 'contact'];
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-  };
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    const offset = 0; // Changed to 0 for exact top alignment
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+  }
+};
 
 const jumpSection = (direction: 'up' | 'down') => {
-  // Same reliable logic as scroll handler, but fresh calculation (no state dependency)
-  const point = window.scrollY + 80;
+  const point = window.scrollY;
   let currentIdx = 0;
 
   for (let i = 0; i < sections.length; i++) {
@@ -294,9 +293,8 @@ const handleScroll = () => {
   const progress = winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100;
   setScrollProgress(progress);
 
-  // Reliable "furthest section we've passed the top of" logic
-  // Matches the 80px offset used in scrollToSection
-  const point = window.scrollY + 80;
+  // Current section: furthest one we've scrolled past its top
+  const point = window.scrollY;
   let current = sections[0];
 
   for (const section of sections) {
@@ -304,7 +302,7 @@ const handleScroll = () => {
     if (el && el.offsetTop <= point) {
       current = section;
     } else {
-      break;
+      break; // Stop at first section not yet passed
     }
   }
 
