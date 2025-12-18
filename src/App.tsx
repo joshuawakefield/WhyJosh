@@ -1,4 +1,4 @@
-import { ExternalLink, Linkedin, Github, Mail, ChevronDown, ChevronUp, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Wrench, Trophy, Activity, Radio, Play, ArrowUp, ArrowDown } from 'lucide-react';
+import { ExternalLink, Linkedin, Github, Mail, ChevronDown, ChevronUp, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Wrench, Trophy, Activity, Radio, Play, DollarSign } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 // --- TYPES ---
@@ -10,54 +10,6 @@ interface TerminalBlock {
 }
 
 // --- COMPONENTS ---
-
-function NavBar({ activeSection }: { activeSection: string }) {
-  const navItems = [
-    { id: 'manifesto', label: 'Manifesto' },
-    { id: 'jamcamping', label: 'JamCamping' },
-    { id: 'timeline', label: 'Timeline' },
-    { id: 'domains', label: 'Domains' },
-    { id: 'wins', label: 'Wins' },
-    { id: 'roi', label: 'ROI' },
-    { id: 'contact', label: 'Contact' }
-  ];
-
-  const scrollTo = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80; // height of nav
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-slate-950/80 backdrop-blur-md border-b border-white/5 flex items-center justify-center transition-all duration-300">
-      <div className="flex gap-1 md:gap-6 overflow-x-auto px-4 w-full max-w-5xl no-scrollbar items-center justify-start md:justify-center h-full">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => scrollTo(item.id)}
-            className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 ${
-              activeSection === item.id 
-                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/50' 
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-    </nav>
-  );
-}
 
 function SpotlightCard({ children, className = '', glowColor = 'amber' }: { children: React.ReactNode; className?: string; glowColor?: 'amber' | 'indigo' }) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -283,7 +235,7 @@ function App() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const offset = 80;
+      const offset = 40; // Reduced offset since nav is gone
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -343,14 +295,12 @@ function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 relative pb-20">
       
-      <NavBar activeSection={activeSection} />
-
       {/* --- GLOBAL TEXTURE LAYER --- */}
       <div className="fixed inset-0 opacity-10 pointer-events-none z-0 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:16px_16px]"></div>
       
       {/* System Progress Bar */}
       <div 
-        className="fixed top-16 left-0 h-0.5 z-50 transition-all duration-300 bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]"
+        className="fixed top-0 left-0 h-1 z-50 transition-all duration-300 bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]"
         style={{ width: `${scrollProgress}%` }} 
       />
 
@@ -743,7 +693,7 @@ function App() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* Story 1: CACI (Governance) */}
-            <SpotlightCard glowColor="indigo" className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+            <SpotlightCard glowColor="amber" className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <div className="p-4 bg-indigo-950/30 border-b border-slate-700 flex justify-between items-center">
                 <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: CACI_RED_TEAM</span>
                 <Shield size={18} className="text-indigo-400" />
@@ -758,7 +708,7 @@ function App() {
             </SpotlightCard>
 
             {/* Story 2: DR Power (Wire Crimp) */}
-            <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+            <SpotlightCard glowColor="amber" className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
               <div className="p-4 bg-amber-950/30 border-b border-slate-700 flex justify-between items-center">
                 <span className="text-xs font-mono text-amber-400 tracking-widest">LOG_REF: REMOTE_DEBUG</span>
                 <Radio size={18} className="text-amber-400" />
@@ -772,18 +722,18 @@ function App() {
               </div>
             </SpotlightCard>
 
-            {/* Story 3: DR Power (Human Override) -- CHANGED TO AMBER GLOW */}
-             <SpotlightCard className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
-              <div className="p-4 bg-amber-950/30 border-b border-slate-700 flex justify-between items-center">
-                <span className="text-xs font-mono text-amber-400 tracking-widest">LOG_REF: HUMAN_OVERRIDE</span>
-                <Activity size={18} className="text-amber-400" />
+            {/* Story 3: DR Power (Human Override) -- CHANGED TO INDIGO THEME, AMBER GLOW */}
+             <SpotlightCard glowColor="amber" className="bg-slate-900 border p-0 rounded-lg border-slate-800 flex flex-col overflow-hidden group/card transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
+              <div className="p-4 bg-indigo-950/30 border-b border-slate-700 flex justify-between items-center">
+                <span className="text-xs font-mono text-indigo-400 tracking-widest">LOG_REF: HUMAN_OVERRIDE</span>
+                <Activity size={18} className="text-indigo-400" />
               </div>
               <div className="p-6 flex flex-col gap-4 flex-1">
                 <h3 className="text-xl font-bold text-gray-100">The 160-Mile Protocol Breach</h3>
                 <p className="text-sm text-gray-400 leading-relaxed flex-1">
                   A customer's husband was dying at home; his mower was a critical emotional anchor. The nearest dealer was 80 miles away. Protocol said "too far." I refused that output. I negotiated a custom service contract, leveraging human empathy to convince the dealer to drive 160 miles round-trip. The machine was fixed before he passed. Some KPIs don't fit on a spreadsheet.
                 </p>
-                <div className="mt-2 text-xs text-amber-300 font-mono">[RESULT: MISSION_COMPLETE]</div>
+                <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: MISSION_COMPLETE]</div>
               </div>
             </SpotlightCard>
 
@@ -793,8 +743,8 @@ function App() {
         {/* The ROI (Arbitrage) */}
         <section id="roi" className="space-y-8 group scroll-mt-24">
            <div className="flex items-center gap-4 relative">
-            <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-amber-500/10 text-amber-400 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)] group-hover:bg-amber-500/20">
-              <Zap size={32} />
+            <div className="p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 bg-indigo-500/10 text-indigo-400 group-hover:shadow-[0_0_20px_rgba(79,70,229,0.5)] group-hover:bg-indigo-500/20">
+              <DollarSign size={32} />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
               The Financial Arbitrage
