@@ -263,9 +263,7 @@ function App() {
     }
   };
 
-  c// ... inside App component
-
-  const jumpSection = (direction: 'up' | 'down') => {
+    const jumpSection = (direction: 'up' | 'down') => {
     // 1. Get current scroll position to find where we actually are
     const scrollPos = window.scrollY + 200;
     const currentIdx = sections.findIndex(id => {
