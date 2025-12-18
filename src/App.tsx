@@ -263,28 +263,24 @@ function App() {
     }
   };
 
-  const jumpSection = (direction: 'up' | 'down') => {
-    const scrollPos = window.scrollY + 200;
-    const currentIdx = sections.findIndex(id => {
-      const el = document.getElementById(id);
-      if (!el) return false;
-      return scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight;
-    });
+const jumpSection = (direction: 'up' | 'down') => {
+  const idx = sections.indexOf(activeSection);
 
-    const idx = currentIdx !== -1 ? currentIdx : sections.indexOf(activeSection);
-
-    if (direction === 'down') {
-      if (idx < sections.length - 1) {
-        scrollToSection(sections[idx + 1]);
-      }
-    } else {
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
-        scrollToSection(sections[sections.length - 2]);
-      } else if (idx > 0) {
-        scrollToSection(sections[idx - 1]);
-      }
+  if (direction === 'down') {
+    if (idx < sections.length - 1) {
+      scrollToSection(sections[idx + 1]);
     }
-  };
+  } else {
+    // 'up'
+    if (idx > 0) {
+      scrollToSection(sections[idx - 1]);
+    }
+    // Optional: if already at the very top (hero), smoothly scroll to absolute top
+    else if (idx === 0) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+};
 
   useEffect(() => {
     const handleScroll = () => {
