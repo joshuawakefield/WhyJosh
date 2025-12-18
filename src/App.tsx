@@ -2,7 +2,6 @@ import { ExternalLink, Linkedin, Github, Mail, ChevronDown, ChevronUp, Terminal,
 import { useState, useEffect, useRef } from 'react';
 
 // --- TYPES ---
-
 interface TerminalBlock {
   id: number;
   command: string;
@@ -24,20 +23,10 @@ const Highlight = ({ children, color }: { children: React.ReactNode; color: Colo
 };
 
 const SectionHeader = ({ title, icon: Icon, color }: { title: string; icon: LucideIcon; color: ColorTheme }) => {
-  const theme = {
-    amber: {
-      wrapper: 'bg-amber-500/10 text-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.5)] bg-amber-500/20',
-      icon: 'text-amber-400'
-    },
-    indigo: {
-      wrapper: 'bg-indigo-500/10 text-indigo-400 shadow-[0_0_20px_rgba(79,70,229,0.5)] bg-indigo-500/20',
-      icon: 'text-indigo-400'
-    }
-  };
-
+  const isAmber = color === 'amber';
   return (
     <div className="flex items-center gap-4 relative group">
-      <div className={`p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 ${theme[color].icon} bg-opacity-10 group-hover:shadow-xl group-hover:bg-opacity-20 ${color === 'amber' ? 'bg-amber-500 group-hover:bg-amber-500' : 'bg-indigo-500 group-hover:bg-indigo-500'}`}>
+      <div className={`p-3 rounded-lg transition-all duration-700 transform group-hover:scale-110 shadow-xl bg-opacity-10 group-hover:bg-opacity-20 ${isAmber ? 'bg-amber-500 text-amber-400 shadow-amber-500/20' : 'bg-indigo-500 text-indigo-400 shadow-indigo-500/20'}`}>
         <Icon size={32} />
       </div>
       <h2 className="text-3xl md:text-4xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">
@@ -251,82 +240,59 @@ function App() {
 
   const sections = ['hero', 'manifesto', 'loom', 'jamcamping', 'timeline', 'domains', 'wins', 'roi', 'contact'];
 
-const scrollToSection = (id: string) => {
-  const element = document.getElementById(id);
-  if (element) {
-    // Offset is 0 because we handle visual spacing via CSS scroll-margin
-    const offset = 0; 
-    const bodyRect = document.body.getBoundingClientRect().top;
-    const elementRect = element.getBoundingClientRect().top;
-    const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - offset;
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const offsetPosition = elementRect - bodyRect;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+  };
 
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    });
-  }
-};
+  const jumpSection = (direction: 'up' | 'down') => {
+    let currentIndex = 0;
+    const threshold = 150; 
 
-const jumpSection = (direction: 'up' | 'down') => {
-  // We determine "current" by which section's top is closest to the top of the screen
-  let currentIndex = 0;
-  const threshold = 100; // Pixels from top to consider a section "active"
-
-  for (let i = 0; i < sections.length; i++) {
-    const el = document.getElementById(sections[i]);
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      // If the top of the section has passed the threshold, it's the current one
-      if (rect.top <= threshold) {
+    // Find the section that is CURRENTLY in view
+    for (let i = 0; i < sections.length; i++) {
+      const el = document.getElementById(sections[i]);
+      if (el && el.getBoundingClientRect().top <= threshold) {
         currentIndex = i;
       }
     }
-  }
 
-  let targetIndex;
-  if (direction === 'down') {
-    targetIndex = Math.min(currentIndex + 1, sections.length - 1);
-  } else {
-    // If we are halfway through a section, 'up' should go to the start of the CURRENT section
-    // If we are already at the start, go to the PREVIOUS section.
-    const currentEl = document.getElementById(sections[currentIndex]);
-    const currentRect = currentEl?.getBoundingClientRect();
-    
-    if (currentRect && currentRect.top < -10) {
-      targetIndex = currentIndex; // Snap back to top of current section
+    let targetIdx;
+    if (direction === 'down') {
+      targetIdx = Math.min(currentIndex + 1, sections.length - 1);
     } else {
-      targetIndex = Math.max(currentIndex - 1, 0); // Go to previous
+      const currentEl = document.getElementById(sections[currentIndex]);
+      const currentTop = currentEl ? currentEl.getBoundingClientRect().top : 0;
+      // If we are significantly scrolled into the current section, 'up' snaps to the top of it first.
+      targetIdx = currentTop < -20 ? currentIndex : Math.max(currentIndex - 1, 0);
     }
-  }
 
-  scrollToSection(sections[targetIndex]);
-};
+    scrollToSection(sections[targetIdx]);
+  };
+
   useEffect(() => {
-const handleScroll = () => {
-  const winHeight = document.documentElement.scrollHeight - window.innerHeight;
-  setScrollProgress(winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100);
+    const handleScroll = () => {
+      const winHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100);
 
-  // Find the current section based on visibility
-  const threshold = 120; 
-  let current = sections[0];
-
-  for (const section of sections) {
-    const el = document.getElementById(section);
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      if (rect.top <= threshold) {
-        current = section;
+      const threshold = 160; 
+      let current = sections[0];
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el && el.getBoundingClientRect().top <= threshold) {
+          current = section;
+        }
       }
-    }
-  }
-  setActiveSection(current);
-};
+      setActiveSection(current);
+    };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const terminalPulseOpacity = 0.2 + (scrollProgress / 100) * 0.8;
 
   return (
     <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 relative pb-20">
@@ -339,36 +305,36 @@ const handleScroll = () => {
         <div className="flex flex-col gap-3 p-2 bg-slate-900/90 backdrop-blur rounded-full border border-amber-500/30 shadow-2xl">
           <button 
             onClick={() => jumpSection('up')} 
-            className="p-3 rounded-full text-amber-500/60 hover:text-amber-400 hover:scale-125 hover:bg-amber-500/10 transition-all duration-300"
+            className="p-3 rounded-full text-amber-500/60 border border-transparent hover:border-amber-500/40 hover:text-amber-400 hover:scale-125 hover:bg-amber-500/10 transition-all duration-300"
           >
             <ChevronUp size={24} strokeWidth={3} />
           </button>
           <div className="h-px w-6 bg-slate-700 mx-auto" />
           <button 
             onClick={() => jumpSection('down')} 
-            className="p-3 rounded-full text-amber-500/60 hover:text-amber-400 hover:scale-125 hover:bg-amber-500/10 transition-all duration-300"
+            className="p-3 rounded-full text-amber-500/60 border border-transparent hover:border-amber-500/40 hover:text-amber-400 hover:scale-125 hover:bg-amber-500/10 transition-all duration-300"
           >
             <ChevronDown size={24} strokeWidth={3} />
           </button>
         </div>
+        
+        {/* Terminal button with light perpetual glow */}
         <button 
           onClick={() => setIsTerminalOpen(true)} 
-          className="p-5 backdrop-blur border rounded-full shadow-2xl transition-all duration-500 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400 group relative overflow-hidden"
+          className="p-5 backdrop-blur border rounded-full shadow-2xl transition-all duration-500 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400 group relative overflow-hidden ring-4 ring-amber-500/5 animate-pulse-glow"
         >
           <Terminal size={28} className="relative z-10" />
-          <div 
-            className="absolute inset-0 bg-amber-500 animate-pulse pointer-events-none"
-            style={{ opacity: terminalPulseOpacity * 0.3 }}
-          />
           <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1 bg-slate-900 text-xs font-mono rounded border border-amber-500/30 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl">CMD+K</span>
         </button>
-        <div className="h-12 w-12 pointer-events-none opacity-0" />
+        
+        {/* Circle-sized spacer to prevent "Made in Bolt" occlusion */}
+        <div className="h-14 w-14 pointer-events-none opacity-0" />
       </div>
 
       <TerminalModal isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} />
 
       {/* HERO SECTION */}
-      <section id="hero" className="min-h-screen flex flex-col items-center justify-center px-6 pt-32 pb-20 relative overflow-hidden z-10">
+      <section id="hero" className="min-h-screen flex flex-col items-center justify-center px-6 pt-32 pb-20 relative overflow-hidden z-10 scroll-mt-32">
         <div className="absolute inset-0 opacity-20 bg-gradient-to-b from-indigo-900 via-purple-900 to-amber-900/20 pointer-events-none"></div>
         <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(251, 191, 36, 0.1) 2px, rgba(251, 191, 36, 0.1) 4px)', animation: 'scanlines 8s linear infinite' }}></div>
         
@@ -395,7 +361,7 @@ const handleScroll = () => {
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-40 relative z-10">
 
         {/* MANIFESTO */}
-        <section id="manifesto" className="space-y-8 group scroll-mt-24">
+        <section id="manifesto" className="space-y-8 group scroll-mt-32">
           <div className="space-y-4 border-l-4 pl-6 relative border-amber-500 transition-all duration-700">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">Integrated Polarity</h2>
             <p className="text-amber-400 font-mono text-lg">/ˈin(t)əˌɡrādəd pōˈlerədē/</p>
@@ -410,28 +376,20 @@ const handleScroll = () => {
           </div>
         </section>
 
-        {/* LOOM */}
-<section 
-  id="loom" 
-  className="space-y-8 group scroll-mt-32 min-h-[60vh] flex flex-col justify-center"
->
-  <SectionHeader title="The Human Interface" icon={Play} color="amber" />
-  
-  <SpotlightCard className="w-full aspect-video bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 shadow-2xl flex items-center justify-center group/video">
-     <div className="text-center space-y-4 p-8">
-       <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover/video:bg-amber-500 group-hover/video:text-slate-900 transition-colors duration-300 text-amber-400">
-         <Play size={32} className="ml-1" />
-       </div>
-       <p className="text-gray-400 font-mono text-sm">[LOOM_VIDEO_PLACEHOLDER]</p>
-       <p className="text-gray-500 text-xs max-w-md mx-auto">
-         "I'm Joshua. I’m currently working construction in Newport, RI, but I’m an engineer at heart. I built this site to show you that I don't just close tickets—I build trust. Let's talk."
-       </p>
-     </div>
-  </SpotlightCard>
-</section>
+        {/* LOOM - Min height added for scroll detection */}
+        <section id="loom" className="space-y-8 group scroll-mt-32 min-h-[40vh] flex flex-col justify-center">
+          <SectionHeader title="The Human Interface" icon={Play} color="amber" />
+          <SpotlightCard className="w-full aspect-video bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 shadow-2xl flex items-center justify-center group/video">
+             <div className="text-center space-y-4 p-8">
+               <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover/video:bg-amber-500 group-hover/video:text-slate-900 transition-colors duration-300 text-amber-400"><Play size={32} className="ml-1" /></div>
+               <p className="text-gray-400 font-mono text-sm">[LOOM_VIDEO_PLACEHOLDER]</p>
+               <p className="text-gray-500 text-xs max-w-md mx-auto">"I'm Joshua. I’m currently working construction in Newport, RI, but I’m an engineer at heart. I built this site to show you that I don't just close tickets—I build trust. Let's talk."</p>
+             </div>
+          </SpotlightCard>
+        </section>
 
         {/* JAMCAMPING */}
-        <section id="jamcamping" className="space-y-12 group scroll-mt-24">
+        <section id="jamcamping" className="space-y-12 group scroll-mt-32">
           <SectionHeader title="AI Orchestration: The Build" icon={Activity} color="indigo" />
           <div className="space-y-8">
             <p className="text-lg text-gray-300 leading-relaxed">JamCamping.com isn't just an app; it is a proof of <Highlight color="amber">Agentic Workflow</Highlight>. I built a production-grade PWA in one weekend using a "Context Hygiene" loop that treats AI models not as chatbots, but as distinct processing units in a signal chain.</p>
@@ -470,7 +428,7 @@ const handleScroll = () => {
         </section>
 
         {/* TIMELINE */}
-        <section id="timeline" className="space-y-12 group scroll-mt-24">
+        <section id="timeline" className="space-y-12 group scroll-mt-32">
           <SectionHeader title="The Electron-to-Cloud Graph" icon={Terminal} color="amber" />
           <div className="relative border-l border-slate-800 ml-4 space-y-12 pb-4">
              <TimelineItem title="The Source Code: From Armatron to NuMega" date="1985-1999" color="amber">
@@ -492,26 +450,26 @@ const handleScroll = () => {
         </section>
 
         {/* DOMAINS */}
-        <section id="domains" className="space-y-12 group scroll-mt-24">
+        <section id="domains" className="space-y-12 group scroll-mt-32">
           <SectionHeader title="The Domain Matrix" icon={Cpu} color="indigo" />
           <div className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed">
             <p>My mind is an association engine. I can poke a stick in a campfire and see embers that remind me of particle trails in a cloud chamber. To me, a jazz mode is just a frequency response; a kitchen service is just a packet-switching network. I don't just "know" these domains—I understand the universal patterns that connect them.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
-              <div className="flex items-center gap-3 text-amber-400"><Zap size={24} /><h3 className="text-xl font-bold">The Physics</h3></div>
+              <div className="flex items-center gap-3 text-amber-400"><Zap size={24} /><h3 className="text-xl font-bold text-white">The Physics</h3></div>
               <p className="text-sm text-gray-400 leading-relaxed">
                 <Highlight color="indigo">First Principles.</Highlight> My foundation isn't syntax; it is the Math of the Universe. I possess the literacy to consume <Highlight color="indigo">Robotics & AI white papers</Highlight> because I speak their native tongue: <Highlight color="indigo">Fourier Transforms</Highlight>, <Highlight color="indigo">Control Theory</Highlight>, and <Highlight color="indigo">Feedback Loops</Highlight>. From <Highlight color="indigo">Relativity</Highlight> and <Highlight color="indigo">Optics</Highlight> to <Highlight color="indigo">Algorithmic Complexity</Highlight>, I understand the deep physics that high-level APIs abstract away.
               </p>
             </SpotlightCard>
             <SpotlightCard glowColor="indigo" className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
-              <div className="flex items-center gap-3 text-indigo-400"><Palette size={24} /><h3 className="text-xl font-bold">The Art</h3></div>
+              <div className="flex items-center gap-3 text-indigo-400"><Palette size={24} /><h3 className="text-xl font-bold text-white">The Art</h3></div>
               <p className="text-sm text-gray-400 leading-relaxed">
                 <Highlight color="amber">Systematic Creativity.</Highlight> To me, the Circle of Fifths is a circuit diagram. I apply <Highlight color="amber">Jazz Theory</Highlight> to improvisational guitar (Phish/Dead), treating music as real-time conversational logic. I create <Highlight color="amber">Sacred Geometric</Highlight> art to explore the visual syntax of nature. I study <Highlight color="amber">Stand-Up Comedy</Highlight> to master the ultimate feedback loop: controlling the timing, tension, and release of a room's energy.
               </p>
             </SpotlightCard>
             <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
-              <div className="flex items-center gap-3 text-amber-400"><Hammer size={24} /><h3 className="text-xl font-bold">The Grind</h3></div>
+              <div className="flex items-center gap-3 text-amber-400"><Hammer size={24} /><h3 className="text-xl font-bold text-white">The Grind</h3></div>
               <p className="text-sm text-gray-400 leading-relaxed">
                 <Highlight color="indigo">Operational Truth.</Highlight> I have mastered the physical stack. In the <Highlight color="indigo">Trades</Highlight>, I execute Carpentry, Plumbing, Electrical, Demo, and Tree Work. In <Highlight color="indigo">Culinary</Highlight>, I am a <Highlight color="indigo">ServSafe Manager</Highlight> who has run everything from Line/Grill to Large-Scale Banquets (Colleges/Cruise Ships). Whether mudding drywall or designing a menu for an industrial kitchen build, I respect the physics of production.
               </p>
@@ -545,7 +503,7 @@ const handleScroll = () => {
         </section>
 
         {/* WINS */}
-        <section id="wins" className="space-y-12 group scroll-mt-24">
+        <section id="wins" className="space-y-12 group scroll-mt-32">
           <SectionHeader title="Selected Wins" icon={Trophy} color="amber" />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <WinCard title="The Red Team Unification" refCode="LOG_REF: CACI_RED_TEAM" icon={Shield} theme="indigo">
@@ -564,7 +522,7 @@ const handleScroll = () => {
         </section>
 
         {/* ROI */}
-        <section id="roi" className="space-y-8 group scroll-mt-24">
+        <section id="roi" className="space-y-8 group scroll-mt-32">
           <SectionHeader title="The Financial Arbitrage" icon={DollarSign} color="indigo" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
@@ -582,9 +540,9 @@ const handleScroll = () => {
         </section>
 
         {/* CONTACT */}
-        <section id="contact" className="text-center space-y-8 pt-10 pb-20 scroll-mt-24">
-          <p className="text-2xl text-gray-300 font-light max-w-2xl mx-auto">
-             I don't just want to close tickets; I want to build the division that eliminates them. My trajectory is vertical. I am looking for the role where I can prove my value in the queue, and eventually lead your entire Customer Experience function.
+        <section id="contact" className="text-center space-y-8 pt-10 pb-20 scroll-mt-32">
+          <p className="text-2xl text-gray-300 font-light max-w-2xl mx-auto leading-relaxed">
+             I don't just want to close tickets; I want to build the division that eliminates them. My trajectory is vertical, mirrored in the design of this system. I am looking for the role where I can prove my value in the queue, and eventually lead your entire Customer Experience function into the next frontier of human-AI synthesis.
           </p>
           <div className="flex justify-center">
              <GlowButton href="mailto:joshua.wakefield@gmail.com" icon={Mail} text="Let's Talk" color="amber" />
