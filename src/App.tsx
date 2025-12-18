@@ -152,7 +152,6 @@ const WinCard = ({ title, refCode, icon: Icon, theme, children }: { title: strin
   );
 };
 
-// --- TERMINAL COMPONENT (Unchanged logic, cleaner file) ---
 function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [input, setInput] = useState('');
   const [blocks, setBlocks] = useState<TerminalBlock[]>([
@@ -255,7 +254,7 @@ function App() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const offset = 40;
+      const offset = 80;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
@@ -266,18 +265,24 @@ function App() {
 
   const jumpSection = (direction: 'up' | 'down') => {
     const idx = sections.indexOf(activeSection);
-    if (idx === -1) return;
-    let nextIdx = direction === 'down' ? idx + 1 : idx - 1;
-    if (nextIdx < 0) nextIdx = 0;
-    if (nextIdx >= sections.length) nextIdx = sections.length - 1;
-    scrollToSection(sections[nextIdx]);
+    if (direction === 'down') {
+      if (idx < sections.length - 1) {
+        scrollToSection(sections[idx + 1]);
+      }
+    } else {
+      if (idx > 0) {
+        scrollToSection(sections[idx - 1]);
+      }
+    }
   };
 
   useEffect(() => {
     const handleScroll = () => {
       const winHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100);
-      const scrollPos = window.scrollY + 300;
+      const progress = winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100;
+      setScrollProgress(progress);
+      
+      const scrollPos = window.scrollY + 400;
       for (const section of sections) {
         const el = document.getElementById(section);
         if (el && scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight) {
@@ -288,26 +293,45 @@ function App() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeSection]); // Added dependency to suppress lint warning, though logical effect is minimal
+  }, []);
+
+  const terminalPulseOpacity = 0.2 + (scrollProgress / 100) * 0.8;
 
   return (
     <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 relative pb-20">
       
-      {/* GLOBAL TEXTURE & PROGRESS */}
       <div className="fixed inset-0 opacity-10 pointer-events-none z-0 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:16px_16px]"></div>
       <div className="fixed top-0 left-0 h-1 z-50 transition-all duration-300 bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]" style={{ width: `${scrollProgress}%` }} />
 
       {/* FLOATING DOCK */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-3 items-center">
-        <div className="flex flex-col gap-2 p-1.5 bg-slate-900/80 backdrop-blur rounded-full border border-slate-700 shadow-xl">
-          <button onClick={() => jumpSection('up')} className="p-3 rounded-full hover:bg-white/10 text-gray-400 hover:text-amber-400 transition-colors"><ChevronUp size={20} /></button>
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-4 items-center">
+        <div className="flex flex-col gap-3 p-2 bg-slate-900/90 backdrop-blur rounded-full border border-amber-500/30 shadow-2xl">
+          <button 
+            onClick={() => jumpSection('up')} 
+            className="p-3 rounded-full text-amber-500/60 hover:text-amber-400 hover:scale-125 hover:bg-amber-500/10 transition-all duration-300"
+          >
+            <ChevronUp size={24} strokeWidth={3} />
+          </button>
           <div className="h-px w-6 bg-slate-700 mx-auto" />
-          <button onClick={() => jumpSection('down')} className="p-3 rounded-full hover:bg-white/10 text-gray-400 hover:text-amber-400 transition-colors"><ChevronDown size={20} /></button>
+          <button 
+            onClick={() => jumpSection('down')} 
+            className="p-3 rounded-full text-amber-500/60 hover:text-amber-400 hover:scale-125 hover:bg-amber-500/10 transition-all duration-300"
+          >
+            <ChevronDown size={24} strokeWidth={3} />
+          </button>
         </div>
-        <button onClick={() => setIsTerminalOpen(true)} className="p-4 backdrop-blur border rounded-full shadow-2xl transition-all duration-300 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400/80 hover:text-amber-400 hover:border-amber-400 group relative">
-          <Terminal size={24} />
-          <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2 py-1 bg-slate-900 text-xs rounded border border-amber-500/30 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">CMD+K</span>
+        <button 
+          onClick={() => setIsTerminalOpen(true)} 
+          className="p-5 backdrop-blur border rounded-full shadow-2xl transition-all duration-500 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400 group relative overflow-hidden"
+        >
+          <Terminal size={28} className="relative z-10" />
+          <div 
+            className="absolute inset-0 bg-amber-500 animate-pulse pointer-events-none"
+            style={{ opacity: terminalPulseOpacity * 0.3 }}
+          />
+          <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1 bg-slate-900 text-xs font-mono rounded border border-amber-500/30 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl">CMD+K</span>
         </button>
+        <div className="h-12 w-12 pointer-events-none opacity-0" />
       </div>
 
       <TerminalModal isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} />
@@ -531,13 +555,37 @@ function App() {
       </div>
 
       <footer className="border-t border-slate-900 mt-32 bg-slate-950 relative z-10">
-        <div className="max-w-4xl mx-auto px-6 py-12">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-center md:text-left"><p className="text-gray-500 text-sm font-mono">SYSTEM_ID: JOSHUA_WAKEFIELD // <span className="text-amber-500">READY</span></p></div>
-            <div className="flex gap-6">
-              {[ { href: 'https://linkedin.com/in/jmwakefield', icon: Linkedin }, { href: 'https://github.com/joshuawakefield', icon: Github }, { href: 'mailto:joshua.wakefield@gmail.com', icon: Mail } ].map((link, idx) => (
-                <a key={idx} href={link.href} target="_blank" rel="noopener noreferrer" className="transition-all duration-300 text-gray-400 hover:text-amber-400 hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"><link.icon size={24} /></a>
+        <div className="max-w-4xl mx-auto px-6 py-16">
+          <div className="flex flex-col items-center gap-10">
+            <div className="flex gap-10">
+              {[ 
+                { href: 'https://linkedin.com/in/jmwakefield', icon: Linkedin, label: 'LinkedIn' }, 
+                { href: 'https://github.com/joshuawakefield', icon: Github, label: 'GitHub' }, 
+                { href: 'mailto:joshua.wakefield@gmail.com', icon: Mail, label: 'Email' } 
+              ].map((link, idx) => (
+                <a 
+                  key={idx} 
+                  href={link.href} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="group flex flex-col items-center gap-2 transition-all duration-300 text-gray-500 hover:text-amber-400"
+                >
+                  <div className="p-4 rounded-full bg-slate-900 border border-slate-800 group-hover:border-amber-500/50 group-hover:scale-110 transition-all duration-300 shadow-lg group-hover:shadow-amber-500/20">
+                    <link.icon size={28} />
+                  </div>
+                  <span className="text-[10px] font-mono tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">
+                    {link.label}
+                  </span>
+                </a>
               ))}
+            </div>
+            <div className="text-center space-y-2">
+              <p className="text-gray-500 text-sm font-mono tracking-tighter">
+                SYSTEM_ID: JOSHUA_WAKEFIELD // STATUS: <span className="text-amber-500 animate-pulse">TRANSMITTING</span>
+              </p>
+              <p className="text-gray-700 text-[10px] font-mono uppercase tracking-[0.2em]">
+                Electron-to-Cloud // Integrated Polarity // 2025
+              </p>
             </div>
           </div>
         </div>
