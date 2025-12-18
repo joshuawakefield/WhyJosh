@@ -383,13 +383,7 @@ function App() {
               />
               <div className="absolute -inset-0 rounded-full animate-ping opacity-20 bg-amber-500" style={{ animationDuration: '3s' }}></div>
             </a>
-
-            <button onClick={() => scrollToSection('jamcamping')} className="group relative px-8 py-4 border font-medium rounded-full transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center overflow-hidden border-amber-500/50 bg-indigo-950/50 text-amber-400 hover:text-amber-300 hover:border-amber-400">
-              <span className="relative z-10 flex items-center gap-2">
-                <ExternalLink size={20} /> View Proof of Work
-              </span>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 bg-amber-500" style={{ transform: 'translateZ(0)' }} />
-            </button>
+            {/* Removed "View Proof of Work" button */}
           </div>
         </div>
       </section>
@@ -415,7 +409,6 @@ function App() {
               I possess the engineering rigor to deconstruct the kernel (WPI EE), but the artistic intuition to read the room (Jazz/Comedy). I have the grit to handle the daily grind, but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.
             </p>
             
-            {/* FIXED: Background color now matches other boxes */}
             <SpotlightCard 
               className="p-6 rounded-lg border mt-8 bg-slate-900 border-slate-800 hover:border-amber-500/50"
             >
@@ -559,7 +552,7 @@ function App() {
                   <span className="text-amber-400 font-mono text-sm">1985-1999</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  My path began with a Radio Shack Armatron in 1985 and evolved through Logo, DOS, and Linux. By 1996, I was attending college night school for C/C++ while still in Catholic high school. This culminated in a professional role at <strong>NuMega Labs (1998)</strong> coding alongside senior engineers and competing in US FIRST Robotics. I entered WPI not as a novice, but as a seasoned practitioner.
+                  My path began with a Radio Shack Armatron in 1985 and evolved through Logo, DOS, and Linux. By 1996, I was attending college night school for C/C++ while still in Catholic high school. This culminated in a professional role at <strong className="text-indigo-400">NuMega Labs (1998)</strong> coding alongside senior engineers and competing in US FIRST Robotics. I entered WPI not as a novice, but as a seasoned practitioner.
                 </div>
               </div>
             </div>
@@ -573,7 +566,7 @@ function App() {
                   <span className="text-indigo-400 font-mono text-sm">1999-2003</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  98% BS in Electrical Engineering. This was the era of "Hard Robotics" and rigorous Control Theory. I specialized in <strong>Real-Time Signals & Systems</strong>, <strong>Control Engineering</strong>, and <strong>Analog Circuits and Motors</strong>. I was building autonomous feedback loops and optimizing assembly for embedded architectures. My understanding of AI is grounded in the math of the universe—Fourier transforms, Entropy, and Feedback—not just API calls.
+                  98% BS in Electrical Engineering. This was the era of "Hard Robotics" and rigorous Control Theory. I specialized in <strong className="text-amber-400">Real-Time Signals & Systems</strong>, <strong className="text-amber-400">Control Engineering</strong>, and <strong className="text-amber-400">Analog Circuits and Motors</strong>. I was building autonomous feedback loops and optimizing assembly for embedded architectures. My understanding of AI is grounded in the math of the universe—Fourier transforms, Entropy, and Feedback—not just API calls.
                 </div>
               </div>
             </div>
@@ -587,7 +580,7 @@ function App() {
                   <span className="text-amber-400 font-mono text-sm">2006-2020</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                   I stepped out of the code and into the fire of reality. From managing multi-million dollar government contracts at <strong>CACI</strong> (Budgeting, BD, Financial), to running Tech Support at <strong>Daft Labs</strong>, to solving critical mechanical failures at <strong>DR Power Equipment</strong>. This era forged my financial literacy and operational grit. I know that when systems fail, it costs real money—whether it's an SAP error or a blown actuator.
+                   I stepped out of the code and into the fire of reality. From managing multi-million dollar government contracts at <strong className="text-indigo-400">CACI</strong> (Budgeting, BD, Financial), to running Tech Support at <strong className="text-indigo-400">Daft Labs</strong>, to solving critical mechanical failures at <strong className="text-indigo-400">DR Power Equipment</strong>. This era forged my financial literacy and operational grit. I know that when systems fail, it costs real money—whether it's an SAP error or a blown actuator.
                 </div>
               </div>
             </div>
@@ -601,7 +594,7 @@ function App() {
                   <span className="text-indigo-400 font-mono text-sm">2020-2022</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  Navigated extreme resource constraints while working rigorous manual labor (Tree Service) during a Vermont winter. This era proved that ambition can survive even when resources are at zero. It culminated in my return to the <strong>Burlington Code Academy</strong>, where I graduated top-of-class in the industry's <strong>final pre-ChatGPT cohort</strong>, re-igniting my entrance back into tech.
+                  Navigated extreme resource constraints while working rigorous manual labor (Tree Service) during a Vermont winter. This era proved that ambition can survive even when resources are at zero. It culminated in my return to the <strong className="text-amber-400">Burlington Code Academy</strong>, where I graduated top-of-class in the industry's <strong className="text-amber-400">final pre-ChatGPT cohort</strong>, re-igniting my entrance back into tech.
                 </div>
               </div>
             </div>
@@ -615,7 +608,7 @@ function App() {
                   <span className="text-amber-400 font-mono text-sm">Present</span>
                 </div>
                 <div className="text-gray-400 leading-relaxed">
-                  I graduated the bootcamp weeks before <strong>ChatGPT</strong> launched, making me a native of the <strong>Generative Era</strong>. Since November 2022, I have engineered context daily across <strong>Claude, Grok, and Gemini</strong>. I don't just write code; I orchestrate agentic workflows—repurposing AI IDEs to transmute code outputs into narrative prose for ebooks. I have integrated WPI's "Hard Engineering" with the "Modern AI Stack" to become the bridge between the metal and the model.
+                  I graduated the bootcamp weeks before <strong className="text-indigo-400">ChatGPT</strong> launched, making me a native of the <strong className="text-indigo-400">Generative Era</strong>. Since November 2022, I have engineered context daily across <strong className="text-indigo-400">Claude, Grok, and Gemini</strong>. I don't just write code; I orchestrate agentic workflows—repurposing AI IDEs to transmute code outputs into narrative prose for ebooks. I have integrated WPI's "Hard Engineering" with the "Modern AI Stack" to become the bridge between the metal and the model.
                 </div>
               </div>
             </div>
@@ -649,7 +642,7 @@ function App() {
                 <h3 className="text-xl font-bold">The Physics</h3>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                <strong>First Principles.</strong> My foundation isn't syntax; it is the Math of the Universe. I possess the literacy to consume <strong>Robotics & AI white papers</strong> because I speak their native tongue: <strong>Fourier Transforms</strong>, <strong>Control Theory</strong>, and <strong>Feedback Loops</strong>. From <strong>Relativity</strong> and <strong>Optics</strong> to <strong>Algorithmic Complexity</strong>, I understand the deep physics that high-level APIs abstract away.
+                <strong className="text-indigo-400">First Principles.</strong> My foundation isn't syntax; it is the Math of the Universe. I possess the literacy to consume <strong className="text-indigo-400">Robotics & AI white papers</strong> because I speak their native tongue: <strong className="text-indigo-400">Fourier Transforms</strong>, <strong className="text-indigo-400">Control Theory</strong>, and <strong className="text-indigo-400">Feedback Loops</strong>. From <strong className="text-indigo-400">Relativity</strong> and <strong className="text-indigo-400">Optics</strong> to <strong className="text-indigo-400">Algorithmic Complexity</strong>, I understand the deep physics that high-level APIs abstract away.
               </p>
             </SpotlightCard>
 
@@ -660,7 +653,7 @@ function App() {
                 <h3 className="text-xl font-bold">The Art</h3>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                <strong>Systematic Creativity.</strong> To me, the Circle of Fifths is a circuit diagram. I apply <strong>Jazz Theory</strong> to improvisational guitar (Phish/Dead), treating music as real-time conversational logic. I create <strong>Sacred Geometric</strong> art to explore the visual syntax of nature. I study <strong>Stand-Up Comedy</strong> to master the ultimate feedback loop: controlling the timing, tension, and release of a room's energy.
+                <strong className="text-amber-400">Systematic Creativity.</strong> To me, the Circle of Fifths is a circuit diagram. I apply <strong className="text-amber-400">Jazz Theory</strong> to improvisational guitar (Phish/Dead), treating music as real-time conversational logic. I create <strong className="text-amber-400">Sacred Geometric</strong> art to explore the visual syntax of nature. I study <strong className="text-amber-400">Stand-Up Comedy</strong> to master the ultimate feedback loop: controlling the timing, tension, and release of a room's energy.
               </p>
             </SpotlightCard>
 
@@ -671,7 +664,7 @@ function App() {
                 <h3 className="text-xl font-bold">The Grind</h3>
               </div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                <strong>Operational Truth.</strong> I have mastered the physical stack. In the <strong>Trades</strong>, I execute Carpentry, Plumbing, Electrical, Demo, and Tree Work. In <strong>Culinary</strong>, I am a <strong>ServSafe Manager</strong> who has run everything from Line/Grill to Large-Scale Banquets (Colleges/Cruise Ships). Whether mudding drywall or designing a menu for an industrial kitchen build, I respect the physics of production.
+                <strong className="text-indigo-400">Operational Truth.</strong> I have mastered the physical stack. In the <strong className="text-indigo-400">Trades</strong>, I execute Carpentry, Plumbing, Electrical, Demo, and Tree Work. In <strong className="text-indigo-400">Culinary</strong>, I am a <strong className="text-indigo-400">ServSafe Manager</strong> who has run everything from Line/Grill to Large-Scale Banquets (Colleges/Cruise Ships). Whether mudding drywall or designing a menu for an industrial kitchen build, I respect the physics of production.
               </p>
             </SpotlightCard>
           </div>
@@ -686,10 +679,10 @@ function App() {
               <div>
                 <h4 className="text-amber-500 mb-3 border-b border-amber-500/20 pb-1">01. THE METAL (Control & Signals)</h4>
                 <ul className="space-y-2 text-gray-400">
-                  <li><span className="text-gray-100">Control Theory:</span> Feedback Loops, PID Tuning, Stability Analysis</li>
-                  <li><span className="text-gray-100">Signal Processing:</span> FFT, Filtering, Noise Reduction, ADC/DAC</li>
-                  <li><span className="text-gray-100">Embedded Logic:</span> Assembly, Real-Time Constraints, Interrupts</li>
-                  <li><span className="text-gray-100">Physics:</span> E&M, Thermodynamics, Kinematics (Robotics)</li>
+                  <li><span className="text-indigo-400 font-bold">Control Theory:</span> Feedback Loops, PID Tuning, Stability Analysis</li>
+                  <li><span className="text-indigo-400 font-bold">Signal Processing:</span> FFT, Filtering, Noise Reduction, ADC/DAC</li>
+                  <li><span className="text-indigo-400 font-bold">Embedded Logic:</span> Assembly, Real-Time Constraints, Interrupts</li>
+                  <li><span className="text-indigo-400 font-bold">Physics:</span> E&M, Thermodynamics, Kinematics (Robotics)</li>
                 </ul>
               </div>
 
@@ -697,10 +690,10 @@ function App() {
               <div>
                 <h4 className="text-amber-500 mb-3 border-b border-amber-500/20 pb-1">02. THE MIND (AI & Math)</h4>
                 <ul className="space-y-2 text-gray-400">
-                  <li><span className="text-gray-100">Mathematics:</span> Linear Algebra, Calculus, Discrete Math, Probability</li>
-                  <li><span className="text-gray-100">AI Context:</span> RAG Architectures, Token Optimization, Agentic Workflows</li>
-                  <li><span className="text-gray-100">Data Engineering:</span> Python (Pandas/NumPy), ETL Pipelines, Regex</li>
-                  <li><span className="text-gray-100">Pattern Rec:</span> High-Dimensional Data Synthesis, Anomaly Detection</li>
+                  <li><span className="text-indigo-400 font-bold">Mathematics:</span> Linear Algebra, Calculus, Discrete Math, Probability</li>
+                  <li><span className="text-indigo-400 font-bold">AI Context:</span> RAG Architectures, Token Optimization, Agentic Workflows</li>
+                  <li><span className="text-indigo-400 font-bold">Data Engineering:</span> Python (Pandas/NumPy), ETL Pipelines, Regex</li>
+                  <li><span className="text-indigo-400 font-bold">Pattern Rec:</span> High-Dimensional Data Synthesis, Anomaly Detection</li>
                 </ul>
               </div>
             </div>
