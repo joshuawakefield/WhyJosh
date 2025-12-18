@@ -254,57 +254,70 @@ function App() {
 const scrollToSection = (id: string) => {
   const element = document.getElementById(id);
   if (element) {
-    // We subtract 100px to account for the visual gap and any floating UI
-    const offset = 100; 
+    // Offset is 0 because we handle visual spacing via CSS scroll-margin
+    const offset = 0; 
     const bodyRect = document.body.getBoundingClientRect().top;
     const elementRect = element.getBoundingClientRect().top;
     const elementPosition = elementRect - bodyRect;
     const offsetPosition = elementPosition - offset;
 
-    window.scrollTo({ 
-      top: offsetPosition, 
-      behavior: 'smooth' 
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
     });
   }
 };
 
 const jumpSection = (direction: 'up' | 'down') => {
-  const scrollPos = window.scrollY;
-  const buffer = 10; // Prevents getting stuck due to 1px offsets
+  // We determine "current" by which section's top is closest to the top of the screen
+  let currentIndex = 0;
+  const threshold = 100; // Pixels from top to consider a section "active"
 
-  if (direction === 'down') {
-    // Find the first section that starts AFTER our current position
-    const nextSection = sections.find(id => {
-      const el = document.getElementById(id);
-      return el && el.offsetTop > scrollPos + buffer;
-    });
-    if (nextSection) scrollToSection(nextSection);
-  } else {
-    // Find all sections that start BEFORE our current position and pick the last one
-    const prevSections = sections.filter(id => {
-      const el = document.getElementById(id);
-      return el && el.offsetTop < scrollPos - buffer;
-    });
-    if (prevSections.length > 0) {
-      scrollToSection(prevSections[prevSections.length - 1]);
+  for (let i = 0; i < sections.length; i++) {
+    const el = document.getElementById(sections[i]);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      // If the top of the section has passed the threshold, it's the current one
+      if (rect.top <= threshold) {
+        currentIndex = i;
+      }
     }
   }
-};
 
+  let targetIndex;
+  if (direction === 'down') {
+    targetIndex = Math.min(currentIndex + 1, sections.length - 1);
+  } else {
+    // If we are halfway through a section, 'up' should go to the start of the CURRENT section
+    // If we are already at the start, go to the PREVIOUS section.
+    const currentEl = document.getElementById(sections[currentIndex]);
+    const currentRect = currentEl?.getBoundingClientRect();
+    
+    if (currentRect && currentRect.top < -10) {
+      targetIndex = currentIndex; // Snap back to top of current section
+    } else {
+      targetIndex = Math.max(currentIndex - 1, 0); // Go to previous
+    }
+  }
+
+  scrollToSection(sections[targetIndex]);
+};
   useEffect(() => {
 const handleScroll = () => {
   const winHeight = document.documentElement.scrollHeight - window.innerHeight;
   setScrollProgress(winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100);
 
-  const scrollPos = window.scrollY;
-  const buffer = 50; // Larger buffer for visual "active" state
+  // Find the current section based on visibility
+  const threshold = 120; 
   let current = sections[0];
 
   for (const section of sections) {
     const el = document.getElementById(section);
-    // If the top of the section is roughly at or above the current scroll position
-    if (el && el.offsetTop <= scrollPos + buffer) {
-      current = section;
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= threshold) {
+        current = section;
+      }
     }
   }
   setActiveSection(current);
