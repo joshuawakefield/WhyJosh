@@ -263,8 +263,7 @@ function App() {
     }
   };
 
-    const jumpSection = (direction: 'up' | 'down') => {
-    // 1. Get current scroll position to find where we actually are
+  const jumpSection = (direction: 'up' | 'down') => {
     const scrollPos = window.scrollY + 200;
     const currentIdx = sections.findIndex(id => {
       const el = document.getElementById(id);
@@ -272,7 +271,6 @@ function App() {
       return scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight;
     });
 
-    // 2. Fallback to activeSection if the index search fails
     const idx = currentIdx !== -1 ? currentIdx : sections.indexOf(activeSection);
 
     if (direction === 'down') {
@@ -280,7 +278,6 @@ function App() {
         scrollToSection(sections[idx + 1]);
       }
     } else {
-      // If we are at the very bottom or in the last section, go to the second to last
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
         scrollToSection(sections[sections.length - 2]);
       } else if (idx > 0) {
@@ -297,7 +294,6 @@ function App() {
       
       const scrollPos = window.scrollY + 250;
       
-      // Special case for the bottom of the page
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10) {
         setActiveSection(sections[sections.length - 1]);
         return;
@@ -314,7 +310,6 @@ function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
 
   const terminalPulseOpacity = 0.2 + (scrollProgress / 100) * 0.8;
 
