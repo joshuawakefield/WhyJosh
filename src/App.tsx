@@ -264,22 +264,38 @@ function App() {
   };
 
 const jumpSection = (direction: 'up' | 'down') => {
-  const idx = sections.indexOf(activeSection);
+  let currentIdx = -1;
+  const point = window.scrollY + 250;
 
-  if (direction === 'down') {
-    if (idx < sections.length - 1) {
-      scrollToSection(sections[idx + 1]);
-    }
+  // Special case: near absolute bottom → treat as last section
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10) {
+    currentIdx = sections.length - 1;
   } else {
-    // 'up'
-    if (idx > 0) {
-      scrollToSection(sections[idx - 1]);
-    }
-    // Optional: if already at the very top (hero), smoothly scroll to absolute top
-    else if (idx === 0) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Find the section containing the detection point
+    for (let i = 0; i < sections.length; i++) {
+      const el = document.getElementById(sections[i]);
+      if (el && point >= el.offsetTop && point < el.offsetTop + el.offsetHeight) {
+        currentIdx = i;
+        break;
+      }
     }
   }
+
+  // Fallback: if no exact match (e.g., scrolled into footer/past last section), use the last section
+  if (currentIdx === -1) {
+    currentIdx = sections.length - 1;
+  }
+
+  // Calculate target index
+  let targetIdx;
+  if (direction === 'down') {
+    targetIdx = Math.min(currentIdx + 1, sections.length - 1);
+  } else {
+    // 'up'
+    targetIdx = Math.max(currentIdx - 1, 0);
+  }
+
+  scrollToSection(sections[targetIdx]);
 };
 
   useEffect(() => {
