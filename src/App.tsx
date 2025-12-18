@@ -264,29 +264,19 @@ function App() {
   };
 
 const jumpSection = (direction: 'up' | 'down') => {
-  let currentIdx = -1;
-  const point = window.scrollY + 250;
+  // Same reliable logic as scroll handler, but fresh calculation (no state dependency)
+  const point = window.scrollY + 80;
+  let currentIdx = 0;
 
-  // Special case: near absolute bottom → treat as last section
-  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10) {
-    currentIdx = sections.length - 1;
-  } else {
-    // Find the section containing the detection point
-    for (let i = 0; i < sections.length; i++) {
-      const el = document.getElementById(sections[i]);
-      if (el && point >= el.offsetTop && point < el.offsetTop + el.offsetHeight) {
-        currentIdx = i;
-        break;
-      }
+  for (let i = 0; i < sections.length; i++) {
+    const el = document.getElementById(sections[i]);
+    if (el && el.offsetTop <= point) {
+      currentIdx = i;
+    } else {
+      break;
     }
   }
 
-  // Fallback: if no exact match (e.g., scrolled into footer/past last section), use the last section
-  if (currentIdx === -1) {
-    currentIdx = sections.length - 1;
-  }
-
-  // Calculate target index
   let targetIdx;
   if (direction === 'down') {
     targetIdx = Math.min(currentIdx + 1, sections.length - 1);
@@ -299,26 +289,27 @@ const jumpSection = (direction: 'up' | 'down') => {
 };
 
   useEffect(() => {
-    const handleScroll = () => {
-      const winHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100;
-      setScrollProgress(progress);
-      
-      const scrollPos = window.scrollY + 250;
-      
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10) {
-        setActiveSection(sections[sections.length - 1]);
-        return;
-      }
+const handleScroll = () => {
+  const winHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100;
+  setScrollProgress(progress);
 
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el && scrollPos >= el.offsetTop && scrollPos < el.offsetTop + el.offsetHeight) {
-          setActiveSection(section);
-          break;
-        }
-      }
-    };
+  // Reliable "furthest section we've passed the top of" logic
+  // Matches the 80px offset used in scrollToSection
+  const point = window.scrollY + 80;
+  let current = sections[0];
+
+  for (const section of sections) {
+    const el = document.getElementById(section);
+    if (el && el.offsetTop <= point) {
+      current = section;
+    } else {
+      break;
+    }
+  }
+
+  setActiveSection(current);
+};
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
