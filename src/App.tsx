@@ -104,8 +104,7 @@ const SpotlightCard = ({ children, className = '', glowColor = 'amber' }: { chil
   );
 };
 
-// --- SECTION SPECIFIC COMPONENTS ---
-
+// --- TIMELINE ITEM ---
 const TimelineItem = ({ title, date, color, children }: { title: string; date: string; color: ColorTheme; children: React.ReactNode }) => {
   return (
     <div className="relative pl-12 group/item">
@@ -123,6 +122,7 @@ const TimelineItem = ({ title, date, color, children }: { title: string; date: s
   );
 };
 
+// --- WIN CARD ---
 const WinCard = ({ title, refCode, icon: Icon, theme, children }: { title: string; refCode: string; icon: LucideIcon; theme: ColorTheme; children: React.ReactNode }) => {
   const isAmber = theme === 'amber';
   return (
@@ -141,6 +141,7 @@ const WinCard = ({ title, refCode, icon: Icon, theme, children }: { title: strin
   );
 };
 
+// --- TERMINAL MODAL ---
 function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [input, setInput] = useState('');
   const [blocks, setBlocks] = useState<TerminalBlock[]>([
@@ -253,8 +254,6 @@ function App() {
   const jumpSection = (direction: 'up' | 'down') => {
     let currentIndex = 0;
     const threshold = 150; 
-
-    // Find the section that is CURRENTLY in view
     for (let i = 0; i < sections.length; i++) {
       const el = document.getElementById(sections[i]);
       if (el && el.getBoundingClientRect().top <= threshold) {
@@ -268,17 +267,16 @@ function App() {
     } else {
       const currentEl = document.getElementById(sections[currentIndex]);
       const currentTop = currentEl ? currentEl.getBoundingClientRect().top : 0;
-      // If we are significantly scrolled into the current section, 'up' snaps to the top of it first.
       targetIdx = currentTop < -20 ? currentIndex : Math.max(currentIndex - 1, 0);
     }
-
     scrollToSection(sections[targetIdx]);
   };
 
   useEffect(() => {
     const handleScroll = () => {
       const winHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100);
+      const progress = winHeight <= 0 ? 0 : (window.scrollY / winHeight) * 100;
+      setScrollProgress(progress);
 
       const threshold = 160; 
       let current = sections[0];
@@ -293,6 +291,9 @@ function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Proximity-based Terminal Glow logic
+  const terminalIntensity = 0.2 + (scrollProgress / 100) * 0.8;
 
   return (
     <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 relative pb-20">
@@ -318,17 +319,21 @@ function App() {
           </button>
         </div>
         
-        {/* Terminal button with light perpetual glow */}
+        {/* Terminal Button with Reactive Proximity Glow */}
         <button 
           onClick={() => setIsTerminalOpen(true)} 
-          className="p-5 backdrop-blur border rounded-full shadow-2xl transition-all duration-500 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400 group relative overflow-hidden ring-4 ring-amber-500/5 animate-pulse-glow"
+          className="p-5 backdrop-blur border rounded-full shadow-2xl transition-all duration-500 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400 group relative overflow-hidden animate-pulse"
+          style={{ 
+            opacity: terminalIntensity,
+            boxShadow: `0 0 ${25 * terminalIntensity}px rgba(251, 191, 36, ${0.4 * terminalIntensity})` 
+          }}
         >
           <Terminal size={28} className="relative z-10" />
           <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1 bg-slate-900 text-xs font-mono rounded border border-amber-500/30 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl">CMD+K</span>
         </button>
         
-        {/* Circle-sized spacer to prevent "Made in Bolt" occlusion */}
-        <div className="h-14 w-14 pointer-events-none opacity-0" />
+        {/* Circle-sized spacer for Badge protection */}
+        <div className="h-16 w-16 pointer-events-none opacity-0" />
       </div>
 
       <TerminalModal isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} />
@@ -376,7 +381,7 @@ function App() {
           </div>
         </section>
 
-        {/* LOOM - Min height added for scroll detection */}
+        {/* LOOM */}
         <section id="loom" className="space-y-8 group scroll-mt-32 min-h-[40vh] flex flex-col justify-center">
           <SectionHeader title="The Human Interface" icon={Play} color="amber" />
           <SpotlightCard className="w-full aspect-video bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 shadow-2xl flex items-center justify-center group/video">
