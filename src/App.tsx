@@ -292,8 +292,11 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Proximity-based Terminal Glow logic
-  const terminalIntensity = 0.2 + (scrollProgress / 100) * 0.8;
+  // NEW DYNAMIC URGENCE LOGIC:
+  // Brightness grows exponentially (power of 2) so it "explodes" at the end
+  const terminalIntensity = 0.2 + Math.pow(scrollProgress / 100, 2) * 0.8;
+  // Animation duration goes from 2s (top) to 0.8s (bottom), a significant speed increase
+  const pulseSpeed = 2 - (scrollProgress / 100) * 1.2;
 
   return (
     <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 relative pb-20">
@@ -319,20 +322,24 @@ function App() {
           </button>
         </div>
         
-        {/* Terminal Button with Reactive Proximity Glow */}
+        {/* Terminal Button with Reactive Proximity Logic */}
         <button 
           onClick={() => setIsTerminalOpen(true)} 
           className="p-5 backdrop-blur border rounded-full shadow-2xl transition-all duration-500 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400 group relative overflow-hidden animate-pulse"
           style={{ 
-            opacity: terminalIntensity,
-            boxShadow: `0 0 ${25 * terminalIntensity}px rgba(251, 191, 36, ${0.4 * terminalIntensity})` 
+            // Opacity hits 1.0 significantly before the bottom to ensure solid visibility
+            opacity: Math.min(0.3 + (scrollProgress / 50), 1),
+            // Glow radius and intensity ramps aggressively
+            boxShadow: `0 0 ${50 * terminalIntensity}px rgba(251, 191, 36, ${0.6 * terminalIntensity})`,
+            // Frequency of blink increases as you descend
+            animationDuration: `${pulseSpeed}s`
           }}
         >
           <Terminal size={28} className="relative z-10" />
           <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1 bg-slate-900 text-xs font-mono rounded border border-amber-500/30 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl">CMD+K</span>
         </button>
         
-        {/* Circle-sized spacer for Badge protection */}
+        {/* Spacer for Badge protection */}
         <div className="h-16 w-16 pointer-events-none opacity-0" />
       </div>
 
