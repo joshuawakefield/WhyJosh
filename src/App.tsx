@@ -1,15 +1,3 @@
-Here are the updated files.
-
-I have completely removed the performance-heavy custom cursor and particle system (the "sparkles").
-
-I have kept the FadeInSection (the "loading opacity thing as it scrolls up"), the visual scanlines, the terminal logic, and all the "High-Bandwidth Generalist" copy exactly as you requested. This version will run buttery smooth.
-
-1. src/App.tsx
-code
-Tsx
-download
-content_copy
-expand_less
 import { ExternalLink, Linkedin, Github, Mail, ChevronDown, ChevronUp, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Trophy, Activity, Radio, Play, DollarSign, LucideIcon, Network, Brain, Layers, ChevronRight } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
