@@ -1,3 +1,15 @@
+Here are the updated files.
+
+I have completely removed the performance-heavy custom cursor and particle system (the "sparkles").
+
+I have kept the FadeInSection (the "loading opacity thing as it scrolls up"), the visual scanlines, the terminal logic, and all the "High-Bandwidth Generalist" copy exactly as you requested. This version will run buttery smooth.
+
+1. src/App.tsx
+code
+Tsx
+download
+content_copy
+expand_less
 import { ExternalLink, Linkedin, Github, Mail, ChevronDown, ChevronUp, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Trophy, Activity, Radio, Play, DollarSign, LucideIcon, Network, Brain, Layers, ChevronRight } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
@@ -13,7 +25,7 @@ type ColorTheme = 'amber' | 'indigo';
 
 // --- VISUAL COMPONENTS ---
 
-// Fade In Observer
+// Fade In Observer (The "Loading Opacity" effect)
 const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -41,87 +53,6 @@ const FadeInSection = ({ children }: { children: React.ReactNode }) => {
       {children}
     </div>
   );
-};
-
-// Particles Background
-const ParticlesBackground = ({ mouseX, mouseY }: { mouseX: number; mouseY: number }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const count = 80; // Optimized particle count
-    const particles: Array<{ x: number; y: number; vx: number; vy: number; radius: number }> = [];
-
-    for (let i = 0; i < count; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4, // Slower, more subtle
-        vy: (Math.random() - 0.5) * 0.4,
-        radius: Math.random() * 1.5 + 0.5
-      });
-    }
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(251, 191, 36, 0.4)'; // Amber-400
-        ctx.fill();
-
-        // Connections
-        particles.forEach(o => {
-          const dist = Math.hypot(p.x - o.x, p.y - o.y);
-          if (dist < 100) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(o.x, o.y);
-            ctx.strokeStyle = `rgba(99, 102, 241, ${1 - dist / 100})`; // Indigo-500
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        });
-
-        // Mouse interaction
-        const mouseDist = Math.hypot(p.x - mouseX, p.y - mouseY);
-        if (mouseDist < 180) {
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouseX, mouseY);
-          ctx.strokeStyle = `rgba(251, 191, 36, ${1 - mouseDist / 180 * 0.5})`;
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
-      });
-
-      requestAnimationFrame(animate);
-    };
-    animate();
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', resize);
-    return () => window.removeEventListener('resize', resize);
-  }, [mouseX, mouseY]);
-
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none opacity-20 z-0" />;
 };
 
 // Typing Text Effect
@@ -209,7 +140,7 @@ const GlowButton = ({ href, icon: Icon, text, color = 'amber', newTab = false }:
       href={href}
       target={newTab ? "_blank" : undefined}
       rel={newTab ? "noopener noreferrer" : undefined}
-      className={`cursor-hover group relative inline-flex items-center justify-center px-10 py-5 font-bold text-lg rounded-full transition-all duration-300 ${styles[color].btn}`}
+      className={`group relative inline-flex items-center justify-center px-10 py-5 font-bold text-lg rounded-full transition-all duration-300 ${styles[color].btn}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -554,8 +485,6 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState('hero');
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
   const [velocity, setVelocity] = useState(0);
   const [showShortcuts, setShowShortcuts] = useState(false);
 
@@ -578,19 +507,6 @@ function App() {
   };
 
   useEffect(() => {
-    const handleMouse = (e: MouseEvent) => {
-      setMouseX(e.clientX);
-      setMouseY(e.clientY);
-    };
-    window.addEventListener('mousemove', handleMouse);
-
-    const hoverables = document.querySelectorAll('.cursor-hover');
-    const body = document.body;
-    hoverables.forEach(el => {
-      el.addEventListener('mouseenter', () => body.classList.add('cursor-hover-active'));
-      el.addEventListener('mouseleave', () => body.classList.remove('cursor-hover-active'));
-    });
-
     const handleKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
@@ -602,7 +518,6 @@ function App() {
     window.addEventListener('keydown', handleKey);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouse);
       window.removeEventListener('keydown', handleKey);
     };
   }, [activeSection]);
@@ -644,14 +559,8 @@ function App() {
   const scanDuration = Math.max(2, 12 - velocity / 50);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 relative pb-20 custom-cursor">
+    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 relative pb-20">
       
-      <ParticlesBackground mouseX={mouseX} mouseY={mouseY} />
-
-      {/* Custom Cursor */}
-      <div className="custom-cursor-ring hidden md:block" style={{ left: mouseX, top: mouseY } as React.CSSProperties} />
-      <div className="custom-cursor-dot hidden md:block" style={{ left: mouseX, top: mouseY } as React.CSSProperties} />
-
       {/* Overlays */}
       <div className="fixed inset-0 pointer-events-none z-40 opacity-20 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:18px_18px]" />
       <div className="fixed inset-0 pointer-events-none z-40 bg-gradient-to-b from-transparent via-transparent to-slate-950/60" />
@@ -971,3 +880,99 @@ function App() {
 }
 
 export default App;
+2. src/index.css
+code
+CSS
+download
+content_copy
+expand_less
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-glow: #fbbf24; /* Amber-400 */
+  --secondary-glow: #4f46e5; /* Indigo-600 */
+}
+
+@keyframes grid-pulse {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.12; }
+}
+
+@keyframes scanlines {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100vh; }
+}
+
+@keyframes glow-header {
+  0%, 100% { text-shadow: 0 0 10px currentColor; }
+  50% { text-shadow: 0 0 20px currentColor; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes glitch1 {
+  0% { transform: translate(0); }
+  20% { transform: translate(-3px, 3px); }
+  40% { transform: translate(-3px, -3px); }
+  60% { transform: translate(3px, 3px); }
+  80% { transform: translate(3px, -3px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes glitch2 {
+  0% { transform: translate(0); }
+  20% { transform: translate(3px, -3px); }
+  40% { transform: translate(-3px, 3px); }
+  60% { transform: translate(3px, -3px); }
+  80% { transform: translate(-3px, 3px); }
+  100% { transform: translate(0); }
+}
+
+.animate-blink { animation: blink 1s step-end infinite; }
+.grid-pulse { animation: grid-pulse 4s ease-in-out infinite; }
+
+.fixed-scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(251,191,36,0.04) 3px, rgba(251,191,36,0.04) 6px);
+  background-size: 100% 6px;
+  animation: scanlines linear infinite;
+  animation-duration: var(--scan-duration, 8s);
+  opacity: 0.25;
+}
+
+.glow-header { animation: glow-header 3s ease-in-out infinite; }
+
+.spotlight-container {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.glitch-hover:hover {
+  animation: glitch1 0.35s linear infinite, glitch2 0.35s linear infinite;
+  text-shadow: 0.05em 0 0 rgba(255,0,0,0.75),
+               -0.05em -0.05em 0 rgba(0,255,255,0.75),
+               0.05em 0.05em 0 rgba(0,255,0,0.75);
+}
+
+/* Global Selection */
+::selection {
+  background-color: rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .space-y-40 { @apply space-y-32; }
+  .px-6 { @apply px-4; }
+}
