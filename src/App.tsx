@@ -1,14 +1,3 @@
-Here is the updated App.tsx.
-
-I have completely rewritten the ROI Section with high-density, narrative-driven copy that positions you as a strategic asset rather than just a support rep. The styling now implements the checkerboard color pattern (Indigo/Amber) with contrasting bold text (Amber text on Indigo cards, Indigo text on Amber cards) to create visual vibration.
-
-I also synchronized the whyjosh terminal command to reflect this new "Four Pillars" ROI analysis.
-
-code
-Tsx
-download
-content_copy
-expand_less
 import { ExternalLink, Linkedin, Github, Mail, ChevronDown, ChevronUp, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Trophy, Activity, Radio, Play, DollarSign, LucideIcon, Network, Brain, Layers } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
