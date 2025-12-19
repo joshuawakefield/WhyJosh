@@ -1,4 +1,4 @@
-import { ExternalLink, Linkedin, Github, Mail, ChevronDown, ChevronUp, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Trophy, Activity, Radio, Play, DollarSign, LucideIcon } from 'lucide-react';
+import { ExternalLink, Linkedin, Github, Mail, ChevronDown, ChevronUp, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Trophy, Activity, Radio, Play, DollarSign, LucideIcon, Network, Brain, Layers } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 // --- TYPES ---
@@ -150,10 +150,12 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
       command: 'boot',
       timestamp: new Date().toLocaleTimeString(),
       output: [
-        "WakefieldOS v1.0.7 (tty1)",
-        "Login: guest",
+        "WakefieldOS v2.1.0 (tty1)",
+        "Memory: 64GB / Integrated Polarity",
         "System Integrity: 100%",
-        "Welcome to the System. Type 'help' for commands."
+        " ",
+        "Welcome. You have accessed the hidden kernel.",
+        "Type 'help' to see available commands."
       ]
     }
   ]);
@@ -174,22 +176,147 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
     if (e.key === 'Enter') {
       const cmd = input.trim().toLowerCase();
       if (!cmd) return;
-      const newBlock: TerminalBlock = { id: Date.now(), command: cmd, timestamp: new Date().toLocaleTimeString(), output: [] };
       
-      const commands: Record<string, string[]> = {
-        help: ["Available commands:", "whoami", "whyjosh", "yearlygoal", "stack", "contact", "jamcamping", "clear", "exit"],
-        whoami: ["Joshua Wakefield.", "Polymathic Systems Synthesizer.", "WPI EE '03.", "Forged in DR Power.", "Currently optimizing entropy."],
-        whyjosh: ["RUNNING: ROI_ANALYSIS.EXE", "---------------------------", "1. ARBITRAGE: You get Senior Architecture logic for Support cost.", "2. STABILITY: A 'Stopper' who absorbs chaos.", "3. VELOCITY: Protects Engineering bandwidth.", "CONCLUSION: Joshua is high-yield infrastructure."],
-        yearlygoal: ["PRIMARY OBJECTIVE:", "To save the company more money than I am being paid.", "METHODOLOGY: Engineering Bandwidth Defense + Churn Reduction"],
-        stack: ["CORE: React, Next.js, Node, TypeScript", "AI: Agent Orchestration, Context Hygiene, RAG", "HARDWARE: Signal Processing, IoT, Circuit Design"],
-        contact: ["Email: joshua.wakefield@gmail.com", "Location: Newport, RI, USA"],
-        jamcamping: ["JamCamping.com", "----------------", "A production-grade PWA built in one weekend on Bolt.new.", "Architecture: Dual-Stack (Vite/Next.js)", "Status: Deployed"],
-      };
+      let newOutput: string[] = [];
+      const timestamp = new Date().toLocaleTimeString();
 
-      if (cmd === 'clear') { setBlocks([]); setInput(''); return; }
-      if (cmd === 'exit') { onClose(); return; }
+      switch (cmd) {
+        case 'help':
+          newOutput = [
+            "Available Commands:",
+            "-------------------",
+            "whoami      ::  Professional identity & mission",
+            "whyjosh     ::  The ROI case (Financial & Operational)",
+            "cv          ::  Work history & high-stakes roles",
+            "stack       ::  Technical competencies (Electron-to-Cloud)",
+            "jamcamping  ::  Zero-Latency Adaptation Case Study",
+            "contact     ::  Direct communication channels",
+            "clear       ::  Clear terminal buffer",
+            "exit        ::  Close session"
+          ];
+          break;
 
-      newBlock.output = commands[cmd] || [`Command not found: ${cmd}`, "Type 'help' for assistance."];
+        case 'whoami':
+          newOutput = [
+            "IDENTITY: Joshua Wakefield",
+            "ROLE: High-Bandwidth Generalist | WPI EE Background",
+            "-----------------------------------------------------",
+            "I operate at the intersection of engineering physics and human dynamics.",
+            "I don't view 'Technical Support' and 'Systems Architecture' as binary choices;",
+            "I view them as part of the same feedback loop.",
+            " ",
+            "I am the 'Old Guard' (Logo '89, Linux '96) and a Pioneer (AI Agents '25).",
+            "I bridge the gap between the Metal (Construction) and the Model (Code)."
+          ];
+          break;
+
+        case 'whyjosh':
+          newOutput = [
+            "EXECUTING: ROI_ANALYSIS.EXE",
+            "---------------------------",
+            "1. PROTECTION OF VELOCITY: I act as a firewall for your roadmap, utilizing my WPI EE background to solve Tier 3 complexity in the queue and protect core developers from context-switching taxes.",
+            " ",
+            "2. LTV PRESERVATION: I defend Net Dollar Retention by applying 'Vibration Control'—a blend of radical empathy and forensic authority—to convert cancellation events into long-term brand evangelism.",
+            " ",
+            "3. OPERATIONAL FORCE MULTIPLIER: My output is logarithmic because I systematize solutions into internal documentation that lifts the competence floor of the entire department from Day 1.",
+            " ",
+            "4. ZERO-LATENCY ONBOARDING: I generate immediate ROI because I already understand your stack and friction points, as evidenced by my production build of JamCamping.com on Bolt.new.",
+            " ",
+            "CONCLUSION: I am a depreciating asset in reverse."
+          ];
+          break;
+        
+        case 'cv':
+          newOutput = [
+            "WORK HISTORY LOG:",
+            "-----------------",
+            "[2021-Present] Independent Trade Contractor & Systems Builder",
+            "   >> Bridging physical infrastructure with systems thinking.",
+            "   >> Parallel execution: Mastered MERN stack while managing logistics.",
+            " ",
+            "[2022-Present] Freelance Full Stack & AI Orchestrator",
+            "   >> Built JamCamping.com (Bolt.new) using Agentic Workflows.",
+            "   >> Focus: Context Hygiene & Zero-Latency Engineering.",
+            " ",
+            "[Past] Tier 3 Technical Support (DR Power)",
+            "   >> The 'Stopper' for critical mechanical failures.",
+            "   >> Remote forensic troubleshooting of engines/circuits.",
+            " ",
+            "[Past] Proposal Red Team Lead (CACI)",
+            "   >> Synthesized $6M federal contracts.",
+            "   >> NUWCDIVNPT officials cited 'best written proposal received.'"
+          ];
+          break;
+
+        case 'stack':
+          newOutput = [
+            "CORE ARCHITECTURE (ELECTRON-TO-CLOUD):",
+            "--------------------------------------",
+            "Frontend :: React, Next.js, Vite, Tailwind, TypeScript",
+            "Backend  :: Node.js, Supabase, PostgreSQL",
+            "AI/LLM   :: Agent Orchestration, Context Hygiene, Prompt Engineering",
+            "Physics  :: Signal Processing, Control Theory, Circuit Analysis (WPI EE)"
+          ];
+          break;
+
+        case 'jamcamping':
+          newOutput = [
+            "PROJECT: JamCamping.com",
+            "STATUS: Production (PWA)",
+            "BUILD TIME: 48 Hours (Weekend Sprint)",
+            "-------------------------------------",
+            "WORKFLOW ARCHITECTURE:",
+            "1. GitIngest: Serialized repo into token-optimized context streams.",
+            "2. External Reasoner: Used O1/Claude for high-level architecture logic.",
+            "3. Bolt.new: Execution environment for rapid implementation.",
+            " ",
+            "RESULT: Zero-latency deployment proving 'Context Hygiene' methodology."
+          ];
+          break;
+
+        case 'contact':
+          newOutput = [
+            "ESTABLISH UPLINK:",
+            "-----------------",
+            "Email    :: joshua.wakefield@gmail.com",
+            "Phone    :: (802) 735-0543",
+            "Location :: Newport, RI, USA",
+            "State    :: Ready to deploy."
+          ];
+          break;
+
+        case 'sudo':
+          newOutput = [
+            "Permission denied: You do not have root access to Joshua.",
+            "To gain root access, please issue the 'hire' contract."
+          ];
+          break;
+          
+        case 'hire':
+          newOutput = [
+            "INITIATING HIRE PROTOCOL...",
+            "Great choice. Send the contract to joshua.wakefield@gmail.com",
+            "Expect immediate ROI."
+          ];
+          break;
+
+        case 'clear':
+          setBlocks([]);
+          setInput('');
+          return;
+
+        case 'exit':
+          onClose();
+          return;
+
+        default:
+          newOutput = [
+            `Command not found: ${cmd}`,
+            "Type 'help' for a list of valid commands."
+          ];
+      }
+
+      const newBlock: TerminalBlock = { id: Date.now(), command: cmd, timestamp, output: newOutput };
       setBlocks(prev => [...prev, newBlock]);
       setInput('');
     }
@@ -215,7 +342,11 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
                 <span className="text-slate-600 text-xs ml-auto font-sans">{block.timestamp}</span>
               </div>
               <div className="pl-6 space-y-1">
-                {block.output.map((line, k) => <div key={k} className="text-green-400/90 text-sm md:text-base leading-relaxed break-words">{line}</div>)}
+                {block.output.map((line, k) => (
+                  <div key={k} className={`${line.startsWith('>>') ? 'text-indigo-300 ml-4' : line.startsWith('COMMAND') ? 'text-amber-400 font-bold' : 'text-green-400/90'} text-sm md:text-base leading-relaxed break-words font-mono`}>
+                    {line}
+                  </div>
+                ))}
               </div>
             </div>
           ))}
@@ -223,7 +354,7 @@ function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
             <div className="flex items-center gap-3">
               <span className="text-amber-500 font-bold animate-pulse">➜</span>
               <span className="text-blue-400">~</span>
-              <input ref={inputRef} type="text" value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleCommand} autoFocus className="bg-transparent border-none outline-none text-gray-100 flex-1 focus:ring-0 placeholder-slate-700 text-base p-0" spellCheck="false" />
+              <input ref={inputRef} type="text" value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleCommand} autoFocus className="bg-transparent border-none outline-none text-gray-100 flex-1 focus:ring-0 placeholder-slate-700 text-base p-0" spellCheck="false" autoComplete="off" />
             </div>
           </div>
         </div>
@@ -292,10 +423,7 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // NEW DYNAMIC URGENCE LOGIC:
-  // Brightness grows exponentially (power of 2) so it "explodes" at the end
   const terminalIntensity = 0.2 + Math.pow(scrollProgress / 100, 2) * 0.8;
-  // Animation duration goes from 2s (top) to 0.8s (bottom), a significant speed increase
   const pulseSpeed = 2 - (scrollProgress / 100) * 1.2;
 
   return (
@@ -322,16 +450,13 @@ function App() {
           </button>
         </div>
         
-        {/* Terminal Button with Reactive Proximity Logic */}
+        {/* Terminal Button */}
         <button 
           onClick={() => setIsTerminalOpen(true)} 
           className="p-5 backdrop-blur border rounded-full shadow-2xl transition-all duration-500 hover:scale-110 bg-indigo-950/90 border-amber-500/50 text-amber-400 group relative overflow-hidden animate-pulse"
           style={{ 
-            // Opacity hits 1.0 significantly before the bottom to ensure solid visibility
             opacity: Math.min(0.3 + (scrollProgress / 50), 1),
-            // Glow radius and intensity ramps aggressively
             boxShadow: `0 0 ${50 * terminalIntensity}px rgba(251, 191, 36, ${0.6 * terminalIntensity})`,
-            // Frequency of blink increases as you descend
             animationDuration: `${pulseSpeed}s`
           }}
         >
@@ -339,7 +464,7 @@ function App() {
           <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1 bg-slate-900 text-xs font-mono rounded border border-amber-500/30 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl">CMD+K</span>
         </button>
         
-        {/* Spacer for Badge protection */}
+        {/* Spacer */}
         <div className="h-16 w-16 pointer-events-none opacity-0" />
       </div>
 
@@ -353,14 +478,14 @@ function App() {
         <div className="max-w-5xl w-full text-center space-y-8 relative z-10">
           <div className="space-y-6">
             <div className="inline-block px-3 py-1 rounded-full border text-sm font-mono mb-4 border-amber-500/50 bg-amber-500/10 text-amber-400">
-              SYSTEM STATE: HIGH VIBRATION // READY
+              SYSTEM STATE: HIGH BANDWIDTH // READY
             </div>
             <h1 className="text-5xl md:text-8xl font-bold tracking-tighter text-transparent bg-clip-text mb-4 bg-gradient-to-r from-amber-400 via-orange-400 to-indigo-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.3)]">
               JOSHUA WAKEFIELD
             </h1>
             <p className="text-xl md:text-3xl text-gray-300 font-light leading-relaxed max-w-4xl mx-auto">
-              The <span className="font-medium text-amber-400">Human Hypervisor</span> for AI Communities.<br className="hidden md:block" />
-              Bridging Blue-Collar Grit & White-Collar Strategy.
+              The <span className="font-medium text-amber-400">High-Bandwidth Generalist</span> for the AI Era.<br className="hidden md:block" />
+              Bridging WPI Physics, Operational Grit, and AI Orchestration.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
@@ -372,41 +497,42 @@ function App() {
       {/* MAIN CONTENT */}
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-40 relative z-10">
 
-        {/* MANIFESTO */}
+        {/* MANIFESTO / TWO SHAPES */}
         <section id="manifesto" className="space-y-8 group scroll-mt-32">
           <div className="space-y-4 border-l-4 pl-6 relative border-amber-500 transition-all duration-700">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">Integrated Polarity</h2>
-            <p className="text-amber-400 font-mono text-lg">/ˈin(t)əˌɡrādəd pōˈlerədē/</p>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight transition-transform duration-700 ease-out origin-left group-hover:scale-[1.15]">The Two Shapes of Value</h2>
+            <p className="text-amber-400 font-mono text-lg">/Deep Specialist vs. AI Generalist/</p>
           </div>
           <div className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed space-y-6">
-            <p>I operate beyond the standard "Soft Skills vs. Hard Skills" binary. Most professionals optimize for a single trajectory—climbing the corporate ladder or mastering a craft. <strong className="text-white"> I have deliberately integrated both.</strong></p>
-            <p>I possess the engineering rigor to deconstruct the kernel (WPI EE), but the artistic intuition to read the room (Jazz/Comedy). I have the grit to handle the daily grind, but the vision to see the product roadmap. I don't just toggle between these states; I synthesize them to solve problems that single-domain experts cannot touch.</p>
+            <p>The future of work is bifurcating into two distinct shapes. There is the <strong className="text-indigo-400">Deep Specialist</strong> (the PhD researcher building the model) and the <strong className="text-amber-400">AI-Amplified Generalist</strong> (the operator wielding it).</p>
+            <p><strong className="text-white">I am the Generalist.</strong></p>
+            <p>I possess a topological understanding of 10+ distinct domains—from Signal Processing and Control Theory to Industrial Logistics and Crisis Negotiation. Before AI, this was called "scattered." <strong className="text-amber-400">With AI, it is called "Hyper-Navigation."</strong></p>
             <SpotlightCard className="p-6 rounded-lg border mt-8 bg-slate-900 border-slate-800 hover:border-amber-500/50">
-              <p className="text-amber-400 font-mono text-sm mb-2">// THE FORCE MULTIPLIER EFFECT</p>
-              <p className="italic text-gray-400">"I am not just one person; I am a team of specialists inhabiting one body, orchestrated by a mature executive consciousness."</p>
+              <p className="text-amber-400 font-mono text-sm mb-2">// THE SYNTHESIS ENGINE</p>
+              <p className="italic text-gray-400">"I use Artificial Intelligence as a universal glue. I don't need to memorize the syntax of every library because I understand the architecture of the system. I use AI to execute the 'How' so I can focus entirely on the 'Why'."</p>
             </SpotlightCard>
           </div>
         </section>
 
         {/* LOOM */}
         <section id="loom" className="space-y-8 group scroll-mt-32 min-h-[40vh] flex flex-col justify-center">
-          <SectionHeader title="The Human Interface" icon={Play} color="amber" />
+          <SectionHeader title="Vibration Control" icon={Play} color="amber" />
           <SpotlightCard className="w-full aspect-video bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 shadow-2xl flex items-center justify-center group/video">
              <div className="text-center space-y-4 p-8">
                <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover/video:bg-amber-500 group-hover/video:text-slate-900 transition-colors duration-300 text-amber-400"><Play size={32} className="ml-1" /></div>
                <p className="text-gray-400 font-mono text-sm">[LOOM_VIDEO_PLACEHOLDER]</p>
-               <p className="text-gray-500 text-xs max-w-md mx-auto">"I'm Joshua. I’m currently working construction in Newport, RI, but I’m an engineer at heart. I built this site to show you that I don't just close tickets—I build trust. Let's talk."</p>
+               <p className="text-gray-500 text-xs max-w-md mx-auto">"I'm Joshua. I'm currently working construction in Newport, RI, but I'm an engineer at heart. I built this site to show you that I don't just close tickets—I build trust. Let's talk."</p>
              </div>
           </SpotlightCard>
         </section>
 
-        {/* JAMCAMPING */}
+        {/* JAMCAMPING (ZERO-LATENCY) */}
         <section id="jamcamping" className="space-y-12 group scroll-mt-32">
-          <SectionHeader title="AI Orchestration: The Build" icon={Activity} color="indigo" />
+          <SectionHeader title="Case Study: Zero-Latency Adaptation" icon={Activity} color="indigo" />
           <div className="space-y-8">
-            <p className="text-lg text-gray-300 leading-relaxed">JamCamping.com isn't just an app; it is a proof of <Highlight color="amber">Agentic Workflow</Highlight>. I built a production-grade PWA in one weekend using a "Context Hygiene" loop that treats AI models not as chatbots, but as distinct processing units in a signal chain.</p>
+            <p className="text-lg text-gray-300 leading-relaxed">The value of JamCamping.com isn't the app itself; it's the <Highlight color="amber">Velocity</Highlight>. I am not a native React developer—I am a Systems Thinker. I used an "External Reasoner" workflow to bridge the gap between intent and execution. <strong className="text-white">I don't need 6 months to learn your stack. I need 48 hours and a clear objective.</strong></p>
             <SpotlightCard className="bg-slate-900 border p-8 rounded-lg border-slate-800 relative overflow-hidden group/workflow hover:border-amber-500/50 transition-all duration-500">
-              <div className="absolute top-0 right-0 p-3 text-xs font-mono text-amber-500/50 border-b border-l border-amber-500/20 rounded-bl-lg bg-amber-500/5">WORKFLOW_ID: RECURSIVE_SYNTHESIS</div>
+              <div className="absolute top-0 right-0 p-3 text-xs font-mono text-amber-500/50 border-b border-l border-amber-500/20 rounded-bl-lg bg-amber-500/5">WORKFLOW_ID: ZERO_LATENCY</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="space-y-6">
                   <div className="flex flex-col gap-4">
@@ -434,118 +560,93 @@ function App() {
               </div>
             </SpotlightCard>
             <div className="flex justify-center mt-8">
-               <GlowButton href="https://jamcamping.com" icon={ExternalLink} text="View Proof of Work" color="indigo" newTab={true} />
+               <GlowButton href="https://jamcamping.com" icon={ExternalLink} text="View Proof of Velocity" color="indigo" newTab={true} />
             </div>
           </div>
         </section>
 
         {/* TIMELINE */}
         <section id="timeline" className="space-y-12 group scroll-mt-32">
-          <SectionHeader title="The Electron-to-Cloud Graph" icon={Terminal} color="amber" />
+          <SectionHeader title="The Convergence" icon={Terminal} color="amber" />
           <div className="relative border-l border-slate-800 ml-4 space-y-12 pb-4">
              <TimelineItem title="The Source Code: From Armatron to NuMega" date="1985-1999" color="amber">
-                My path began with a Radio Shack Armatron in 1985 and evolved through Logo, DOS, and Linux. By 1996, I was attending college night school for C/C++ while still in Catholic high school. This culminated in a professional role at <Highlight color="indigo">NuMega Labs (1998)</Highlight> coding alongside senior engineers and competing in US FIRST Robotics. I entered WPI not as a novice, but as a seasoned practitioner.
+                My path began with a Radio Shack Armatron in 1985 and evolved through learning to code in Logo in 1989, DOS and BASIC in 1990, and Linux in 1995. This culminated in a professional role at <Highlight color="indigo">NuMega Labs (1998)</Highlight> coding alongside senior engineers. I entered WPI not as a novice, but with deep roots in the history of the machine.
              </TimelineItem>
              <TimelineItem title="The Hard Foundation: WPI Engineering" date="1999-2003" color="indigo">
-                98% BS in Electrical Engineering. This was the era of "Hard Robotics" and rigorous Control Theory. I specialized in <Highlight color="amber">Real-Time Signals & Systems</Highlight>, <Highlight color="amber">Control Engineering</Highlight>, and <Highlight color="amber">Analog Circuits and Motors</Highlight>. I was building autonomous feedback loops and optimizing assembly for embedded architectures. My understanding of AI is grounded in the math of the universe—Fourier transforms, Entropy, and Feedback—not just API calls.
+                98% BS in Electrical Engineering. This was the era of engineering labs and rigorous mathematical lecture. I specialized in <Highlight color="amber">Real-Time Signals & Systems</Highlight>, <Highlight color="amber">Control Engineering</Highlight>, and <Highlight color="amber">Power Engineering</Highlight>. My understanding of AI is grounded in the math of the universe—Fourier transforms, Entropy, and Feedback—not just API calls.
              </TimelineItem>
              <TimelineItem title="The Crucible: High-Stakes Operations" date="2006-2020" color="amber">
-                I stepped out of the code and into the fire of reality. From managing multi-million dollar government contracts at <Highlight color="indigo">CACI</Highlight> (Budgeting, BD, Financial), to running Tech Support at <Highlight color="indigo">Daft Labs</Highlight>, to solving critical mechanical failures at <Highlight color="indigo">DR Power Equipment</Highlight>. This era forged my financial literacy and operational grit. I know that when systems fail, it costs real money—whether it's an SAP error or a blown actuator.
+                I stepped out of the code and into the fire of reality. From managing multi-million dollar government contracts at <Highlight color="indigo">CACI</Highlight>, to solving critical mechanical failures at <Highlight color="indigo">DR Power Equipment</Highlight>. This era forged my financial literacy and operational grit. I know that when systems fail, it costs real money.
              </TimelineItem>
              <TimelineItem title="The Antifragile Turn" date="2020-2022" color="indigo">
-                Navigated extreme resource constraints while working rigorous manual labor (Tree Service) during a Vermont winter. This era proved that ambition can survive even when resources are at zero. It culminated in my return to the <Highlight color="amber">Burlington Code Academy</Highlight>, where I graduated top-of-class in the industry's <Highlight color="amber">final pre-ChatGPT cohort</Highlight>, re-igniting my entrance back into tech.
+                Navigated extreme resource constraints while working rigorous manual labor (Tree Service) during the Vermont winter. This era proved that ambition can survive even when resources are at zero. It culminated in <Highlight color="amber">Burlington Code Academy</Highlight>, where I graduated top-of-class in the final pre-ChatGPT cohort.
              </TimelineItem>
              <TimelineItem title="The Synthesis: Native AI Orchestration" date="Present" color="amber">
-                I graduated the bootcamp weeks before <Highlight color="indigo">ChatGPT</Highlight> launched, making me a native of the <Highlight color="indigo">Generative Era</Highlight>. Since November 2022, I have engineered context daily across <Highlight color="indigo">Claude, Grok, and Gemini</Highlight>. I don't just write code; I orchestrate agentic workflows—repurposing AI IDEs to transmute code outputs into narrative prose for ebooks. I have integrated WPI's "Hard Engineering" with the "Modern AI Stack" to become the bridge between the metal and the model.
+                Since November 2022, I have engineered context daily. I don't just write code; I orchestrate agentic workflows—repurposing AI IDEs to transmute code outputs into narrative prose and production software. I have integrated WPI's "Hard Engineering" with the "Modern AI Stack" to become the bridge between the metal and the model.
              </TimelineItem>
           </div>
         </section>
 
-        {/* DOMAINS */}
+        {/* DOMAINS / CONVERGENCE */}
         <section id="domains" className="space-y-12 group scroll-mt-32">
-          <SectionHeader title="The Domain Matrix" icon={Cpu} color="indigo" />
+          <SectionHeader title="The Synthesis" icon={Network} color="indigo" />
           <div className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed">
-            <p>My mind is an association engine. I can poke a stick in a campfire and see embers that remind me of particle trails in a cloud chamber. To me, a jazz mode is just a frequency response; a kitchen service is just a packet-switching network. I don't just "know" these domains—I understand the universal patterns that connect them.</p>
+            <p>I don't just "know" these domains; I understand the universal patterns that connect them. AI is the high-bandwidth cable that allows me to transfer the logic of one domain into the execution of another instantly.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
-              <div className="flex items-center gap-3 text-amber-400"><Zap size={24} /><h3 className="text-xl font-bold text-white">The Physics</h3></div>
+              <div className="flex items-center gap-3 text-amber-400"><Zap size={24} /><h3 className="text-xl font-bold text-white">The Metal</h3></div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                <Highlight color="indigo">First Principles.</Highlight> My foundation isn't syntax; it is the Math of the Universe. I possess the literacy to consume <Highlight color="indigo">Robotics & AI white papers</Highlight> because I speak their native tongue: <Highlight color="indigo">Fourier Transforms</Highlight>, <Highlight color="indigo">Control Theory</Highlight>, and <Highlight color="indigo">Feedback Loops</Highlight>. From <Highlight color="indigo">Relativity</Highlight> and <Highlight color="indigo">Optics</Highlight> to <Highlight color="indigo">Algorithmic Complexity</Highlight>, I understand the deep physics that high-level APIs abstract away.
+                <Highlight color="indigo">WPI Physics & Trades.</Highlight> My foundation isn't syntax; it is the Math of the Universe. I possess the literacy to consume <Highlight color="indigo">Robotics & AI white papers</Highlight> because I speak their native tongue: <Highlight color="indigo">Fourier Transforms</Highlight> and <Highlight color="indigo">Control Theory</Highlight>. I understand the deep physics that high-level APIs abstract away.
               </p>
             </SpotlightCard>
             <SpotlightCard glowColor="indigo" className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-indigo-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
-              <div className="flex items-center gap-3 text-indigo-400"><Palette size={24} /><h3 className="text-xl font-bold text-white">The Art</h3></div>
+              <div className="flex items-center gap-3 text-indigo-400"><Brain size={24} /><h3 className="text-xl font-bold text-white">The Mind</h3></div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                <Highlight color="amber">Systematic Creativity.</Highlight> To me, the Circle of Fifths is a circuit diagram. I apply <Highlight color="amber">Jazz Theory</Highlight> to improvisational guitar (Phish/Dead), treating music as real-time conversational logic. I create <Highlight color="amber">Sacred Geometric</Highlight> art to explore the visual syntax of nature. I study <Highlight color="amber">Stand-Up Comedy</Highlight> to master the ultimate feedback loop: controlling the timing, tension, and release of a room's energy.
+                <Highlight color="amber">Systematic Creativity.</Highlight> To me, the Circle of Fifths is a circuit diagram. I apply <Highlight color="amber">Jazz Theory</Highlight> to improvisational guitar, treating music as real-time conversational logic. I study <Highlight color="amber">Stand-Up Comedy</Highlight> to master the ultimate feedback loop: controlling the timing, tension, and release of a room's energy.
               </p>
             </SpotlightCard>
             <SpotlightCard className="bg-slate-900 border p-6 rounded-lg border-slate-800 flex flex-col gap-4 transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
-              <div className="flex items-center gap-3 text-amber-400"><Hammer size={24} /><h3 className="text-xl font-bold text-white">The Grind</h3></div>
+              <div className="flex items-center gap-3 text-amber-400"><Layers size={24} /><h3 className="text-xl font-bold text-white">The Glue</h3></div>
               <p className="text-sm text-gray-400 leading-relaxed">
-                <Highlight color="indigo">Operational Truth.</Highlight> I have mastered the physical stack. In the <Highlight color="indigo">Trades</Highlight>, I execute Carpentry, Plumbing, Electrical, Demo, and Tree Work. In <Highlight color="indigo">Culinary</Highlight>, I am a <Highlight color="indigo">ServSafe Manager</Highlight> who has run everything from Line/Grill to Large-Scale Banquets (Colleges/Cruise Ships). Whether mudding drywall or designing a menu for an industrial kitchen build, I respect the physics of production.
+                <Highlight color="indigo">AI Orchestration.</Highlight> This is the lever. I use Artificial Intelligence to synthesize the rigorous logic of "The Metal" with the creative intuition of "The Mind." It allows me to be a <Highlight color="indigo">Hyper-Navigator</Highlight>, solving problems that cross the boundaries of Engineering, Operations, and Human Dynamics.
               </p>
             </SpotlightCard>
           </div>
-
-          {/* HARD SKILLS MATRIX */}
-          <div className="mt-8 rounded-lg border border-slate-700 bg-slate-950 p-6 font-mono text-sm relative overflow-hidden group/matrix transition-all duration-300 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
-            <div className="absolute top-0 right-0 p-2 text-xs text-slate-500 font-bold tracking-widest uppercase">Desirability Index: Perfectly suited Robotics & AI</div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
-              <div>
-                <h4 className="text-amber-500 mb-3 border-b border-amber-500/20 pb-1">01. THE METAL (Control & Signals)</h4>
-                <ul className="space-y-2 text-gray-400">
-                  <li><Highlight color="indigo">Control Theory:</Highlight> Feedback Loops, PID Tuning, Stability Analysis</li>
-                  <li><Highlight color="indigo">Signal Processing:</Highlight> FFT, Filtering, Noise Reduction, ADC/DAC</li>
-                  <li><Highlight color="indigo">Embedded Logic:</Highlight> Assembly, Real-Time Constraints, Interrupts</li>
-                  <li><Highlight color="indigo">Physics:</Highlight> E&M, Thermodynamics, Kinematics (Robotics)</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-amber-500 mb-3 border-b border-amber-500/20 pb-1">02. THE MIND (AI & Math)</h4>
-                <ul className="space-y-2 text-gray-400">
-                  <li><Highlight color="indigo">Mathematics:</Highlight> Linear Algebra, Calculus, Discrete Math, Probability</li>
-                  <li><Highlight color="indigo">AI Context:</Highlight> RAG Architectures, Token Optimization, Agentic Workflows</li>
-                  <li><Highlight color="indigo">Data Engineering:</Highlight> Python (Pandas/NumPy), ETL Pipelines, Regex</li>
-                  <li><Highlight color="indigo">Pattern Rec:</Highlight> High-Dimensional Data Synthesis, Anomaly Detection</li>
-                </ul>
-              </div>
-            </div>
-          </div>
         </section>
 
-        {/* WINS */}
+        {/* WINS / HYPER-NAVIGATION */}
         <section id="wins" className="space-y-12 group scroll-mt-32">
-          <SectionHeader title="Selected Wins" icon={Trophy} color="amber" />
+          <SectionHeader title="Hyper-Navigation Wins" icon={Trophy} color="amber" />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <WinCard title="The Red Team Unification" refCode="LOG_REF: CACI_RED_TEAM" icon={Shield} theme="indigo">
-                As the final Red Team Editor for a <strong>$6M federal recompete</strong>, I inherited 21 disjointed submissions with clashing voices and formatting. I spent days synthesizing them into a "single consciousness," harmonizing every font, tense, and vocabulary choice. NUWCDIVNPT officials later confirmed it was the "<strong>best written</strong> proposal they had ever received," even though we lost on cost (#2).
-                <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: QUALITY_BENCHMARK_SET]</div>
+                As the final Red Team Editor for a <strong>$6M federal recompete</strong>, I inherited 21 disjointed submissions. I acted as a <Highlight color="amber">Synthesizer</Highlight>, harmonizing every font, tense, and vocabulary choice into a single consciousness. NUWCDIVNPT officials confirmed it was the "<strong>best written</strong> proposal they had ever received."
+                <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: CROSS_DOMAIN_TRANSLATION]</div>
             </WinCard>
             <WinCard title="The Remote Debug" refCode="LOG_REF: REMOTE_DEBUG" icon={Radio} theme="amber">
-                A customer received a top-of-the-line trimmer that wouldn't start. He was irate, swearing at me. I didn't react; I visualized the schematic. Walking him through a forensic check, we located a one-off QC error: a crimped throttle cable deep in the chassis. I heard the engine fire live on the call. He went from swearing to apologizing, turning a DOA unit into a lifelong brand advocate.
+                A customer received a top-of-the-line trimmer that wouldn't start. I visualized the schematic remotely. Walking him through a forensic check, we located a QC error deep in the chassis. I turned a "Detractor" into an "Evangelist" by applying <Highlight color="indigo">Technical Authority</Highlight> via phone.
                 <div className="mt-2 text-xs text-amber-300 font-mono">[RESULT: DETRACTOR_CONVERTED]</div>
             </WinCard>
             <WinCard title="The 160-Mile Protocol Breach" refCode="LOG_REF: HUMAN_OVERRIDE" icon={Activity} theme="indigo">
-                 A customer's husband was dying at home; his mower was a critical emotional anchor. The nearest dealer was 80 miles away. Protocol said "too far." I refused that output. I negotiated a custom service contract, leveraging human empathy to convince the dealer to drive 160 miles round-trip. The machine was fixed before he passed. Some KPIs don't fit on a spreadsheet.
+                 A customer's husband was dying; his mower was a critical emotional anchor. Protocol said "too far." I refused that output. I negotiated a custom service contract, leveraging human empathy to fix the machine before he passed. Some KPIs don't fit on a spreadsheet.
                 <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: MISSION_COMPLETE]</div>
             </WinCard>
           </div>
         </section>
 
-        {/* ROI */}
+        {/* ROI / HYPER-NAVIGATOR */}
         <section id="roi" className="space-y-8 group scroll-mt-32">
-          <SectionHeader title="The Financial Arbitrage" icon={DollarSign} color="indigo" />
+          <SectionHeader title="The ROI of Synthesis" icon={DollarSign} color="indigo" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { title: "OpEx Defense (Engineering Shield)", desc: "Every ticket I solve is an interruption your Senior Engineers don't have to handle. I protect your most expensive payroll assets from context-switching costs, effectively subsidizing my own salary by preserving high-value engineering hours." },
-              { title: "NDR Protection (Churn Defense)", desc: "Support is the frontline of revenue retention. We are the face of the company to those who need us most. I convert 'Cancellation Events' into 'Loyalty Events' through radical empathy and forensic technical competence, directly defending your Net Dollar Retention (NDR) and reducing churn." },
-              { title: "Capital Efficiency (Token Hygiene)", desc: "I don't just use AI; I orchestrate it. My JamCamping workflow proves I can teach your users how to be Hypervisors of their own code, reducing frustration and maximizing the value they get from every token they pay for." },
-              { title: "Zero Latency (Immediate Yield)", desc: "I built a production app on a new stack in 48 hours. I don't need a 3-month ramp. I am a depreciating asset in reverse: I become exponentially more valuable every week as I synthesize the platform's edge cases into documentation." }
+              { title: "Cross-Domain Translation", desc: "Startups die in the gaps between departments. The Engineer speaks Code; the User speaks Emotion; the Manager speaks Metrics. Because I am a Generalist, I speak all three. I use AI to translate friction into tickets, and tickets into strategy." },
+              { title: "Protection of Velocity", desc: "Every ticket I solve is an interruption your Senior Engineers don't have to handle. I act as a firewall, protecting your most expensive payroll assets from context-switching costs. I solve Tier 3 complexity in the queue." },
+              { title: "Infinite Elasticity", desc: "Today you need Support. Tomorrow you might need Technical Writing, QA, or Logistics. The Specialist breaks when the domain changes. The Generalist adapts. I am infrastructure that scales horizontally." },
+              { title: "Immediate Yield", desc: "I built a production app on a new stack in 48 hours. I don't need a 6-month ramp. I am a depreciating asset in reverse: I become exponentially more valuable every week as I synthesize the platform's edge cases into documentation." }
             ].map((roi, idx) => (
               <SpotlightCard key={idx} className="bg-slate-900 border p-6 rounded-lg transition-all duration-300 border-slate-800 hover:border-amber-500/50 hover:scale-[1.05] hover:z-10 hover:shadow-2xl">
                 <h3 className="text-lg font-bold text-gray-200 mb-2">{roi.title}</h3>
-                <p className="text-gray-400 text-sm" dangerouslySetInnerHTML={{ __html: roi.desc.replace(/don't/g, "<em>don't</em>").replace(/the face/g, "<strong>the face</strong>") }} />
+                <p className="text-gray-400 text-sm" dangerouslySetInnerHTML={{ __html: roi.desc }} />
               </SpotlightCard>
             ))}
           </div>
@@ -554,7 +655,7 @@ function App() {
         {/* CONTACT */}
         <section id="contact" className="text-center space-y-8 pt-10 pb-20 scroll-mt-32">
           <p className="text-2xl text-gray-300 font-light max-w-2xl mx-auto leading-relaxed">
-             I don't just want to close tickets; I want to build the division that eliminates them. My trajectory is vertical, mirrored in the design of this system. I am looking for the role where I can prove my value in the queue, and eventually lead your entire Customer Experience function into the next frontier of human-AI synthesis.
+             Support is the only department that touches every other department. It is the natural home for the Generalist. I am applying for this role because it is the "Central Nervous System" of the company. Let's build the Trust Department.
           </p>
           <div className="flex justify-center">
              <GlowButton href="mailto:joshua.wakefield@gmail.com" icon={Mail} text="Let's Talk" color="amber" />
@@ -593,7 +694,7 @@ function App() {
                 SYSTEM_ID: JOSHUA_WAKEFIELD // STATUS: <span className="text-amber-500 animate-pulse">TRANSMITTING</span>
               </p>
               <p className="text-gray-700 text-[10px] font-mono uppercase tracking-[0.2em]">
-                Electron-to-Cloud // Integrated Polarity // 2025
+                High-Bandwidth Generalist // Integrated Polarity // 2025
               </p>
             </div>
           </div>
