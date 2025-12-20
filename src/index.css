@@ -2,89 +2,94 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --primary-glow: #fbbf24; /* Amber-400 */
-  --secondary-glow: #4f46e5; /* Indigo-600 */
+@layer base {
+  :root {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-300;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Custom Scrollbar for a "Technical" look */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-950;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 rounded-full border-2 border-slate-950 hover:bg-amber-500/50 transition-colors;
+  }
+
+  /* Selection color */
+  ::selection {
+    @apply bg-amber-500/30 text-amber-200;
+  }
 }
 
-@keyframes grid-pulse {
-  0%, 100% { opacity: 0.05; }
-  50% { opacity: 0.12; }
+@layer components {
+  /* Information Hiding: Max-Height Transition for Timeline */
+  .max-height-0 {
+    max-height: 0;
+    transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
+  }
+  
+  .max-height-96 {
+    max-height: 24rem; /* 384px */
+    transition: max-height 0.5s ease-in, opacity 0.4s ease-in;
+  }
+
+  /* Atmospheric pulse keyframes */
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.15;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.25;
+      transform: scale(1.05);
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 8s ease-in-out infinite;
+  }
 }
 
-@keyframes scanlines {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 100vh; }
+@layer utilities {
+  /* #2 & #13: Spotlight tracking utility */
+  .spotlight-mask {
+    background: radial-gradient(
+      600px circle at var(--mouse-x) var(--mouse-y),
+      rgba(251, 191, 36, 0.08),
+      transparent 40%
+    );
+  }
+
+  /* Utility to force hardware acceleration on transforms */
+  .force-gpu {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
 }
 
-@keyframes glow-header {
-  0%, 100% { text-shadow: 0 0 10px currentColor; }
-  50% { text-shadow: 0 0 20px currentColor; }
+/* Typography Overrides */
+h1, h2, h3, h4 {
+  letter-spacing: -0.02em;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes glitch1 {
-  0% { transform: translate(0); }
-  20% { transform: translate(-3px, 3px); }
-  40% { transform: translate(-3px, -3px); }
-  60% { transform: translate(3px, 3px); }
-  80% { transform: translate(3px, -3px); }
-  100% { transform: translate(0); }
-}
-
-@keyframes glitch2 {
-  0% { transform: translate(0); }
-  20% { transform: translate(3px, -3px); }
-  40% { transform: translate(-3px, 3px); }
-  60% { transform: translate(3px, -3px); }
-  80% { transform: translate(-3px, 3px); }
-  100% { transform: translate(0); }
-}
-
-.animate-blink { animation: blink 1s step-end infinite; }
-.grid-pulse { animation: grid-pulse 4s ease-in-out infinite; }
-
-.fixed-scanlines {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(251,191,36,0.04) 3px, rgba(251,191,36,0.04) 6px);
-  background-size: 100% 6px;
-  animation: scanlines linear infinite;
-  animation-duration: var(--scan-duration, 8s);
-  opacity: 0.25;
-}
-
-.glow-header { animation: glow-header 3s ease-in-out infinite; }
-
-.spotlight-container {
-  position: relative;
-  overflow: hidden;
-  transform: translateZ(0);
-}
-
-.glitch-hover:hover {
-  animation: glitch1 0.35s linear infinite, glitch2 0.35s linear infinite;
-  text-shadow: 0.05em 0 0 rgba(255,0,0,0.75),
-               -0.05em -0.05em 0 rgba(0,255,255,0.75),
-               0.05em 0.05em 0 rgba(0,255,0,0.75);
-}
-
-/* Global Selection */
-::selection {
-  background-color: rgba(251, 191, 36, 0.3);
-  color: #fbbf24;
-}
-
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  .space-y-40 { @apply space-y-32; }
-  .px-6 { @apply px-4; }
+code, .font-mono {
+  font-family: 'Roboto Mono', monospace !important;
 }
