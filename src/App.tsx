@@ -1,870 +1,479 @@
-import { ExternalLink, Linkedin, Github, Mail, ChevronDown, ChevronUp, Terminal, X, Zap, Cpu, Palette, Hammer, Shield, Trophy, Activity, Radio, Play, DollarSign, LucideIcon, Network, Brain, Layers, ChevronRight } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { 
+  Terminal, 
+  Cpu, 
+  Zap, 
+  ChevronRight, 
+  ExternalLink, 
+  Github, 
+  Mail, 
+  Linkedin, 
+  ChevronDown,
+  Command
+} from 'lucide-react';
 
-// --- TYPES ---
-interface TerminalBlock {
-  id: number;
-  command: string;
-  output: string[];
-  timestamp: string;
-}
+// --- SUBTLE COMPONENTS (THE GREEN LIST) ---
 
-type ColorTheme = 'amber' | 'indigo';
+/**
+ * #11: Breathing Gradient Background
+ * Fixed atmospheric layer that doesn't interfere with scroll performance.
+ */
+const BreathingBackground = () => (
+  <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
+    <div className="absolute inset-0 bg-slate-950" />
+    <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-500/20 via-transparent to-transparent animate-[pulse_8s_ease-in-out_infinite]" />
+    <div className="absolute bottom-[-10%] right-[-10%] w-[120%] h-[120%] opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500/20 via-transparent to-transparent animate-[pulse_12s_ease-in-out_infinite] delay-1000" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_30%,_rgba(2,6,23,0.8)_100%)]" />
+  </div>
+);
 
-// --- VISUAL COMPONENTS ---
+/**
+ * #3: Typing Animation for Hero
+ */
+const TypingText = ({ text, delay = 50 }: { text: string, delay?: number }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  
+  useEffect(() => {
+    let i = 0;
+    const timer = setInterval(() => {
+      setDisplayedText(text.slice(0, i));
+      i++;
+      if (i > text.length) clearInterval(timer);
+    }, delay);
+    return () => clearInterval(timer);
+  }, [text, delay]);
 
-// Fade In Observer (The "Loading Opacity" effect)
+  return (
+    <span className="font-mono">
+      {displayedText}
+      <span className="animate-pulse inline-block w-2 h-5 bg-amber-500 ml-1 align-middle" />
+    </span>
+  );
+};
+
+/**
+ * #6: Scroll-Triggered Section Reveal
+ */
 const FadeInSection = ({ children }: { children: React.ReactNode }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setVisible] = useState(false);
+  const domRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-
-    if (ref.current) observer.observe(ref.current);
-
-    return () => observer.disconnect();
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => setVisible(entry.isIntersecting));
+    }, { threshold: 0.1 });
+    
+    if (domRef.current) observer.observe(domRef.current);
+    return () => { if (domRef.current) observer.unobserve(domRef.current); };
   }, []);
 
   return (
     <div
-      ref={ref}
-      className={`transition-all duration-1000 ease-out transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+      ref={domRef}
+      className={`transition-all duration-1000 ease-out transform ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+      }`}
     >
       {children}
     </div>
   );
 };
 
-// Typing Text Effect
-const TypingText = ({ text }: { text: string }) => {
-  const [displayed, setDisplayed] = useState('');
-  
-  useEffect(() => {
-    setDisplayed(''); // Reset on text change
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i < text.length) {
-        setDisplayed(prev => prev + text.charAt(i));
-        i++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 40); // Typing speed
-    return () => clearInterval(interval);
-  }, [text]);
-
-  return (
-    <>
-      {displayed}
-      <span className="animate-blink text-amber-400 ml-1">_</span>
-    </>
-  );
-};
-
-// --- UI COMPONENTS ---
-
-const Highlight = ({ children, color }: { children: React.ReactNode; color: ColorTheme | 'green' }) => {
-  const colorClasses = {
-    amber: 'text-amber-400',
-    indigo: 'text-indigo-400',
-    green: 'text-green-400'
-  };
-  return <strong className={colorClasses[color]}>{children}</strong>;
-};
-
-const SectionHeader = ({ title, icon: Icon, color }: { title: string; icon: LucideIcon; color: ColorTheme }) => {
-  const isAmber = color === 'amber';
-  return (
-    <div className="flex items-center gap-6 relative group">
-      <div className={`p-4 rounded-xl transition-all duration-700 transform group-hover:scale-110 shadow-xl bg-opacity-10 group-hover:bg-opacity-30 ${isAmber ? 'bg-amber-500 text-amber-400 shadow-amber-500/30' : 'bg-indigo-500 text-indigo-400 shadow-indigo-500/30'}`}>
-        <Icon size={36} />
-      </div>
-      <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight glitch-hover transition-transform duration-700 ease-out origin-left group-hover:scale-[1.05]">
-        {title}
-      </h2>
-    </div>
-  );
-};
-
-const GlowButton = ({ href, icon: Icon, text, color = 'amber', newTab = false }: { href: string; icon: LucideIcon; text: string; color?: ColorTheme; newTab?: boolean }) => {
-  const buttonRef = useRef<HTMLAnchorElement>(null);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!buttonRef.current) return;
-    const rect = buttonRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    buttonRef.current.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px) scale(1.05)`;
-  };
-
-  const handleMouseLeave = () => {
-    if (buttonRef.current) buttonRef.current.style.transform = 'translate(0, 0) scale(1)';
-  };
-
-  const styles = {
-    amber: {
-      btn: 'bg-amber-500 text-slate-900 shadow-[0_0_60px_-10px_rgba(251,191,36,0.5)] hover:shadow-[0_0_80px_-5px_rgba(251,191,36,0.8)]',
-      glow: 'bg-amber-400',
-      ping: 'bg-amber-500'
-    },
-    indigo: {
-      btn: 'bg-indigo-500 text-white shadow-[0_0_60px_-10px_rgba(99,102,241,0.5)] hover:shadow-[0_0_80px_-5px_rgba(99,102,241,0.8)]',
-      glow: 'bg-indigo-400',
-      ping: 'bg-indigo-500'
-    }
-  };
-
-  return (
-    <a
-      ref={buttonRef}
-      href={href}
-      target={newTab ? "_blank" : undefined}
-      rel={newTab ? "noopener noreferrer" : undefined}
-      className={`group relative inline-flex items-center justify-center px-10 py-5 font-bold text-lg rounded-full transition-all duration-300 ${styles[color].btn}`}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <span className="relative z-10 flex items-center gap-3">
-        <Icon size={24} /> {text}
-      </span>
-      <div className={`absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity blur-xl ${styles[color].glow}`} />
-      <div className={`absolute -inset-0 rounded-full animate-ping opacity-30 ${styles[color].ping}`} style={{ animationDuration: '2.5s' }} />
-    </a>
-  );
-};
-
-const SpotlightCard = ({ children, className = '', glowColor = 'amber' }: { children: React.ReactNode; className?: string; glowColor?: ColorTheme }) => {
+/**
+ * #2 & #13: 3D Tilt + Enhanced Spotlight + Parallax
+ */
+const SpotlightCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
+  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-  const spotlightRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current || !spotlightRef.current || !innerRef.current) return;
+    if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
-    // Spotlight
-    spotlightRef.current.style.opacity = '0.7';
-    spotlightRef.current.style.left = `${x - 100}px`;
-    spotlightRef.current.style.top = `${y - 100}px`;
-
-    // 3D Tilt
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateY = ((x - centerX) / centerX) * 4; // Subtle tilt
-    const rotateX = ((centerY - y) / centerY) * 4;
-    cardRef.current.style.transform = `perspective(1400px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-
-    // Parallax inner content
-    innerRef.current.style.transform = `translate(${rotateY * 0.5}px, ${rotateX * 0.5}px)`;
-  };
-
-  const handleMouseLeave = () => {
-    if (spotlightRef.current) spotlightRef.current.style.opacity = '0';
-    if (cardRef.current) cardRef.current.style.transform = 'perspective(1400px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-    if (innerRef.current) innerRef.current.style.transform = 'translate(0, 0)';
+    const xc = rect.width / 2;
+    const yc = rect.height / 2;
+    const dx = x - xc;
+    const dy = y - yc;
+    setRotate({ x: dy / -15, y: dx / 15 });
   };
 
   return (
     <div
       ref={cardRef}
-      className={`spotlight-container relative overflow-hidden rounded-xl border border-slate-800 bg-slate-900/80 backdrop-blur-sm transition-all duration-300 ${className}`}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ transformStyle: 'preserve-3d' }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => { setIsHovered(false); setRotate({ x: 0, y: 0 }); }}
+      className={`relative group bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden transition-all duration-200 ease-out ${className}`}
+      style={{
+        transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale3d(${isHovered ? 1.02 : 1}, ${isHovered ? 1.02 : 1}, 1)`,
+        willChange: 'transform'
+      }}
     >
-      <div
-        ref={spotlightRef}
-        className={`spotlight w-56 h-56 absolute pointer-events-none rounded-full blur-[80px] transition-opacity duration-200 ${glowColor === 'amber' ? 'bg-amber-400/30' : 'bg-indigo-500/30'}`}
-        style={{ opacity: 0 }}
+      <div 
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{
+          background: `radial-gradient(600px circle at ${isHovered ? 'var(--mouse-x)' : '50%'} ${isHovered ? 'var(--mouse-y)' : '50%'}, rgba(251, 191, 36, 0.08), transparent 40%)`
+        }}
       />
-      <div ref={innerRef} className="relative z-10 transition-transform duration-200">
+      {/* #13 Parallax Layer */}
+      <div 
+        className="relative z-10 transition-transform duration-200 ease-out"
+        style={{ transform: `translateX(${rotate.y * -0.5}px) translateY(${rotate.x * -0.5}px)` }}
+      >
         {children}
       </div>
     </div>
   );
 };
 
-const TimelineItem = ({ title, date, color, children, expandedContent }: { title: string; date: string; color: ColorTheme; children: React.ReactNode; expandedContent?: React.ReactNode }) => {
+/**
+ * #12: Expandable Timeline Item
+ */
+const TimelineItem = ({ 
+  title, 
+  period, 
+  company, 
+  highlights, 
+  details 
+}: { 
+  title: string, 
+  period: string, 
+  company: string, 
+  highlights: string[], 
+  details?: string 
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className={`relative pl-12 group/item transition-all duration-300 ${expandedContent ? 'cursor-pointer' : ''}`} onClick={() => expandedContent && setIsExpanded(!isExpanded)}>
-      <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-slate-900 border-2 transition-all duration-300 group-hover/item:scale-125 ${color === 'amber' ? 'border-amber-500 group-hover/item:bg-amber-500' : 'border-indigo-500 group-hover/item:bg-indigo-500'}`}></div>
-      <div className="flex items-center gap-3">
-        <h3 className="text-xl font-bold text-gray-100">{title}</h3>
-        <span className={`font-mono text-sm ${color === 'amber' ? 'text-amber-400' : 'text-indigo-400'}`}>{date}</span>
-        {expandedContent && (
-          <ChevronRight className={`ml-auto text-slate-500 transition-transform duration-300 ${isExpanded ? 'rotate-90 text-amber-400' : ''}`} size={20} />
-        )}
+    <div className="relative pl-8 border-l border-slate-800 pb-12 last:pb-0">
+      <div className="absolute left-[-5px] top-2 w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(251,191,36,0.5)]" />
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
+        <h3 className="text-xl font-bold text-slate-100">{title}</h3>
+        <span className="text-sm font-mono text-amber-500/80">{period}</span>
       </div>
-      <div className="text-gray-400 leading-relaxed mt-2">
-        {children}
+      <div className="text-indigo-400 font-medium mb-4 flex items-center gap-2">
+        <Cpu size={16} /> {company}
       </div>
-      {expandedContent && isExpanded && (
-        <div className="mt-4 pl-6 border-l-2 border-slate-800 text-gray-500 text-sm leading-relaxed animate-in fade-in slide-in-from-top-2 duration-300">
-          {expandedContent}
-        </div>
+      <ul className="space-y-2 mb-4">
+        {highlights.map((point, i) => (
+          <li key={i} className="text-slate-400 text-sm flex gap-2">
+            <span className="text-amber-500/50 mt-1.5">•</span>
+            {point}
+          </li>
+        ))}
+      </ul>
+      
+      {details && (
+        <button 
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex items-center gap-1 text-xs font-mono text-slate-500 hover:text-amber-500 transition-colors"
+        >
+          {isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+          {isExpanded ? "HIDE OPERATIONAL LOGS" : "VIEW OPERATIONAL LOGS"}
+        </button>
       )}
+      
+      <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? 'max-height-96 mt-4 opacity-100' : 'max-height-0 opacity-0'}`}>
+        <p className="text-xs text-slate-500 leading-relaxed bg-slate-900/50 p-4 rounded border border-slate-800/50 font-mono italic">
+          {details}
+        </p>
+      </div>
     </div>
   );
 };
 
-const WinCard = ({ title, refCode, icon: Icon, theme, children }: { title: string; refCode: string; icon: LucideIcon; theme: ColorTheme; children: React.ReactNode }) => {
-  const isAmber = theme === 'amber';
-  return (
-    <SpotlightCard glowColor="amber" className={`p-0 flex flex-col ${isAmber ? 'hover:border-amber-500/50' : 'hover:border-indigo-500/50'}`}>
-      <div className={`p-4 border-b border-slate-700/50 flex justify-between items-center ${isAmber ? 'bg-amber-950/20' : 'bg-indigo-950/20'}`}>
-        <span className={`text-xs font-mono tracking-widest ${isAmber ? 'text-amber-400' : 'text-indigo-400'}`}>{refCode}</span>
-        <Icon size={18} className={isAmber ? 'text-amber-400' : 'text-indigo-400'} />
-      </div>
-      <div className="p-6 flex flex-col gap-4 flex-1">
-        <h3 className="text-xl font-bold text-gray-100">{title}</h3>
-        <div className="text-sm text-gray-400 leading-relaxed flex-1">
-          {children}
-        </div>
-      </div>
-    </SpotlightCard>
-  );
-};
+// --- MAIN PAGE ARCHITECTURE ---
 
-// --- TERMINAL MODAL ---
-function TerminalModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const [input, setInput] = useState('');
-  const [blocks, setBlocks] = useState<TerminalBlock[]>([
-    {
-      id: 0,
-      command: 'boot',
-      timestamp: new Date().toLocaleTimeString(),
-      output: [
-        "WakefieldOS v2.2.0 (tty1)",
-        "Memory: 64GB / Integrated Polarity",
-        "System Integrity: 100%",
-        " ",
-        "Welcome. You have accessed the hidden kernel.",
-        "Type 'help' to see available commands."
-      ]
-    }
-  ]);
-  
-  const inputRef = useRef<HTMLInputElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
+const Portfolio = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isTerminalHovered, setIsTerminalHovered] = useState(false);
 
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => {
-        if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-        inputRef.current?.focus();
-      }, 100);
-    }
-  }, [blocks, isOpen]);
-
-  const handleCommand = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      const cmd = input.trim().toLowerCase();
-      if (!cmd) return;
-      
-      let newOutput: string[] = [];
-      const timestamp = new Date().toLocaleTimeString();
-
-      switch (cmd) {
-        case 'help':
-          newOutput = [
-            "Available Commands:",
-            "-------------------",
-            "whoami      ::  Professional identity & mission",
-            "whyjosh     ::  The ROI case (Financial & Operational)",
-            "cv          ::  Work history & high-stakes roles",
-            "stack       ::  Technical competencies (Electron-to-Cloud)",
-            "jamcamping  ::  Zero-Latency Adaptation Case Study",
-            "contact     ::  Direct communication channels",
-            "clear       ::  Clear terminal buffer",
-            "exit        ::  Close session"
-          ];
-          break;
-
-        case 'whoami':
-          newOutput = [
-            "IDENTITY: Joshua Wakefield",
-            "ROLE: High-Bandwidth Generalist | WPI EE Background",
-            "-----------------------------------------------------",
-            "I operate at the intersection of engineering physics and human dynamics.",
-            "I don't view 'Technical Support' and 'Systems Architecture' as binary choices;",
-            "I view them as part of the same feedback loop.",
-            " ",
-            "I am the 'Old Guard' (Logo '89, Linux '96) and a Pioneer (AI Agents '25).",
-            "I bridge the gap between the Metal (Construction) and the Model (Code)."
-          ];
-          break;
-
-        case 'whyjosh':
-          newOutput = [
-            "EXECUTING: ROI_ANALYSIS.EXE",
-            "---------------------------",
-            "1. SYSTEMIC TRANSLATION:",
-            "   Startups die in the gaps between departments. I use AI to translate",
-            "   Code (Engineering), Emotion (Users), and Metrics (Management).",
-            " ",
-            "2. ENGINEERING FIREWALL:",
-            "   I solve Tier 3 complexity in the queue, protecting your roadmap",
-            "   from the tax of context-switching.",
-            " ",
-            "3. ZERO-LATENCY ELASTICITY:",
-            "   Specialists break when domains change. I adapt. I use AI to",
-            "   compress learning curves (Proof: JamCamping in 48hrs).",
-            " ",
-            "4. NET DOLLAR DEFENSE:",
-            "   I turn cancellation events into loyalty events via Radical Empathy,",
-            "   saving the company more capital than I cost.",
-            " ",
-            "CONCLUSION: A depreciating asset in reverse. Compound operational interest."
-          ];
-          break;
-        
-        case 'cv':
-          newOutput = [
-            "WORK HISTORY LOG:",
-            "-----------------",
-            "[2021-Present] Independent Trade Contractor & Systems Builder",
-            "   >> Bridging physical infrastructure with systems thinking.",
-            "   >> Parallel execution: Mastered MERN stack while managing logistics.",
-            " ",
-            "[2022-Present] Freelance Full Stack & AI Orchestrator",
-            "   >> Built JamCamping.com (Bolt.new) using Agentic Workflows.",
-            "   >> Focus: Context Hygiene & Zero-Latency Engineering.",
-            " ",
-            "[Past] Tier 3 Technical Support (DR Power)",
-            "   >> The 'Stopper' for critical mechanical failures.",
-            "   >> Remote forensic troubleshooting of engines/circuits.",
-            " ",
-            "[Past] Proposal Red Team Lead (CACI)",
-            "   >> Synthesized $6M federal contracts.",
-            "   >> NUWCDIVNPT officials cited 'best written proposal received.'"
-          ];
-          break;
-
-        case 'stack':
-          newOutput = [
-            "CORE ARCHITECTURE (ELECTRON-TO-CLOUD):",
-            "--------------------------------------",
-            "Frontend :: React, Next.js, Vite, Tailwind, TypeScript",
-            "Backend  :: Node.js, Supabase, PostgreSQL",
-            "AI/LLM   :: Agent Orchestration, Context Hygiene, Prompt Engineering",
-            "Physics  :: Signal Processing, Control Theory, Circuit Analysis (WPI EE)"
-          ];
-          break;
-
-        case 'jamcamping':
-          newOutput = [
-            "PROJECT: JamCamping.com",
-            "STATUS: Production (PWA)",
-            "BUILD TIME: 48 Hours (Weekend Sprint)",
-            "-------------------------------------",
-            "WORKFLOW ARCHITECTURE:",
-            "1. GitIngest: Serialized repo into token-optimized context streams.",
-            "2. External Reasoner: Used O1/Claude for high-level architecture logic.",
-            "3. Bolt.new: Execution environment for rapid implementation.",
-            " ",
-            "RESULT: Zero-latency deployment proving 'Context Hygiene' methodology."
-          ];
-          break;
-
-        case 'contact':
-          newOutput = [
-            "ESTABLISH UPLINK:",
-            "-----------------",
-            "Email    :: joshua.wakefield@gmail.com",
-            "Phone    :: (802) 735-0543",
-            "Location :: Newport, RI, USA",
-            "State    :: Ready to deploy."
-          ];
-          break;
-
-        case 'sudo':
-          newOutput = [
-            "Permission denied: You do not have root access to Joshua.",
-            "To gain root access, please issue the 'hire' contract."
-          ];
-          break;
-          
-        case 'hire':
-          newOutput = [
-            "INITIATING HIRE PROTOCOL...",
-            "Great choice. Send the contract to joshua.wakefield@gmail.com",
-            "Expect immediate ROI."
-          ];
-          break;
-
-        case 'clear':
-          setBlocks([]);
-          setInput('');
-          return;
-
-        case 'exit':
-          onClose();
-          return;
-
-        default:
-          newOutput = [
-            `Command not found: ${cmd}`,
-            "Type 'help' for a list of valid commands."
-          ];
-      }
-
-      const newBlock: TerminalBlock = { id: Date.now(), command: cmd, timestamp, output: newOutput };
-      setBlocks(prev => [...prev, newBlock]);
-      setInput('');
-    }
-  };
-
-  if (!isOpen) return null;
+    const handleScroll = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(window.scrollY / total);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-0 md:p-4" onClick={onClose}>
-      <div className="w-full h-full md:h-auto md:max-w-3xl bg-slate-950 border-0 md:border border-slate-700 md:rounded-lg shadow-2xl overflow-hidden font-mono ring-0 md:ring-1 ring-amber-500/20 flex flex-col md:max-h-[80vh]" onClick={e => e.stopPropagation()}>
-        <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-indigo-400 p-3 flex justify-between items-center shrink-0">
-          <div className="flex gap-2 ml-2"></div>
-          <div className="text-slate-900 font-bold text-xs tracking-widest opacity-80">GUEST@WAKEFIELD:~</div>
-          <button onClick={onClose} className="text-slate-900 hover:text-white transition-colors mr-2"><X size={18} /></button>
+    <div className="min-h-screen text-slate-300 selection:bg-amber-500/30 selection:text-amber-200">
+      <BreathingBackground />
+
+      {/* Navigation (Sticky) */}
+      <nav className="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2 font-mono font-bold text-slate-100">
+            <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+            JOSHUA WAKEFIELD
+          </div>
+          <div className="hidden md:flex items-center gap-8 text-sm font-mono tracking-tighter uppercase">
+            <a href="#about" className="hover:text-amber-500 transition-colors">About</a>
+            <a href="#projects" className="hover:text-amber-500 transition-colors">Projects</a>
+            <a href="#experience" className="hover:text-amber-500 transition-colors">Experience</a>
+            <a href="mailto:joshua.wakefield@gmail.com" className="px-4 py-2 border border-amber-500/50 text-amber-500 rounded-md hover:bg-amber-500/10 transition-all">Contact</a>
+          </div>
         </div>
-        <div className="flex-1 overflow-y-auto bg-slate-950 scrollbar-thin scrollbar-thumb-slate-800 p-2" ref={scrollRef}>
-          {blocks.map((block, i) => (
-            <div key={block.id} className={`p-4 border-b border-white/5 ${i % 2 === 0 ? 'bg-indigo-950/10' : 'bg-transparent'}`}>
-              <div className="flex items-start gap-3 mb-2 opacity-80">
-                <span className="text-amber-500 font-bold shrink-0">➜</span>
-                <span className="text-blue-400 shrink-0">~</span>
-                <span className="text-gray-100">{block.command}</span>
-                <span className="text-slate-600 text-xs ml-auto font-sans">{block.timestamp}</span>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col gap-6">
+            <h1 className="text-5xl md:text-8xl font-black text-slate-100 leading-none">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-amber-200">SYSTEM</span> SYNTHESIZER
+            </h1>
+            <h2 className="text-xl md:text-3xl font-mono text-indigo-400">
+              <TypingText text="The High-Bandwidth Generalist for the AI Era." />
+            </h2>
+            <p className="max-w-2xl text-lg text-slate-400 leading-relaxed">
+              Bridging WPI Physics, Operational Grit, and AI Orchestration. I possess a topological understanding of 10+ distinct domains—from Signal Processing to Industrial Logistics.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* About / Synthesis Engine */}
+      <section id="about" className="py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <FadeInSection>
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <div className="inline-block px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-mono mb-4 uppercase tracking-widest">
+                  // THE SYNTHESIS ENGINE
+                </div>
+                <p className="text-2xl text-slate-200 leading-tight">
+                  "I use Artificial Intelligence as a universal glue. I don't need to memorize the syntax of every library because I understand the architecture of the system."
+                </p>
+                <p className="text-slate-400">
+                  I use AI to execute the 'How' so I can focus entirely on the 'Why'. This allows me to be a **Hyper-Navigator**, solving problems that cross the boundaries of Engineering, Operations, and Human Dynamics.
+                </p>
               </div>
-              <div className="pl-6 space-y-1">
-                {block.output.map((line, k) => (
-                  <div key={k} className={`${line.startsWith('>>') ? 'text-indigo-300 ml-4' : line.startsWith('COMMAND') ? 'text-amber-400 font-bold' : 'text-green-400/90'} text-sm md:text-base leading-relaxed break-words font-mono`}>
-                    {line}
+              
+              <SpotlightCard className="p-8">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-amber-500/10 rounded-lg text-amber-500">
+                      <Zap size={24} />
+                    </div>
+                    <div>
+                      <h4 className="text-slate-100 font-bold uppercase tracking-wider text-xs">Vibration Control</h4>
+                      <p className="text-sm text-slate-400">Stable frequency in high-entropy environments.</p>
+                    </div>
+                  </div>
+                  <div className="w-full h-[2px] bg-slate-800" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <div className="text-[10px] uppercase font-mono text-slate-500">Node Entropy</div>
+                      <div className="text-sm font-mono text-slate-300 italic">0.0003ms</div>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-[10px] uppercase font-mono text-slate-500">Vibe Check</div>
+                      <div className="text-sm font-mono text-slate-300 italic">Optimized</div>
+                    </div>
+                  </div>
+                </div>
+              </SpotlightCard>
+            </div>
+          </FadeInSection>
+        </div>
+      </section>
+
+      {/* Featured Projects (Proof of Velocity) */}
+      <section id="projects" className="py-24 px-6 bg-slate-900/20">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-end justify-between mb-16">
+            <div>
+              <h2 className="text-4xl font-bold text-slate-100 mb-2 uppercase tracking-tighter">Case Study: Zero-Latency Adaptation</h2>
+              <p className="text-indigo-400 font-mono text-sm">Deployment Velocity: 48 Hours</p>
+            </div>
+            <div className="hidden md:block h-[1px] flex-1 bg-slate-800 mx-10 mb-2" />
+          </div>
+
+          <div className="grid md:grid-cols-12 gap-8 items-start">
+            <div className="md:col-span-5 space-y-6">
+              <p className="text-slate-400 leading-relaxed">
+                The value of JamCamping.com isn't the app itself; it's the **Velocity**. I am not a native React developer—I am a Systems Thinker. I used an "External Reasoner" workflow to bridge the gap between intent and execution.
+              </p>
+              
+              <div className="space-y-4">
+                {[
+                  { step: '01', title: 'GitIngest (Context)', desc: 'Serialized repo into context stream.' },
+                  { step: '02', title: 'External Reasoner', desc: 'Architecture logic via O1/Claude.' },
+                  { step: '03', title: 'Bolt.new (Execution)', desc: 'Real-time compilation and deployment.' }
+                ].map((item) => (
+                  <div key={item.step} className="flex gap-4 p-4 rounded-lg bg-slate-900/50 border border-slate-800/50">
+                    <span className="text-amber-500 font-mono text-lg font-bold">{item.step}</span>
+                    <div>
+                      <h4 className="text-slate-200 text-sm font-bold uppercase">{item.title}</h4>
+                      <p className="text-xs text-slate-500">{item.desc}</p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
-          ))}
-          <div className="p-4 bg-slate-900/30 mb-20 md:mb-0">
-            <div className="flex items-center gap-3">
-              <span className="text-amber-500 font-bold animate-pulse">➜</span>
-              <span className="text-blue-400">~</span>
-              <input ref={inputRef} type="text" value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleCommand} autoFocus className="bg-transparent border-none outline-none text-gray-100 flex-1 focus:ring-0 placeholder-slate-700 text-base p-0" spellCheck="false" autoComplete="off" />
+
+            <div className="md:col-span-7">
+              <SpotlightCard className="h-full aspect-video flex flex-col items-center justify-center p-0">
+                <div className="absolute top-4 right-4 z-20">
+                  <a 
+                    href="https://jamcamping.com/" 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-slate-950 font-bold rounded-full hover:bg-amber-400 transition-all text-xs"
+                  >
+                    LIVE SITE <ExternalLink size={14} />
+                  </a>
+                </div>
+                <div className="text-center p-12 bg-slate-950/80 w-full h-full flex flex-col justify-center">
+                   <h3 className="text-4xl font-black text-white mb-2 tracking-tighter">JamCamping</h3>
+                   <p className="font-mono text-amber-500/50 text-xs mb-6 uppercase">V 1.0.0 // PRODUCTION</p>
+                   <div className="flex justify-center gap-2">
+                     <span className="px-3 py-1 bg-slate-900 text-[10px] text-slate-400 rounded-full border border-slate-800">React</span>
+                     <span className="px-3 py-1 bg-slate-900 text-[10px] text-slate-400 rounded-full border border-slate-800">Vite</span>
+                     <span className="px-3 py-1 bg-slate-900 text-[10px] text-slate-400 rounded-full border border-slate-800">Supabase</span>
+                   </div>
+                </div>
+              </SpotlightCard>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-// --- MAIN APP ---
-
-function App() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [activeSection, setActiveSection] = useState('hero');
-  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
-  const [velocity, setVelocity] = useState(0);
-  const [showShortcuts, setShowShortcuts] = useState(false);
-
-  const sections = ['hero', 'manifesto', 'loom', 'jamcamping', 'timeline', 'domains', 'wins', 'roi', 'contact'];
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const offsetPosition = elementRect - bodyRect;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-  };
-
-  const jumpSection = (direction: 'up' | 'down') => {
-    const currentIndex = sections.indexOf(activeSection);
-    const targetIdx = direction === 'down' ? Math.min(currentIndex + 1, sections.length - 1) : Math.max(currentIndex - 1, 0);
-    scrollToSection(sections[targetIdx]);
-  };
-
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setIsTerminalOpen(true);
-      }
-      if (e.key === 'ArrowDown') jumpSection('down');
-      if (e.key === 'ArrowUp') jumpSection('up');
-    };
-    window.addEventListener('keydown', handleKey);
-
-    return () => {
-      window.removeEventListener('keydown', handleKey);
-    };
-  }, [activeSection]);
-
-  useEffect(() => {
-    let prevScroll = window.scrollY;
-    let prevTime = performance.now();
-
-    const handleScroll = () => {
-      const current = window.scrollY;
-      const time = performance.now();
-      const deltaTime = time - prevTime || 1;
-      const deltaScroll = Math.abs(current - prevScroll);
-      const currentVelocity = (deltaScroll / deltaTime) * 1000;
-      setVelocity(currentVelocity);
-
-      const winHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = winHeight <= 0 ? 0 : (current / winHeight) * 100;
-      setScrollProgress(progress);
-
-      const threshold = window.innerHeight * 0.3; 
-      let currentSection = sections[0];
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el && el.getBoundingClientRect().top <= threshold) {
-          currentSection = section;
-        }
-      }
-      setActiveSection(currentSection);
-
-      prevScroll = current;
-      prevTime = time;
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const terminalIntensity = 0.3 + Math.pow(scrollProgress / 100, 2) * 0.9;
-  const scanDuration = Math.max(2, 12 - velocity / 50);
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans antialiased transition-colors duration-700 relative pb-20">
-      
-      {/* Overlays */}
-      <div className="fixed inset-0 pointer-events-none z-40 opacity-20 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:18px_18px]" />
-      <div className="fixed inset-0 pointer-events-none z-40 bg-gradient-to-b from-transparent via-transparent to-slate-950/60" />
-      <div className="fixed inset-0 pointer-events-none z-40 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(15,23,42,0.9)_100%)]" />
-      <div className="fixed-scanlines z-40" style={{ '--scan-duration': `${scanDuration}s` } as React.CSSProperties} />
-
-      {/* Progress Bar */}
-      <div className="fixed top-0 left-0 h-1.5 z-50 w-full bg-slate-800">
-        <div className="h-full bg-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.9)] transition-all duration-300" style={{ width: `${scrollProgress}%` }} />
-      </div>
-
-      {/* Floating Dock & Terminal */}
-      <div className="fixed bottom-8 right-8 z-50 flex flex-col items-center gap-4">
-        {/* Nav Buttons (Mobile/Desktop) */}
-        <div className="flex flex-col gap-2 p-2 bg-slate-900/90 backdrop-blur rounded-full border border-slate-700 shadow-xl">
-           <button onClick={() => jumpSection('up')} className="p-2 text-slate-400 hover:text-amber-400 transition-colors"><ChevronUp size={20} /></button>
-           <button onClick={() => jumpSection('down')} className="p-2 text-slate-400 hover:text-amber-400 transition-colors"><ChevronDown size={20} /></button>
-        </div>
-
-        {/* Terminal Button */}
-        <div className="relative" onMouseEnter={() => setShowShortcuts(true)} onMouseLeave={() => setShowShortcuts(false)}>
-          <button 
-            onClick={() => setIsTerminalOpen(true)} 
-            className="cursor-hover relative p-5 rounded-full bg-slate-900/90 backdrop-blur-md border border-slate-700 shadow-2xl transition-all duration-500 hover:scale-110 group"
-            style={{ boxShadow: `0 0 ${60 * terminalIntensity}px rgba(251,191,36,${terminalIntensity})` }}
-          >
-            <Terminal size={32} className="text-amber-400 relative z-10" />
-            <span className="absolute right-full mr-6 top-1/2 -translate-y-1/2 px-3 py-1 bg-slate-900 text-xs font-mono rounded border border-amber-500/30 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl">CMD+K</span>
-          </button>
-          {showShortcuts && (
-            <div className="absolute bottom-full right-0 mb-4 p-4 bg-slate-900/95 backdrop-blur border border-slate-700 rounded-lg shadow-2xl text-xs font-mono text-gray-300 whitespace-nowrap hidden md:block">
-              <div>⌘ K → Terminal</div>
-              <div>↑ ↓ → Jump sections</div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <TerminalModal isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} />
-
-      {/* HERO SECTION */}
-      <section id="hero" className="min-h-screen flex flex-col items-center justify-center px-6 text-center relative z-10 scroll-mt-32">
-        <FadeInSection>
-          <div className="inline-block px-3 py-1 rounded-full border text-sm font-mono mb-6 border-amber-500/50 bg-amber-500/10 text-amber-400 animate-pulse">
-             SYSTEM STATE: HIGH BANDWIDTH // READY
-          </div>
-          <h1 className="text-5xl md:text-8xl font-bold text-gray-100 mb-8 tracking-tighter glitch-hover">
-            JOSHUA WAKEFIELD
-          </h1>
-          <p className="text-2xl md:text-5xl text-amber-400 mb-6 font-light">
-             High-Bandwidth Generalist
-          </p>
-          <p className="text-xl md:text-4xl text-gray-300 max-w-5xl leading-relaxed mx-auto">
-            <TypingText text="Bridging WPI Physics, Operational Grit, and AI Orchestration." />
-          </p>
-          <div className="mt-12 flex justify-center">
-            <GlowButton href="mailto:joshua.wakefield@gmail.com" icon={Mail} text="Contact Me" color="amber" />
-          </div>
-          <div className="mt-20 flex justify-center">
-            <ChevronDown size={48} className="text-amber-400 animate-bounce cursor-pointer cursor-hover opacity-50 hover:opacity-100 transition-opacity" onClick={() => scrollToSection('manifesto')} />
-          </div>
-        </FadeInSection>
       </section>
 
-      {/* MAIN CONTENT WRAPPER */}
-      <div className="max-w-5xl mx-auto px-6 md:px-10 py-10 space-y-48 relative z-10">
+      {/* Experience Timeline */}
+      <section id="experience" className="py-24 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-4 mb-16">
+            <h2 className="text-4xl font-black text-slate-100 uppercase tracking-tighter">Professional History</h2>
+            <div className="h-[1px] flex-1 bg-slate-800" />
+          </div>
 
-        {/* MANIFESTO */}
-        <FadeInSection>
-          <section id="manifesto" className="space-y-12 group scroll-mt-32">
-            <div className="space-y-4 border-l-4 pl-6 relative border-amber-500 transition-all duration-700">
-              <h2 className="text-3xl md:text-5xl font-bold text-gray-100 tracking-tight">The Two Shapes of Value</h2>
-              <p className="text-amber-400 font-mono text-lg">/Deep Specialist vs. AI Generalist/</p>
-            </div>
-            <div className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed space-y-6">
-              <p>The future of work is bifurcating into two distinct shapes. There is the <strong className="text-indigo-400">Deep Specialist</strong> (the PhD researcher building the model) and the <strong className="text-amber-400">AI-Amplified Generalist</strong> (the operator wielding it).</p>
-              <p><strong className="text-white">I am the Generalist.</strong></p>
-              <p>I possess a topological understanding of 10+ distinct domains—from Signal Processing and Control Theory to Industrial Logistics and Crisis Negotiation. Before AI, this was called "scattered." <strong className="text-amber-400">With AI, it is called "Hyper-Navigation."</strong></p>
-              <SpotlightCard className="p-8 mt-8 border-slate-800">
-                <p className="text-amber-400 font-mono text-sm mb-4">// THE SYNTHESIS ENGINE</p>
-                <p className="italic text-gray-300 text-lg">"I use Artificial Intelligence as a universal glue. I don't need to memorize the syntax of every library because I understand the architecture of the system. I use AI to execute the 'How' so I can focus entirely on the 'Why'."</p>
-              </SpotlightCard>
-            </div>
-          </section>
-        </FadeInSection>
-
-        {/* LOOM */}
-        <FadeInSection>
-          <section id="loom" className="space-y-12 group scroll-mt-32">
-            <SectionHeader title="Vibration Control" icon={Play} color="amber" />
-            <SpotlightCard className="w-full aspect-video bg-slate-900 border border-slate-700 rounded-xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 shadow-2xl flex items-center justify-center group/video cursor-hover">
-              <div className="text-center space-y-6 p-8">
-                <div className="w-20 h-20 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover/video:bg-amber-500 group-hover/video:text-slate-900 transition-colors duration-300 text-amber-400 transform group-hover/video:scale-110">
-                  <Play size={40} className="ml-1" />
-                </div>
-                <p className="text-gray-400 font-mono text-sm">[LOOM_VIDEO_PLACEHOLDER]</p>
-                <p className="text-gray-500 text-sm max-w-md mx-auto">"I'm Joshua. I'm currently working construction in Newport, RI, but I'm an engineer at heart. I built this site to show you that I don't just close tickets—I build trust."</p>
-              </div>
-            </SpotlightCard>
-          </section>
-        </FadeInSection>
-
-        {/* JAMCAMPING */}
-        <FadeInSection>
-          <section id="jamcamping" className="space-y-12 group scroll-mt-32">
-            <SectionHeader title="Case Study: Zero-Latency Adaptation" icon={Activity} color="indigo" />
-            <div className="space-y-8">
-              <p className="text-xl text-gray-300 leading-relaxed">The value of JamCamping.com isn't the app itself; it's the <Highlight color="amber">Velocity</Highlight>. I am not a native React developer—I am a Systems Thinker. I used an "External Reasoner" workflow to bridge the gap between intent and execution. <strong className="text-white">I don't need 6 months to learn your stack. I need 48 hours and a clear objective.</strong></p>
+          <FadeInSection>
+            <div className="space-y-0">
+              <TimelineItem 
+                title="Systems Builder & Trade Contractor"
+                period="2021 – PRESENT"
+                company="Independent"
+                highlights={[
+                  "Executing high-precision infrastructure projects while maintaining operational discipline.",
+                  "Mastered MERN stack and Agentic workflows while working in physical systems (The Metal).",
+                  "Applied engineering first-principles to physical infrastructure failure points."
+                ]}
+                details="This era forged the 'Operational Grit' required for technical stability. Managing complex carpentry, electrical, and landscaping projects taught me to see the code in the physical world. Successfully navigated the Vermont motel program during housing instability while simultaneously upskilling in Full-Stack development."
+              />
               
-              <SpotlightCard className="p-8 border-slate-800 relative group/workflow">
-                <div className="absolute top-0 right-0 p-3 text-xs font-mono text-amber-500/50 border-b border-l border-amber-500/20 rounded-bl-lg bg-amber-500/5">WORKFLOW_ID: ZERO_LATENCY</div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-                  <div className="space-y-8">
-                    <div className="flex flex-col gap-6">
-                      {[
-                        { id: '01', title: 'GitIngest (Context)', desc: 'Serialized repo into context stream.', color: 'text-amber-400' },
-                        { id: '02', title: 'External Reasoner', desc: 'O1/Claude Sonnet for architecture logic.', color: 'text-indigo-400' },
-                        { id: '03', title: 'Bolt.new (Execution)', desc: 'IDE/Compiler to implement logic.', color: 'text-green-400' }
-                      ].map((step, idx) => (
-                        <div key={idx} className="flex flex-col md:flex-row gap-3">
-                          <div className="flex items-center gap-4">
-                              <div className="w-10 h-10 rounded bg-slate-800 flex items-center justify-center text-gray-400 font-mono text-sm border border-slate-700">{step.id}</div>
-                              <div><h4 className={`font-bold text-lg ${step.color}`}>{step.title}</h4><p className="text-sm text-gray-500">{step.desc}</p></div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="relative h-full min-h-[200px] flex items-center justify-center">
-                    <div className="relative w-full aspect-video bg-indigo-950/30 rounded-xl border border-indigo-500/30 flex flex-col items-center justify-center transition-all duration-500 group-hover/workflow:scale-105 group-hover/workflow:border-amber-500 group-hover/workflow:shadow-[0_0_30px_rgba(251,191,36,0.2)]">
-                        <div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 mb-3">JamCamping</div>
-                        <div className="text-xs font-mono text-indigo-300 bg-indigo-900/50 px-3 py-1 rounded">V 1.0.0 // PRODUCTION</div>
-                        <a href="https://jamcamping.com" target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-10 cursor-hover"></a>
-                    </div>
-                  </div>
-                </div>
-              </SpotlightCard>
-              
-              <div className="flex justify-center mt-8">
-                <GlowButton href="https://jamcamping.com" icon={ExternalLink} text="View Proof of Velocity" color="indigo" newTab={true} />
-              </div>
+              <TimelineItem 
+                title="Technical Support Engineer (Tier 3)"
+                period="2020 – 2022"
+                company="DR Power Equipment"
+                highlights={[
+                  "Served as 'The Stopper' for critical mechanical and electrical failures.",
+                  "Performed forensic RCA on engines, electrical systems, and embedded controllers.",
+                  "Converted high-stress detractor events into brand loyalty milestones."
+                ]}
+                details="Utilized SAP and remote diagnostic frameworks to visualize schematics for customers in crisis. Once guided a customer through a QC repair deep in a chassis via phone, saving a $3,000 return and solidifying brand authority."
+              />
+
+              <TimelineItem 
+                title="Customer Success Operations"
+                period="2016 – 2018"
+                company="Localvore"
+                highlights={[
+                  "Managed CX operations for a SaaS platform with 15,000+ active users.",
+                  "Designed scalable support workflows and internal knowledge base architectures.",
+                  "Liaison between users and engineering to prioritize high-impact product features."
+                ]}
+              />
+
+              <TimelineItem 
+                title="Senior Proposal Editor & Red Team Lead"
+                period="2006 – 2013"
+                company="CACI International"
+                highlights={[
+                  "Synthesized 21 disjointed technical submissions into unified federal contracts ($6M+).",
+                  "Ensured Section L/M compliance and forensic invoice validation.",
+                  "Coordinated with SMEs to translate Signal Processing data into executive narratives."
+                ]}
+              />
             </div>
-          </section>
-        </FadeInSection>
+          </FadeInSection>
+        </div>
+      </section>
 
-        {/* TIMELINE */}
-        <FadeInSection>
-          <section id="timeline" className="space-y-12 group scroll-mt-32">
-            <SectionHeader title="The Convergence" icon={Terminal} color="amber" />
-            <div className="relative border-l-2 border-slate-800 ml-4 space-y-12 pb-8">
-              <TimelineItem title="The Source Code: From Armatron to NuMega" date="1985-1999" color="amber" 
-                expandedContent="Deep dive into early hardware tinkering and professional coding at NuMega Labs alongside senior engineers.">
-                  My path began with a Radio Shack Armatron in 1985 and evolved through learning to code in Logo in 1989, DOS and BASIC in 1990, and Linux in 1995. This culminated in a professional role at <Highlight color="indigo">NuMega Labs (1998)</Highlight> coding alongside senior engineers. I entered WPI not as a novice, but with deep roots in the history of the machine.
-              </TimelineItem>
-              <TimelineItem title="The Hard Foundation: WPI Engineering" date="1999-2003" color="indigo"
-                expandedContent="Specilized coursework in Signals & Systems and Control Theory.">
-                  98% BS in Electrical Engineering. This was the era of engineering labs and rigorous mathematical lecture. I specialized in <Highlight color="amber">Real-Time Signals & Systems</Highlight>, <Highlight color="amber">Control Engineering</Highlight>, and <Highlight color="amber">Power Engineering</Highlight>. My understanding of AI is grounded in the math of the universe—Fourier transforms, Entropy, and Feedback—not just API calls.
-              </TimelineItem>
-              <TimelineItem title="The Crucible: High-Stakes Operations" date="2006-2020" color="amber">
-                  I stepped out of the code and into the fire of reality. From managing multi-million dollar government contracts at <Highlight color="indigo">CACI</Highlight>, to solving critical mechanical failures at <Highlight color="indigo">DR Power Equipment</Highlight>. This era forged my financial literacy and operational grit. I know that when systems fail, it costs real money.
-              </TimelineItem>
-              <TimelineItem title="The Antifragile Turn" date="2020-2022" color="indigo">
-                  Navigated extreme resource constraints while working rigorous manual labor (Tree Service) during the Vermont winter. This era proved that ambition can survive even when resources are at zero. It culminated in <Highlight color="amber">Burlington Code Academy</Highlight>, where I graduated top-of-class in the final pre-ChatGPT cohort.
-              </TimelineItem>
-              <TimelineItem title="The Synthesis: Native AI Orchestration" date="Present" color="amber">
-                  Since November 2022, I have engineered context daily. I don't just write code; I orchestrate agentic workflows—repurposing AI IDEs to transmute code outputs into narrative prose and production software. I have integrated WPI's "Hard Engineering" with the "Modern AI Stack" to become the bridge between the metal and the model.
-              </TimelineItem>
+      {/* The Convergence (WPI) */}
+      <section className="py-24 px-6 bg-slate-900/30 border-y border-slate-800">
+        <div className="max-w-6xl mx-auto text-center">
+          <FadeInSection>
+            <div className="inline-block p-4 bg-amber-500/10 rounded-2xl mb-8">
+              <Cpu size={48} className="text-amber-500" />
             </div>
-          </section>
-        </FadeInSection>
-
-        {/* DOMAINS */}
-        <FadeInSection>
-          <section id="domains" className="space-y-12 group scroll-mt-32">
-            <SectionHeader title="The Synthesis" icon={Network} color="indigo" />
-            <div className="prose prose-invert prose-lg max-w-none text-gray-300 leading-relaxed">
-              <p>I don't just "know" these domains; I understand the universal patterns that connect them. AI is the high-bandwidth cable that allows me to transfer the logic of one domain into the execution of another instantly.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <SpotlightCard className="p-6 border-slate-800 flex flex-col gap-4">
-                <div className="flex items-center gap-3 text-amber-400"><Zap size={24} /><h3 className="text-xl font-bold text-white">The Metal</h3></div>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  <Highlight color="indigo">WPI Physics & Trades.</Highlight> My foundation isn't syntax; it is the Math of the Universe. I possess the literacy to consume <Highlight color="indigo">Robotics & AI white papers</Highlight> because I speak their native tongue: <Highlight color="indigo">Fourier Transforms</Highlight> and <Highlight color="indigo">Control Theory</Highlight>. I understand the deep physics that high-level APIs abstract away.
-                </p>
-              </SpotlightCard>
-              <SpotlightCard glowColor="indigo" className="p-6 border-slate-800 flex flex-col gap-4">
-                <div className="flex items-center gap-3 text-indigo-400"><Brain size={24} /><h3 className="text-xl font-bold text-white">The Mind</h3></div>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  <Highlight color="amber">Systematic Creativity.</Highlight> To me, the Circle of Fifths is a circuit diagram. I apply <Highlight color="amber">Jazz Theory</Highlight> to improvisational guitar, treating music as real-time conversational logic. I study <Highlight color="amber">Stand-Up Comedy</Highlight> to master the ultimate feedback loop: controlling the timing, tension, and release of a room's energy.
-                </p>
-              </SpotlightCard>
-              <SpotlightCard className="p-6 border-slate-800 flex flex-col gap-4">
-                <div className="flex items-center gap-3 text-amber-400"><Layers size={24} /><h3 className="text-xl font-bold text-white">The Glue</h3></div>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  <Highlight color="indigo">AI Orchestration.</Highlight> This is the lever. I use Artificial Intelligence to synthesize the rigorous logic of "The Metal" with the creative intuition of "The Mind." It allows me to be a <Highlight color="indigo">Hyper-Navigator</Highlight>, solving problems that cross the boundaries of Engineering, Operations, and Human Dynamics.
-                </p>
-              </SpotlightCard>
-            </div>
-          </section>
-        </FadeInSection>
-
-        {/* WINS */}
-        <FadeInSection>
-          <section id="wins" className="space-y-12 group scroll-mt-32">
-            <SectionHeader title="Hyper-Navigation Wins" icon={Trophy} color="amber" />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <WinCard title="The Red Team Unification" refCode="LOG_REF: CACI_RED_TEAM" icon={Shield} theme="indigo">
-                  As the final Red Team Editor for a <strong>$6M federal recompete</strong>, I inherited 21 disjointed submissions. I acted as a <Highlight color="amber">Synthesizer</Highlight>, harmonizing every font, tense, and vocabulary choice into a single consciousness. NUWCDIVNPT officials confirmed it was the "<strong>best written</strong> proposal they had ever received."
-                  <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: CROSS_DOMAIN_TRANSLATION]</div>
-              </WinCard>
-              <WinCard title="The Remote Debug" refCode="LOG_REF: REMOTE_DEBUG" icon={Radio} theme="amber">
-                  A customer received a top-of-the-line trimmer that wouldn't start. I visualized the schematic remotely. Walking him through a forensic check, we located a QC error deep in the chassis. I turned a "Detractor" into an "Evangelist" by applying <Highlight color="indigo">Technical Authority</Highlight> via phone.
-                  <div className="mt-2 text-xs text-amber-300 font-mono">[RESULT: DETRACTOR_CONVERTED]</div>
-              </WinCard>
-              <WinCard title="The 160-Mile Protocol Breach" refCode="LOG_REF: HUMAN_OVERRIDE" icon={Activity} theme="indigo">
-                   A customer's husband was dying; his mower was a critical emotional anchor. Protocol said "too far." I refused that output. I negotiated a custom service contract, leveraging human empathy to fix the machine before he passed. Some KPIs don't fit on a spreadsheet.
-                  <div className="mt-2 text-xs text-indigo-300 font-mono">[RESULT: MISSION_COMPLETE]</div>
-              </WinCard>
-            </div>
-          </section>
-        </FadeInSection>
-
-        {/* ROI */}
-        <FadeInSection>
-          <section id="roi" className="space-y-8 group scroll-mt-32">
-            <SectionHeader title="The ROI of Synthesis" icon={DollarSign} color="indigo" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* Card 1: Systemic Translation (Indigo Theme / Amber Bold) */}
-              <SpotlightCard glowColor="indigo" className="p-8 border-slate-800">
-                  <h3 className="text-xl font-bold text-gray-200 mb-4">Systemic Translation</h3>
-                  <p className="text-gray-400 text-base leading-relaxed">
-                    Startups hemorrhage value in the "air gaps" between departments. The Engineer speaks in rigid syntax; the User speaks in raw emotion; the Manager speaks in metrics. As a Generalist, <strong className="text-amber-400">I act as the universal translator.</strong> I use AI to normalize these disparate signals, turning vague user frustration into actionable engineering specs and converting technical limitations into empathetic customer narratives.
-                  </p>
-              </SpotlightCard>
-
-              {/* Card 2: Engineering Shielding (Amber Theme / Indigo Bold) */}
-              <SpotlightCard glowColor="amber" className="p-8 border-slate-800">
-                  <h3 className="text-xl font-bold text-gray-200 mb-4">Engineering Shielding</h3>
-                  <p className="text-gray-400 text-base leading-relaxed">
-                    Your Senior Engineers are your most expensive assets, and every support escalation taxes their bandwidth. I function as a <strong className="text-indigo-400">Tier-3 Firewall.</strong> Because I possess the "Electron-to-Cloud" literacy to debug the root cause myself, I filter out the noise. I protect your roadmap from context-switching costs, ensuring your core team focuses on shipping features, not fixing history.
-                  </p>
-              </SpotlightCard>
-
-              {/* Card 3: Zero-Latency Elasticity (Amber Theme / Indigo Bold) */}
-              <SpotlightCard glowColor="amber" className="p-8 border-slate-800">
-                  <h3 className="text-xl font-bold text-gray-200 mb-4">Zero-Latency Elasticity</h3>
-                  <p className="text-gray-400 text-base leading-relaxed">
-                    Specialists break when the domain changes; Generalists adapt. I proved this with JamCamping.com: I am not a native React developer, yet I shipped a production PWA in 48 hours using an Agentic Workflow. <strong className="text-indigo-400">I don't need a 6-month ramp-up.</strong> I use AI to compress the learning curve, meaning I can pivot from Support to QA to Technical Writing instantly as the company scales.
-                  </p>
-              </SpotlightCard>
-
-              {/* Card 4: Net Dollar Defense (Indigo Theme / Amber Bold) */}
-              <SpotlightCard glowColor="indigo" className="p-8 border-slate-800">
-                  <h3 className="text-xl font-bold text-gray-200 mb-4">Net Dollar Defense</h3>
-                  <p className="text-gray-400 text-base leading-relaxed">
-                    I view Support not as a cost center, but as a Revenue Defense unit. In the AI era, users churn when they feel stupid or ignored. I apply <strong className="text-amber-400">"Vibration Control"</strong>—a synthesis of radical empathy and technical authority—to turn cancellation events into loyalty events. I aim to save the company more capital than I cost by defending Net Dollar Retention (NDR) at the source.
-                  </p>
-              </SpotlightCard>
-
-            </div>
-          </section>
-        </FadeInSection>
-
-        {/* CONTACT */}
-        <FadeInSection>
-          <section id="contact" className="text-center space-y-12 py-20 scroll-mt-32">
-            <p className="text-3xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
-               Support is the only department that touches every other department. It is the natural home for the Generalist. I am applying for this role because it is the "Central Nervous System" of the company. Let's build the Trust Department.
+            <h2 className="text-3xl font-bold text-slate-100 mb-6 uppercase tracking-wider">The Engineering Bedrock</h2>
+            <p className="max-w-3xl mx-auto text-slate-400 mb-12">
+              My understanding of AI is grounded in the math of the universe. I studied **Signals & Systems** and **Control Engineering** at **Worcester Polytechnic Institute (WPI)**. My first principles are Fourier transforms and Feedback Loops—not just API calls.
             </p>
-            <div className="flex justify-center">
-               <GlowButton href="mailto:joshua.wakefield@gmail.com" icon={Mail} text="Let's Talk" color="amber" />
+            <div className="flex flex-wrap justify-center gap-4 text-xs font-mono text-indigo-400">
+              <span className="px-4 py-2 bg-slate-900 border border-slate-800 rounded">LAPLACE TRANSFORMS</span>
+              <span className="px-4 py-2 bg-slate-900 border border-slate-800 rounded">STOCHASTIC SYSTEMS</span>
+              <span className="px-4 py-2 bg-slate-900 border border-slate-800 rounded">VIBRATION ANALYSIS</span>
+              <span className="px-4 py-2 bg-slate-900 border border-slate-800 rounded">POWER SYSTEMS</span>
             </div>
-          </section>
-        </FadeInSection>
+          </FadeInSection>
+        </div>
+      </section>
 
-      </div>
-
-      <footer className="border-t border-slate-900 mt-40 bg-slate-950/95 backdrop-blur z-10 relative">
-        <div className="max-w-4xl mx-auto px-6 py-16">
-          <div className="flex flex-col items-center gap-10">
-            <div className="flex gap-10">
-              {[ 
-                { href: 'https://linkedin.com/in/jmwakefield', icon: Linkedin, label: 'LinkedIn' }, 
-                { href: 'https://github.com/joshuawakefield', icon: Github, label: 'GitHub' }, 
-                { href: 'mailto:joshua.wakefield@gmail.com', icon: Mail, label: 'Email' } 
-              ].map((link, idx) => (
-                <a 
-                  key={idx} 
-                  href={link.href} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="group flex flex-col items-center gap-3 transition-all duration-300 text-gray-500 hover:text-amber-400"
-                >
-                  <div className="p-4 rounded-full bg-slate-900 border border-slate-800 group-hover:border-amber-500/50 group-hover:scale-110 transition-all duration-300 shadow-lg group-hover:shadow-amber-500/20 cursor-hover">
-                    <link.icon size={28} />
-                  </div>
-                  <span className="text-[10px] font-mono tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">
-                    {link.label}
-                  </span>
-                </a>
-              ))}
-            </div>
-            <div className="text-center space-y-3">
-              <p className="text-gray-500 text-sm font-mono tracking-tighter">
-                SYSTEM_ID: JOSHUA_WAKEFIELD // STATUS: <span className="text-amber-500 animate-pulse">TRANSMITTING</span>
-              </p>
-              <p className="text-gray-700 text-[10px] font-mono uppercase tracking-[0.2em]">
-                High-Bandwidth Generalist // Integrated Polarity // 2025
-              </p>
-            </div>
+      {/* Footer / Social */}
+      <footer className="py-12 px-6 border-t border-slate-900">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex flex-col items-center md:items-start gap-2">
+             <div className="font-mono font-bold text-slate-100">JOSHUA WAKEFIELD // 2025</div>
+             <div className="text-xs text-slate-500 font-mono tracking-widest uppercase italic opacity-50">STATUS: TRANSMITTING</div>
+          </div>
+          <div className="flex gap-6">
+            <a href="https://linkedin.com/in/jmwakefield" className="text-slate-500 hover:text-amber-500 transition-colors"><Linkedin size={20} /></a>
+            <a href="https://github.com/joshuawakefield" className="text-slate-500 hover:text-amber-500 transition-colors"><Github size={20} /></a>
+            <a href="mailto:joshua.wakefield@gmail.com" className="text-slate-500 hover:text-amber-500 transition-colors"><Mail size={20} /></a>
           </div>
         </div>
       </footer>
+
+      {/* #14: Terminal Trigger Tooltip Implementation */}
+      <div 
+        className="fixed bottom-10 right-10 z-[60]"
+        onMouseEnter={() => setIsTerminalHovered(true)}
+        onMouseLeave={() => setIsTerminalHovered(false)}
+      >
+        <div className={`absolute bottom-full right-0 mb-4 transition-all duration-200 ${isTerminalHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}>
+          <div className="bg-slate-900 border border-slate-700 p-4 rounded-xl shadow-2xl w-48 font-mono">
+            <div className="text-[10px] text-slate-500 uppercase mb-2">Power User Access</div>
+            <div className="space-y-2 text-xs">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400">Query Portfolio</span>
+                <span className="text-amber-500 px-1.5 py-0.5 bg-amber-500/10 rounded">CMD+K</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400">ROI Analysis</span>
+                <span className="text-amber-500 italic">whyjosh</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button 
+          className="relative group p-4 bg-amber-500 text-slate-950 rounded-full shadow-[0_0_30px_rgba(251,191,36,0.3)] hover:scale-110 transition-all duration-300"
+          style={{ 
+            boxShadow: `0 0 ${20 + (scrollProgress * 60)}px rgba(251,191,36,${0.3 + (scrollProgress * 0.4)})`
+          }}
+        >
+          <Terminal size={24} />
+          <div className="absolute -inset-1 rounded-full border border-amber-500/50 animate-ping opacity-20 pointer-events-none" />
+        </button>
+      </div>
+
     </div>
   );
-}
+};
 
-export default App;
+export default Portfolio;
