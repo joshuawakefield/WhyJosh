@@ -87,17 +87,22 @@ const SpotlightCard = ({ children, className = "" }: { children: React.ReactNode
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const xc = rect.width / 2;
-    const yc = rect.height / 2;
-    const dx = x - xc;
-    const dy = y - yc;
-    setRotate({ x: dy / -15, y: dx / 15 });
-  };
+const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  if (!cardRef.current) return;
+  const rect = cardRef.current.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  // Update the CSS variables for the spotlight gradient
+  cardRef.current.style.setProperty("--mouse-x", `${x}px`);
+  cardRef.current.style.setProperty("--mouse-y", `${y}px`);
+
+  const xc = rect.width / 2;
+  const yc = rect.height / 2;
+  const dx = x - xc;
+  const dy = y - yc;
+  setRotate({ x: dy / -15, y: dx / 15 });
+};
 
   return (
     <div
